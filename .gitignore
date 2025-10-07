@@ -6,8 +6,7 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 
-# Distribution package
-dist/
+# Distribution archives (dist/ folder is committed, but not the .zip files)
 *.zip
 
 # Native addon build artifacts

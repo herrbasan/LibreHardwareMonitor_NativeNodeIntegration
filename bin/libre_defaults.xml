@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appSettings>
+    <add key="startMinMenuItem" value="true" />
+    <add key="runWebServerMenuItem" value="true" />
+    <add key="listenerPort" value="8085" />
+    <add key="authenticationEnabled" value="false" />
+    <add key="authenticationUserName" value="" />
+    <add key="authenticationPassword" value="e67e72111b363d80c8124d28193926000980e1211c7986cacbd26aacc5528d48" />
+  </appSettings>
+</configuration>

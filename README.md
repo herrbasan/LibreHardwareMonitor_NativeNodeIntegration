@@ -39,7 +39,23 @@ To build from source, you need:
 
 ## 🚀 Quick Start
 
-### Installation
+### Installation Options
+
+#### Option 1: Pre-built Distribution (Easiest - No Build Tools Required!)
+
+Download the latest release `.zip` file from [GitHub Releases](https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration/releases) and extract it.
+
+**Requirements**: Windows 10/11, Node.js 16+, [.NET Runtime 6.0+](https://dotnet.microsoft.com/download/dotnet/6.0)
+
+```javascript
+const monitor = require('./path/to/dist');
+await monitor.init({ cpu: true, gpu: true });
+const data = await monitor.poll();
+```
+
+No Visual Studio, Python, or build tools needed!
+
+#### Option 2: Build from Source
 
 ```bash
 # Clone the repository with submodules
@@ -49,6 +65,8 @@ cd LibreHardwareMonitor_NativeNodeIntegration
 # Install dependencies and build
 npm install
 ```
+
+**Requires**: Visual Studio 2019+, .NET SDK 6.0+, Python 3.x
 
 ### Usage Example
 
@@ -161,24 +179,54 @@ npm run clean
 npm run rebuild
 ```
 
+### Creating Distribution Package
+
+To create a pre-built distribution for sharing (no build tools required for users):
+
+```bash
+# Build everything first
+npm run build
+
+# Create distribution package
+npm run dist
+```
+
+This creates:
+- `dist/` folder (4.3 MB) - Ready to use, all binaries included
+- `librehardwaremonitor-native-v{version}-win64.zip` (1.5 MB) - Compressed archive
+
+Users can extract and use immediately:
+```javascript
+const monitor = require('./dist');
+await monitor.init({ cpu: true, gpu: true });
+```
+
 ### Testing
 
 ```bash
 # Run basic test (requires Administrator privileges)
 npm test
 
-# Or run directly
-node test/basic.js
+# Test distribution package
+node test/test-dist.js
+
+# Test flattening feature
+node test/test-flatten.js
 ```
 
 ### Current Status
 
-**✅ Completed (Phase 1)**:
+**✅ Completed (Phase 2)**:
 - Build infrastructure with git submodule
 - LibreHardwareMonitor compilation automation
 - Native addon skeleton with Node-API
 - CLR hosting layer foundation
 - JavaScript interface API
+- **Full CLR runtime integration**
+- **Real hardware sensor polling**
+- **JSON format matching web endpoint**
+- **Optional flattening feature**
+- **Pre-built distribution packages**
 
 **🚧 In Progress (Phase 2)**:
 - CLR runtime initialization with proper config

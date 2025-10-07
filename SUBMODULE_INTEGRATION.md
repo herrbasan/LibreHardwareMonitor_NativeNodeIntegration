@@ -2,6 +2,34 @@
 
 This document explains how to integrate `librehardwaremonitor-native` as a git submodule in your Node.js or Electron project.
 
+## 🎯 Two Integration Options
+
+### Option 1: Pre-built Distribution (Recommended for Most Users)
+
+**No build tools required!** Download the pre-built `.zip` file from [GitHub Releases](https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration/releases).
+
+```bash
+# Download and extract the zip file to your project
+# Example: extract to lib/librehardwaremonitor-native/
+
+# Use immediately - no npm install needed!
+```
+
+```javascript
+const monitor = require('./lib/librehardwaremonitor-native');
+await monitor.init({ cpu: true, gpu: true });
+```
+
+**Pros**: No Visual Studio, no Python, no build time  
+**Cons**: Larger repository size if committed to git
+
+### Option 2: Git Submodule (For Development/Customization)
+
+Build from source using git submodule. Recommended if you need to:
+- Modify the native addon
+- Track LibreHardwareMonitor updates
+- Build as part of your CI/CD pipeline
+
 ## ⚠️ Important: Nested Submodules
 
 **This project contains a nested submodule** (`deps/LibreHardwareMonitor-src`). Always use the `--recurse-submodules` flag when cloning or updating to ensure all dependencies are properly initialized.

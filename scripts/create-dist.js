@@ -1,0 +1,348 @@
+/**
+ * Create distribution package
+ * 
+ * This script packages all necessary files for distribution:
+ * - Built native addon (.node file)
+ * - All DLL dependencies
+ * - Runtime config files
+ * - JavaScript interface files
+ * - README and license
+ * 
+ * Users can extract and use without building from source.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+const ROOT = path.join(__dirname, '..');
+const BUILD_DIR = path.join(ROOT, 'build', 'Release');
+const DIST_DIR = path.join(ROOT, 'dist');
+const LIB_DIR = path.join(ROOT, 'lib');
+
+// Get version from package.json
+const packageJson = require(path.join(ROOT, 'package.json'));
+const VERSION = packageJson.version;
+
+// Helper: Recursively remove directory
+function removeDir(dir) {
+    if (fs.existsSync(dir)) {
+        fs.readdirSync(dir).forEach(file => {
+            const curPath = path.join(dir, file);
+            if (fs.lstatSync(curPath).isDirectory()) {
+                removeDir(curPath);
+            } else {
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(dir);
+    }
+}
+
+// Helper: Recursively copy directory
+function copyDir(src, dest) {
+    if (!fs.existsSync(dest)) {
+        fs.mkdirSync(dest, { recursive: true });
+    }
+    
+    const entries = fs.readdirSync(src, { withFileTypes: true });
+    
+    for (const entry of entries) {
+        const srcPath = path.join(src, entry.name);
+        const destPath = path.join(dest, entry.name);
+        
+        if (entry.isDirectory()) {
+            copyDir(srcPath, destPath);
+        } else {
+            fs.copyFileSync(srcPath, destPath);
+        }
+    }
+}
+
+console.log('Creating Distribution Package');
+console.log('='.repeat(60));
+console.log(`Version: ${VERSION}\n`);
+
+async function createDistribution() {
+    try {
+        // 1. Clean dist directory
+        console.log('1. Cleaning dist directory...');
+        if (fs.existsSync(DIST_DIR)) {
+            removeDir(DIST_DIR);
+        }
+        fs.mkdirSync(DIST_DIR, { recursive: true });
+        console.log('   ✓ Cleaned\n');
+
+        // 2. Check if build exists
+        console.log('2. Checking build artifacts...');
+        if (!fs.existsSync(BUILD_DIR)) {
+            console.error('   ✗ Build directory not found!');
+            console.error('   Run "npm run build" first.');
+            process.exit(1);
+        }
+        
+        const addonFile = path.join(BUILD_DIR, 'librehardwaremonitor_native.node');
+        if (!fs.existsSync(addonFile)) {
+            console.error('   ✗ Native addon not found!');
+            console.error('   Run "npm run build:native" first.');
+            process.exit(1);
+        }
+        console.log('   ✓ Build artifacts found\n');
+
+        // 3. Copy native addon
+        console.log('3. Copying native addon...');
+        fs.copyFileSync(
+            addonFile,
+            path.join(DIST_DIR, 'librehardwaremonitor_native.node')
+        );
+        console.log('   ✓ librehardwaremonitor_native.node\n');
+
+        // 4. Copy all DLL dependencies
+        console.log('4. Copying DLL dependencies...');
+        const dllFiles = [
+            'LibreHardwareMonitorLib.dll',
+            'LibreHardwareMonitorLib.deps.json',
+            'LibreHardwareMonitorBridge.dll',
+            'LibreHardwareMonitorBridge.deps.json',
+            'LibreHardwareMonitorBridge.runtimeconfig.json',
+            'HidSharp.dll',
+            'RAMSPDToolkit-NDD.dll',
+            'Mono.Posix.NETStandard.dll',
+            'MonoPosixHelper.dll',
+            'libMonoPosixHelper.dll',
+            'nethost.dll',
+            'System.Management.dll',
+            'System.IO.Ports.dll',
+            'System.Threading.AccessControl.dll',
+            'System.CodeDom.dll'
+        ];
+
+        let copiedCount = 0;
+        for (const file of dllFiles) {
+            const srcPath = path.join(BUILD_DIR, file);
+            if (fs.existsSync(srcPath)) {
+                fs.copyFileSync(srcPath, path.join(DIST_DIR, file));
+                console.log(`   ✓ ${file}`);
+                copiedCount++;
+            } else {
+                console.warn(`   ⚠ ${file} not found (may be optional)`);
+            }
+        }
+        console.log(`   Copied ${copiedCount} files\n`);
+
+        // 5. Copy JavaScript interface with modified paths
+        console.log('5. Copying JavaScript interface...');
+        fs.mkdirSync(path.join(DIST_DIR, 'lib'), { recursive: true });
+        
+        // Copy flatten.js as-is
+        fs.copyFileSync(
+            path.join(LIB_DIR, 'flatten.js'),
+            path.join(DIST_DIR, 'lib', 'flatten.js')
+        );
+        
+        // Create modified index.js for dist (load .node from parent directory)
+        const indexContent = fs.readFileSync(path.join(LIB_DIR, 'index.js'), 'utf8');
+        const modifiedIndex = indexContent.replace(
+            "require('../build/Release/librehardwaremonitor_native.node')",
+            "require('../librehardwaremonitor_native.node')"
+        );
+        fs.writeFileSync(
+            path.join(DIST_DIR, 'lib', 'index.js'),
+            modifiedIndex
+        );
+        
+        console.log('   ✓ lib/index.js (modified for dist)');
+        console.log('   ✓ lib/flatten.js\n');
+
+        // 6. Create package.json for dist
+        console.log('6. Creating package.json...');
+        const distPackageJson = {
+            name: packageJson.name,
+            version: VERSION,
+            description: packageJson.description + ' (pre-built distribution)',
+            main: 'lib/index.js',
+            keywords: packageJson.keywords,
+            author: packageJson.author,
+            license: packageJson.license,
+            repository: packageJson.repository,
+            engines: packageJson.engines,
+            os: packageJson.os,
+            dependencies: {
+                // No build dependencies needed for pre-built dist
+            }
+        };
+        fs.writeFileSync(
+            path.join(DIST_DIR, 'package.json'),
+            JSON.stringify(distPackageJson, null, 2)
+        );
+        console.log('   ✓ package.json\n');
+
+        // 7. Copy documentation
+        console.log('7. Copying documentation...');
+        const docFiles = [
+            'README.md',
+            'LICENSE',
+            'SUBMODULE_INTEGRATION.md'
+        ];
+        for (const file of docFiles) {
+            const srcPath = path.join(ROOT, file);
+            if (fs.existsSync(srcPath)) {
+                fs.copyFileSync(srcPath, path.join(DIST_DIR, file));
+                console.log(`   ✓ ${file}`);
+            }
+        }
+        console.log();
+
+        // 8. Create DIST_README.md with usage instructions
+        console.log('8. Creating distribution README...');
+        const distReadme = `# LibreHardwareMonitor Native - Pre-built Distribution
+
+This is a **pre-built distribution** of librehardwaremonitor-native v${VERSION}.
+
+## ⚡ Quick Start (No Build Required!)
+
+This package contains all compiled binaries. No build tools needed!
+
+### Requirements
+
+- **Windows 10/11** (64-bit)
+- **.NET Runtime 6.0+** ([Download](https://dotnet.microsoft.com/download/dotnet/6.0))
+- **Node.js 16.0.0+**
+- **Administrator privileges** (LibreHardwareMonitor limitation)
+
+### Usage
+
+\`\`\`javascript
+const monitor = require('./path/to/dist');
+
+async function main() {
+    await monitor.init({ cpu: true, gpu: true, memory: true });
+    const data = await monitor.poll();
+    console.log(data);
+    await monitor.shutdown();
+}
+
+main();
+\`\`\`
+
+### Files Included
+
+- \`librehardwaremonitor_native.node\` - Native Node.js addon
+- \`LibreHardwareMonitorLib.dll\` - LibreHardwareMonitor library
+- \`LibreHardwareMonitorBridge.dll\` - C# bridge
+- All required .NET dependencies
+- JavaScript interface (\`lib/\`)
+
+### Administrator Privileges
+
+LibreHardwareMonitor requires admin rights for hardware access:
+
+\`\`\`powershell
+# Development
+Start-Process node -ArgumentList "your-app.js" -Verb RunAs
+
+# Production (Electron)
+# Add to app.manifest:
+# <requestedExecutionLevel level="requireAdministrator" />
+\`\`\`
+
+### Optional Flattening
+
+\`\`\`javascript
+// Hierarchical format (default)
+const raw = await monitor.poll();
+
+// Flattened format (23% smaller, easier to use)
+const flat = await monitor.poll({ flatten: true });
+console.log(flat.cpu[0].temperatures.cpu_core_1.data.value);
+\`\`\`
+
+## 📦 Build From Source Alternative
+
+If you prefer building from source (recommended for development):
+
+\`\`\`bash
+git clone --recurse-submodules https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration.git
+cd LibreHardwareMonitor_NativeNodeIntegration
+npm install
+\`\`\`
+
+See main README.md for details.
+
+## 📄 License
+
+MIT - See LICENSE file
+
+## 🤖 Note
+
+100% of this project was generated by Claude Sonnet 4.5.
+
+---
+
+**Version**: ${VERSION}  
+**Build Date**: ${new Date().toISOString()}  
+**Repository**: https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration
+`;
+        
+        fs.writeFileSync(path.join(DIST_DIR, 'DIST_README.md'), distReadme);
+        console.log('   ✓ DIST_README.md\n');
+
+        // 9. Get total size
+        console.log('9. Calculating package size...');
+        const getDirectorySize = (dir) => {
+            let size = 0;
+            const files = fs.readdirSync(dir);
+            for (const file of files) {
+                const filePath = path.join(dir, file);
+                const stats = fs.statSync(filePath);
+                if (stats.isDirectory()) {
+                    size += getDirectorySize(filePath);
+                } else {
+                    size += stats.size;
+                }
+            }
+            return size;
+        };
+        
+        const totalSize = getDirectorySize(DIST_DIR);
+        console.log(`   Total size: ${(totalSize / 1024 / 1024).toFixed(2)} MB\n`);
+
+        // 10. Create archive (optional, if 7-zip available)
+        console.log('10. Creating archive...');
+        const archiveName = `librehardwaremonitor-native-v${VERSION}-win64.zip`;
+        const archivePath = path.join(ROOT, archiveName);
+        
+        try {
+            // Try PowerShell Compress-Archive
+            execSync(
+                `powershell -Command "Compress-Archive -Path '${DIST_DIR}\\*' -DestinationPath '${archivePath}' -Force"`,
+                { stdio: 'inherit' }
+            );
+            console.log(`   ✓ Created ${archiveName}\n`);
+        } catch (err) {
+            console.log('   ⚠ Could not create archive (PowerShell not available)');
+            console.log('   Manually zip the dist/ folder if needed\n');
+        }
+
+        // Summary
+        console.log('='.repeat(60));
+        console.log('✓ Distribution package created successfully!\n');
+        console.log('Output:');
+        console.log(`  - dist/ folder (${(totalSize / 1024 / 1024).toFixed(2)} MB)`);
+        if (fs.existsSync(archivePath)) {
+            const archiveSize = fs.statSync(archivePath).size;
+            console.log(`  - ${archiveName} (${(archiveSize / 1024 / 1024).toFixed(2)} MB)`);
+        }
+        console.log('\nUsage:');
+        console.log('  1. Share the dist/ folder or .zip file');
+        console.log('  2. Users extract and require: require("./dist")');
+        console.log('  3. No build tools required!\n');
+
+    } catch (err) {
+        console.error('\n✗ Distribution creation failed:');
+        console.error(err.message);
+        process.exit(1);
+    }
+}
+
+createDistribution();

@@ -450,9 +450,8 @@ class HardwareMonitor {
 **Core DLLs** (must be in same directory as .node addon):
 ```
 deps/LibreHardwareMonitor/
-├── LibreHardwareMonitorLib.dll    # Main library
-├── HidSharp.dll                   # USB HID device access
-└── PawnIO.sys                     # Kernel driver (loaded at runtime)
+├── LibreHardwareMonitorLib.dll    # Main library (PawnIO driver embedded as resources)
+└── HidSharp.dll                   # USB HID device access
 ```
 
 **Optional Dependencies** (for extended sensor support):
@@ -548,8 +547,8 @@ try {
   // Copy required DLLs
   const requiredFiles = [
     'LibreHardwareMonitorLib.dll',
-    'HidSharp.dll',
-    'PawnIO.sys'  // Kernel driver
+    'HidSharp.dll'
+    // Note: PawnIO driver modules are embedded as resources inside LibreHardwareMonitorLib.dll
   ];
   
   requiredFiles.forEach(file => {
@@ -843,9 +842,10 @@ This ensures Windows prompts for elevation at application launch, which is **man
    - Prevent code execution from untrusted sources
 
 **Kernel Driver Considerations**:
-- LibreHardwareMonitor uses a kernel driver for hardware access (WinRing0.sys or PawnIO.sys)
-- **Note**: Due to security vulnerabilities in WinRing0, newer LibreHardwareMonitor versions use PawnIO instead
-- Driver is loaded/unloaded automatically by LibreHardwareMonitor
+- LibreHardwareMonitor uses PawnIO kernel driver modules for hardware access (embedded as resources in DLL)
+- **Note**: PawnIO replaced WinRing0 due to security vulnerabilities in the legacy driver
+- Driver modules are embedded as .bin resources inside LibreHardwareMonitorLib.dll
+- Modules are extracted and loaded at runtime by LibreHardwareMonitor
 - Requires Administrator privileges (inherent requirement, not optional)
 - Driver signature is verified by Windows (must be signed)
 

@@ -4,6 +4,10 @@
 #include <hostfxr.h>
 #include <iostream>
 
+// Dummy global variable to get module handle
+// Defined here, declared extern in clr_host.h
+int g_module_marker = 0;
+
 CLRHost::CLRHost()
     : m_hostfxrHandle(nullptr)
     , m_hostContextHandle(nullptr)
@@ -73,13 +77,19 @@ bool CLRHost::Initialize() {
         return false;
     }
     
-    // For now, we'll initialize without a runtime config
-    // In production, you might want to use a .runtimeconfig.json
-    // TODO: Consider creating a runtime config for version control
+    // Get the path to our .node addon (not node.exe)
+    // We need to use the HMODULE of our DLL
+    HMODULE hModule = nullptr;
+    if (!GetModuleHandleExW(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        (LPCWSTR)&g_module_marker,  // Address of global variable in our module
+        &hModule)) {
+        std::wcerr << L"Failed to get module handle" << std::endl;
+        return false;
+    }
     
-    // Get the directory containing LibreHardwareMonitorLib.dll
     wchar_t currentPath[MAX_PATH];
-    GetModuleFileNameW(nullptr, currentPath, MAX_PATH);
+    GetModuleFileNameW(hModule, currentPath, MAX_PATH);
     
     // Remove filename to get directory
     wchar_t* lastSlash = wcsrchr(currentPath, L'\\');
@@ -87,18 +97,23 @@ bool CLRHost::Initialize() {
         *(lastSlash + 1) = L'\0';
     }
     
-    // Append the DLL path
-    wcscat_s(currentPath, MAX_PATH, L"LibreHardwareMonitorLib.dll");
+    // Build path to LibreHardwareMonitorBridge.runtimeconfig.json
+    wchar_t runtimeConfigPath[MAX_PATH];
+    wcscpy_s(runtimeConfigPath, MAX_PATH, currentPath);
+    wcscat_s(runtimeConfigPath, MAX_PATH, L"LibreHardwareMonitorBridge.runtimeconfig.json");
     
-    // For initial implementation, we'll use the simpler runtime initialization
-    // This requires .NET Runtime to be installed on the system
+    std::wcout << L"Initializing .NET runtime with config: " << runtimeConfigPath << std::endl;
     
-    std::wcout << L"CLR Host initialized (runtime config approach pending)" << std::endl;
-    std::wcout << L"Looking for LibreHardwareMonitorLib.dll at: " << currentPath << std::endl;
+    // Initialize the runtime
+    int rc = m_initFptr(runtimeConfigPath, nullptr, &m_hostContextHandle);
     
-    // Mark as initialized (placeholder until full implementation)
-    // In the next phase, we'll properly initialize the runtime context
-    m_hostContextHandle = (void*)1; // Placeholder non-null value
+    if (rc != 0 || m_hostContextHandle == nullptr) {
+        std::wcerr << L"Failed to initialize .NET runtime. Error code: " << rc << std::endl;
+        std::wcerr << L"Make sure LibreHardwareMonitorBridge.runtimeconfig.json exists in the application directory" << std::endl;
+        return false;
+    }
+    
+    std::wcout << L"✓ .NET runtime initialized successfully" << std::endl;
     
     return true;
 }
@@ -106,9 +121,7 @@ bool CLRHost::Initialize() {
 void CLRHost::Shutdown() {
     if (m_hostContextHandle != nullptr && m_closeFptr != nullptr) {
         // Close the runtime context
-        if ((size_t)m_hostContextHandle != 1) { // Not placeholder
-            m_closeFptr(m_hostContextHandle);
-        }
+        m_closeFptr(m_hostContextHandle);
         m_hostContextHandle = nullptr;
     }
     
@@ -120,6 +133,8 @@ void CLRHost::Shutdown() {
     m_initFptr = nullptr;
     m_getDelegateFptr = nullptr;
     m_closeFptr = nullptr;
+    
+    std::wcout << L"✓ CLR runtime shutdown complete" << std::endl;
 }
 
 bool CLRHost::GetDelegate(int32_t type, void** delegate) {
@@ -159,6 +174,12 @@ bool CLRHost::LoadAssemblyAndGetFunctionPointer(
         delegateTypeName,
         reserved,
         delegate);
+    
+    if (rc != 0) {
+        std::wcerr << L"Failed to load function '" << methodName 
+                   << L"' from type '" << typeName 
+                   << L"'. Error code: 0x" << std::hex << rc << std::dec << std::endl;
+    }
     
     return rc == 0;
 }

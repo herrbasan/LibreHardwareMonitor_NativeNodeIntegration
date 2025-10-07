@@ -42,8 +42,20 @@
           "destination": "<(module_root_dir)/build/Release",
           "files": [
             "<(module_root_dir)/deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll",
+            "<(module_root_dir)/deps/LibreHardwareMonitor/LibreHardwareMonitorLib.deps.json",
             "<(module_root_dir)/deps/LibreHardwareMonitor/HidSharp.dll",
-            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native/nethost.dll"
+            "<(module_root_dir)/deps/LibreHardwareMonitor/RAMSPDToolkit-NDD.dll",
+            "<(module_root_dir)/deps/LibreHardwareMonitor/Mono.Posix.NETStandard.dll",
+            "<(module_root_dir)/deps/LibreHardwareMonitor/MonoPosixHelper.dll",
+            "<(module_root_dir)/deps/LibreHardwareMonitor/libMonoPosixHelper.dll",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native/nethost.dll",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/LibreHardwareMonitorBridge.dll",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/System.Management.dll",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/System.IO.Ports.dll",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/System.Threading.AccessControl.dll",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/System.CodeDom.dll",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/LibreHardwareMonitorBridge.deps.json",
+            "<(module_root_dir)/managed/LibreHardwareMonitorBridge/LibreHardwareMonitorBridge.runtimeconfig.json"
           ]
         }
       ],

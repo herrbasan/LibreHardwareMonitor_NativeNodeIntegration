@@ -56,10 +56,15 @@ private:
     bool m_isInitialized;
     HardwareConfig m_config;
     
-    // Function pointers to managed code (will be populated in next phase)
-    void* m_createComputerFn;
-    void* m_openComputerFn;
-    void* m_closeComputerFn;
-    void* m_pollSensorsFn;
-    void* m_getJsonDataFn;
+    // Function pointers to managed bridge functions
+    typedef int (*LHM_InitializeFn)(bool cpu, bool gpu, bool motherboard, bool memory,
+                                     bool storage, bool network, bool psu, bool controller, bool battery);
+    typedef void* (*LHM_PollFn)();
+    typedef void (*LHM_FreeStringFn)(void* ptr);
+    typedef void (*LHM_ShutdownFn)();
+    
+    LHM_InitializeFn m_initializeFn;
+    LHM_PollFn m_pollFn;
+    LHM_FreeStringFn m_freeStringFn;
+    LHM_ShutdownFn m_shutdownFn;
 };

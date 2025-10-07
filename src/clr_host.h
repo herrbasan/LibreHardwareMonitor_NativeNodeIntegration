@@ -6,6 +6,10 @@
 #include <hostfxr.h>
 #include <coreclr_delegates.h>
 
+// Global marker variable used to get module handle of .node addon
+// Defined in clr_host.cc, used by GetModuleHandleExW
+extern int g_module_marker;
+
 /**
  * CLR Host - manages the .NET runtime lifecycle
  * Responsible for loading hostfxr, initializing the runtime,

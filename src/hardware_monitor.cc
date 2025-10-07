@@ -4,11 +4,10 @@
 HardwareMonitor::HardwareMonitor(CLRHost* clrHost)
     : m_clrHost(clrHost)
     , m_isInitialized(false)
-    , m_createComputerFn(nullptr)
-    , m_openComputerFn(nullptr)
-    , m_closeComputerFn(nullptr)
-    , m_pollSensorsFn(nullptr)
-    , m_getJsonDataFn(nullptr)
+    , m_initializeFn(nullptr)
+    , m_pollFn(nullptr)
+    , m_freeStringFn(nullptr)
+    , m_shutdownFn(nullptr)
 {
 }
 
@@ -29,15 +28,100 @@ bool HardwareMonitor::Initialize(const HardwareConfig& config) {
     // Store configuration
     m_config = config;
     
-    // TODO: Next phase - Load LibreHardwareMonitorLib.dll and get function pointers
-    // For now, just mark as initialized for build testing
+    // Get the path to our .node addon
+    HMODULE hModule = nullptr;
+    if (!GetModuleHandleExW(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        (LPCWSTR)&g_module_marker,
+        &hModule)) {
+        std::cerr << "Failed to get module handle" << std::endl;
+        return false;
+    }
     
-    std::cout << "Hardware Monitor initialized with config:" << std::endl;
-    std::cout << "  CPU: " << (config.cpu ? "enabled" : "disabled") << std::endl;
-    std::cout << "  GPU: " << (config.gpu ? "enabled" : "disabled") << std::endl;
-    std::cout << "  Motherboard: " << (config.motherboard ? "enabled" : "disabled") << std::endl;
-    std::cout << "  Memory: " << (config.memory ? "enabled" : "disabled") << std::endl;
+    wchar_t currentPath[MAX_PATH];
+    GetModuleFileNameW(hModule, currentPath, MAX_PATH);
     
+    // Remove filename to get directory
+    wchar_t* lastSlash = wcsrchr(currentPath, L'\\');
+    if (lastSlash) {
+        *(lastSlash + 1) = L'\0';
+    }
+    
+    // Build path to LibreHardwareMonitorBridge.dll
+    wchar_t bridgeDllPath[MAX_PATH];
+    wcscpy_s(bridgeDllPath, MAX_PATH, currentPath);
+    wcscat_s(bridgeDllPath, MAX_PATH, L"LibreHardwareMonitorBridge.dll");
+    
+    std::wcout << L"Loading managed bridge: " << bridgeDllPath << std::endl;
+    
+    // Load function pointers from managed assembly
+    const wchar_t* typeName = L"LibreHardwareMonitorNative.HardwareMonitorBridge, LibreHardwareMonitorBridge";
+    
+    if (!m_clrHost->LoadAssemblyAndGetFunctionPointer(
+            bridgeDllPath,
+            typeName,
+            L"Initialize",
+            L"LibreHardwareMonitorNative.HardwareMonitorBridge+InitializeDelegate, LibreHardwareMonitorBridge",
+            nullptr,
+            (void**)&m_initializeFn)) {
+        std::cerr << "Failed to load LHM_Initialize function" << std::endl;
+        return false;
+    }
+    
+    if (!m_clrHost->LoadAssemblyAndGetFunctionPointer(
+            bridgeDllPath,
+            typeName,
+            L"Poll",
+            L"LibreHardwareMonitorNative.HardwareMonitorBridge+PollDelegate, LibreHardwareMonitorBridge",
+            nullptr,
+            (void**)&m_pollFn)) {
+        std::cerr << "Failed to load LHM_Poll function" << std::endl;
+        return false;
+    }
+    
+    if (!m_clrHost->LoadAssemblyAndGetFunctionPointer(
+            bridgeDllPath,
+            typeName,
+            L"FreeString",
+            L"LibreHardwareMonitorNative.HardwareMonitorBridge+FreeStringDelegate, LibreHardwareMonitorBridge",
+            nullptr,
+            (void**)&m_freeStringFn)) {
+        std::cerr << "Failed to load LHM_FreeString function" << std::endl;
+        return false;
+    }
+    
+    if (!m_clrHost->LoadAssemblyAndGetFunctionPointer(
+            bridgeDllPath,
+            typeName,
+            L"Shutdown",
+            L"LibreHardwareMonitorNative.HardwareMonitorBridge+ShutdownDelegate, LibreHardwareMonitorBridge",
+            nullptr,
+            (void**)&m_shutdownFn)) {
+        std::cerr << "Failed to load LHM_Shutdown function" << std::endl;
+        return false;
+    }
+    
+    std::cout << "✓ Loaded all managed function pointers" << std::endl;
+    
+    // Call the managed initialization
+    int result = m_initializeFn(
+        config.cpu,
+        config.gpu,
+        config.motherboard,
+        config.memory,
+        config.storage,
+        config.network,
+        config.psu,
+        config.controller,
+        config.battery
+    );
+    
+    if (result != 0) {
+        std::cerr << "Managed initialization failed with code: " << result << std::endl;
+        return false;
+    }
+    
+    std::cout << "✓ Hardware monitoring initialized successfully" << std::endl;
     m_isInitialized = true;
     return true;
 }
@@ -47,28 +131,20 @@ std::string HardwareMonitor::Poll() {
         throw std::runtime_error("Hardware monitor not initialized");
     }
     
-    // TODO: Next phase - Call managed code to poll sensors
-    // For now, return mock data matching the expected format
+    // Call managed poll function
+    void* jsonPtr = m_pollFn();
     
-    return R"({
-        "id": 0,
-        "Text": "Sensor",
-        "Children": [
-            {
-                "id": 1,
-                "Text": "Mock CPU",
-                "Children": [],
-                "Min": "0.0 °C",
-                "Value": "45.0 °C",
-                "Max": "75.0 °C",
-                "ImageURL": ""
-            }
-        ],
-        "Min": "",
-        "Value": "",
-        "Max": "",
-        "ImageURL": ""
-    })";
+    if (jsonPtr == nullptr) {
+        throw std::runtime_error("Managed poll function returned null");
+    }
+    
+    // Convert to std::string
+    std::string result(static_cast<char*>(jsonPtr));
+    
+    // Free the managed memory
+    m_freeStringFn(jsonPtr);
+    
+    return result;
 }
 
 void HardwareMonitor::Shutdown() {
@@ -76,14 +152,16 @@ void HardwareMonitor::Shutdown() {
         return;
     }
     
-    // TODO: Next phase - Close Computer instance and release managed resources
+    // Call managed shutdown
+    if (m_shutdownFn != nullptr) {
+        m_shutdownFn();
+    }
     
     std::cout << "Hardware Monitor shutdown" << std::endl;
     
     m_isInitialized = false;
-    m_createComputerFn = nullptr;
-    m_openComputerFn = nullptr;
-    m_closeComputerFn = nullptr;
-    m_pollSensorsFn = nullptr;
-    m_getJsonDataFn = nullptr;
+    m_initializeFn = nullptr;
+    m_pollFn = nullptr;
+    m_freeStringFn = nullptr;
+    m_shutdownFn = nullptr;
 }

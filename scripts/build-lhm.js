@@ -37,15 +37,15 @@ try {
   let buildOutput;
   
   // Check runtime-specific paths first
-  if (fs.existsSync(path.join(binDir, 'net472', 'win-x64'))) {
-    buildOutput = path.join(binDir, 'net472', 'win-x64');
-    console.log('Using net472/win-x64 build output');
+  if (fs.existsSync(path.join(binDir, 'net9.0', 'win-x64'))) {
+    buildOutput = path.join(binDir, 'net9.0', 'win-x64');
+    console.log('Using net9.0/win-x64 build output');
   } else if (fs.existsSync(path.join(binDir, 'net8.0', 'win-x64'))) {
     buildOutput = path.join(binDir, 'net8.0', 'win-x64');
     console.log('Using net8.0/win-x64 build output');
-  } else if (fs.existsSync(path.join(binDir, 'net9.0', 'win-x64'))) {
-    buildOutput = path.join(binDir, 'net9.0', 'win-x64');
-    console.log('Using net9.0/win-x64 build output');
+  } else if (fs.existsSync(path.join(binDir, 'net472', 'win-x64'))) {
+    buildOutput = path.join(binDir, 'net472', 'win-x64');
+    console.log('Using net472/win-x64 build output');
   } else if (fs.existsSync(path.join(binDir, 'net472'))) {
     buildOutput = path.join(binDir, 'net472');
     console.log('Using net472 build output');
@@ -75,11 +75,23 @@ try {
   // Copy required DLLs
   const requiredFiles = [
     'LibreHardwareMonitorLib.dll',
-    'HidSharp.dll'
+    'HidSharp.dll',
+    'RAMSPDToolkit-NDD.dll',
+    'System.Buffers.dll',
+    'System.CodeDom.dll',
+    'System.Memory.dll',
+    'System.Numerics.Vectors.dll',
+    'System.Runtime.CompilerServices.Unsafe.dll',
+    'System.Security.AccessControl.dll',
+    'System.Security.Principal.Windows.dll',
+    'System.Threading.AccessControl.dll'
     // Note: PawnIO driver modules are embedded as resources inside LibreHardwareMonitorLib.dll
   ];
   
   console.log(`\nCopying DLLs from ${buildOutput} to ${LHM_DEST}...`);
+  
+  let successCount = 0;
+  let missingFiles = [];
   
   requiredFiles.forEach(file => {
     const src = path.join(buildOutput, file);
@@ -88,11 +100,20 @@ try {
     if (fs.existsSync(src)) {
       fs.copyFileSync(src, dest);
       console.log(`✓ Copied ${file}`);
+      successCount++;
     } else {
-      console.error(`✗ Error: ${file} not found in build output`);
-      process.exit(1);
+      // For net9.0 builds, some dependencies might not be present 
+      // They're loaded from the .NET runtime instead
+      console.log(`⚠ Skipped ${file} (not in build output - may use runtime version)`);
+      missingFiles.push(file);
     }
   });
+  
+  // Ensure at minimum LibreHardwareMonitorLib.dll was copied
+  if (!fs.existsSync(path.join(LHM_DEST, 'LibreHardwareMonitorLib.dll'))) {
+    console.error('\n✗ CRITICAL: LibreHardwareMonitorLib.dll was not found!');
+    process.exit(1);
+  }
   
   console.log('\n✓ LibreHardwareMonitor build complete');
   console.log(`Built DLLs are in: ${LHM_DEST}`);

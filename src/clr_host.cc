@@ -127,7 +127,7 @@ bool CLRHost::GetDelegate(int32_t type, void** delegate) {
         return false;
     }
     
-    int32_t rc = m_getDelegateFptr(m_hostContextHandle, type, delegate);
+    int32_t rc = m_getDelegateFptr(m_hostContextHandle, static_cast<hostfxr_delegate_type>(type), delegate);
     return rc == 0;
 }
 

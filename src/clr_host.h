@@ -2,18 +2,9 @@
 
 #include <string>
 #include <windows.h>
-
-// Forward declarations for .NET hosting
-struct hostfxr_initialize_parameters;
-typedef int32_t(*hostfxr_initialize_for_runtime_config_fn)(
-    const char_t* runtime_config_path,
-    const hostfxr_initialize_parameters* parameters,
-    void** host_context_handle);
-typedef int32_t(*hostfxr_get_runtime_delegate_fn)(
-    const void* host_context_handle,
-    int32_t type,
-    void** delegate);
-typedef int32_t(*hostfxr_close_fn)(const void* host_context_handle);
+#include <nethost.h>
+#include <hostfxr.h>
+#include <coreclr_delegates.h>
 
 /**
  * CLR Host - manages the .NET runtime lifecycle

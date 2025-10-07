@@ -10,7 +10,8 @@
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
-        "src"
+        "src",
+        "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native"
       ],
       "dependencies": [
         "<!(node -p \"require('node-addon-api').gyp\")"
@@ -29,7 +30,7 @@
         },
         "VCLinkerTool": {
           "AdditionalLibraryDirectories": [
-            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/6.0.0/runtimes/win-x64/native"
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native"
           ]
         }
       },
@@ -41,7 +42,8 @@
           "destination": "<(module_root_dir)/build/Release",
           "files": [
             "<(module_root_dir)/deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll",
-            "<(module_root_dir)/deps/LibreHardwareMonitor/HidSharp.dll"
+            "<(module_root_dir)/deps/LibreHardwareMonitor/HidSharp.dll",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native/nethost.dll"
           ]
         }
       ],

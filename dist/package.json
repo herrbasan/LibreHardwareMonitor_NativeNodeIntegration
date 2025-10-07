@@ -1,0 +1,31 @@
+{
+  "name": "librehardwaremonitor-native",
+  "version": "0.1.0",
+  "description": "Native Node.js addon providing direct access to LibreHardwareMonitor sensor data (pre-built distribution)",
+  "main": "lib/index.js",
+  "keywords": [
+    "hardware",
+    "monitoring",
+    "sensors",
+    "cpu",
+    "gpu",
+    "temperature",
+    "LibreHardwareMonitor",
+    "native",
+    "addon",
+    "node-api"
+  ],
+  "author": "herrbasan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration.git"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "os": [
+    "win32"
+  ],
+  "dependencies": {}
+}

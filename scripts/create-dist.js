@@ -193,8 +193,40 @@ async function createDistribution() {
         }
         console.log();
 
-        // 8. Create DIST_README.md with usage instructions
-        console.log('8. Creating distribution README...');
+        // 8. Get LibreHardwareMonitor submodule info
+        console.log('8. Reading LibreHardwareMonitor version info...');
+        let lhmCommit = 'unknown';
+        let lhmDate = 'unknown';
+        let lhmMessage = 'unknown';
+        
+        const lhmPath = path.join(ROOT, 'deps', 'LibreHardwareMonitor-src');
+        if (fs.existsSync(path.join(lhmPath, '.git'))) {
+            try {
+                lhmCommit = execSync('git log -1 --format="%H"', { 
+                    cwd: lhmPath, 
+                    encoding: 'utf8' 
+                }).trim().replace(/"/g, '');
+                
+                lhmDate = execSync('git log -1 --format="%ai"', { 
+                    cwd: lhmPath, 
+                    encoding: 'utf8' 
+                }).trim().replace(/"/g, '');
+                
+                lhmMessage = execSync('git log -1 --format="%s"', { 
+                    cwd: lhmPath, 
+                    encoding: 'utf8' 
+                }).trim().replace(/"/g, '');
+                
+                console.log(`   ✓ LibreHardwareMonitor commit: ${lhmCommit.substring(0, 7)}`);
+                console.log(`   ✓ Date: ${lhmDate.split(' ')[0]}`);
+            } catch (err) {
+                console.warn('   ⚠ Could not read LibreHardwareMonitor git info');
+            }
+        }
+        console.log();
+
+        // 9. Create DIST_README.md with usage instructions
+        console.log('9. Creating distribution README...');
         const distReadme = `# LibreHardwareMonitor Native - Pre-built Distribution
 
 This is a **pre-built distribution** of librehardwaremonitor-native v${VERSION}.
@@ -232,6 +264,16 @@ main();
 - \`LibreHardwareMonitorBridge.dll\` - C# bridge
 - All required .NET dependencies
 - JavaScript interface (\`lib/\`)
+
+### LibreHardwareMonitor Version
+
+This distribution includes LibreHardwareMonitor built from source:
+
+- **Commit**: [\`${lhmCommit.substring(0, 7)}\`](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/${lhmCommit})
+- **Date**: ${lhmDate.split(' ')[0]}
+- **Message**: ${lhmMessage}
+
+Full commit: \`${lhmCommit}\`
 
 ### Administrator Privileges
 
@@ -281,14 +323,15 @@ MIT - See LICENSE file
 
 **Version**: ${VERSION}  
 **Build Date**: ${new Date().toISOString()}  
+**LibreHardwareMonitor**: [\`${lhmCommit.substring(0, 7)}\`](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/${lhmCommit}) (${lhmDate.split(' ')[0]})  
 **Repository**: https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration
 `;
         
         fs.writeFileSync(path.join(DIST_DIR, 'DIST_README.md'), distReadme);
         console.log('   ✓ DIST_README.md\n');
 
-        // 9. Get total size
-        console.log('9. Calculating package size...');
+        // 10. Get total size
+        console.log('10. Calculating package size...');
         const getDirectorySize = (dir) => {
             let size = 0;
             const files = fs.readdirSync(dir);
@@ -307,8 +350,8 @@ MIT - See LICENSE file
         const totalSize = getDirectorySize(DIST_DIR);
         console.log(`   Total size: ${(totalSize / 1024 / 1024).toFixed(2)} MB\n`);
 
-        // 10. Create archive (optional, if 7-zip available)
-        console.log('10. Creating archive...');
+        // 11. Create archive (optional, if PowerShell available)
+        console.log('11. Creating archive...');
         const archiveName = `librehardwaremonitor-native-v${VERSION}-win64.zip`;
         const archivePath = path.join(ROOT, archiveName);
         

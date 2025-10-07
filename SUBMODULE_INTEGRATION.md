@@ -2,6 +2,10 @@
 
 This document explains how to integrate `librehardwaremonitor-native` as a git submodule in your Node.js or Electron project.
 
+## ⚠️ Important: Nested Submodules
+
+**This project contains a nested submodule** (`deps/LibreHardwareMonitor-src`). Always use the `--recurse-submodules` flag when cloning or updating to ensure all dependencies are properly initialized.
+
 ## Adding as Submodule
 
 From your main project directory:
@@ -10,12 +14,22 @@ From your main project directory:
 # Add as submodule (example: in a 'native' or 'lib' directory)
 git submodule add https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration.git lib/librehardwaremonitor-native
 
-# Initialize and update submodule
+# Initialize and update submodule AND its nested submodules
 git submodule update --init --recursive
 
 # Commit the submodule addition
 git add .gitmodules lib/librehardwaremonitor-native
 git commit -m "Add librehardwaremonitor-native as submodule"
+```
+
+**For users cloning your main project:**
+
+```bash
+# Clone with all submodules (including nested ones)
+git clone --recurse-submodules https://github.com/you/YourMainProject.git
+
+# Or if already cloned without submodules:
+git submodule update --init --recursive
 ```
 
 ## Building the Submodule
@@ -48,6 +62,26 @@ The build output will be in `lib/librehardwaremonitor-native/build/Release/`:
 - `LibreHardwareMonitorLib.dll` - LibreHardwareMonitor library
 - `LibreHardwareMonitorBridge.dll` - C# bridge
 - All required dependencies (.NET assemblies, HidSharp, etc.)
+
+## Understanding the Nested Submodule Structure
+
+This addon uses a **nested submodule** architecture:
+
+```
+YourMainProject/
+└── lib/librehardwaremonitor-native/              ← Your submodule
+    ├── src/                                       ← Native C++ addon code
+    ├── managed/                                   ← C# bridge code
+    └── deps/LibreHardwareMonitor-src/             ← Nested submodule (LHM source)
+        └── LibreHardwareMonitorLib/               ← Built during npm install
+```
+
+**Why nested submodules?**
+- LibreHardwareMonitor source is pinned to a specific commit (security)
+- Built from source during `npm install` (no pre-compiled binaries)
+- Automatically updated when you update the parent submodule
+
+**Git automatically handles this** when you use `--recurse-submodules` flag.
 
 ## Using in Your Project
 
@@ -117,8 +151,11 @@ When the native addon is updated:
 # From your main project root
 cd lib/librehardwaremonitor-native
 
-# Pull latest changes
+# Pull latest changes (including nested LibreHardwareMonitor submodule)
 git pull origin main
+
+# Update nested submodules if they changed
+git submodule update --init --recursive
 
 # Rebuild if needed
 npm run rebuild
@@ -128,6 +165,8 @@ cd ../..
 git add lib/librehardwaremonitor-native
 git commit -m "Update librehardwaremonitor-native submodule"
 ```
+
+**Important**: The `git submodule update --init --recursive` ensures that if the LibreHardwareMonitor nested submodule was updated (e.g., to a newer commit), it gets updated too.
 
 ## Working on the Submodule
 
@@ -227,6 +266,36 @@ class HardwareMonitor {
 ```
 
 ## Troubleshooting
+
+### Nested Submodule Issues
+
+**Problem**: `deps/LibreHardwareMonitor-src` directory is empty or missing
+
+```bash
+# Solution: Initialize nested submodules
+cd lib/librehardwaremonitor-native
+git submodule update --init --recursive
+```
+
+**Problem**: LibreHardwareMonitor build fails with "source files not found"
+
+```bash
+# Solution: Verify nested submodule is checked out
+cd deps/LibreHardwareMonitor-src
+git status  # Should show files, not "empty directory"
+
+# If empty, go back and reinitialize
+cd ../..
+git submodule update --init --recursive
+```
+
+**Problem**: Your team members get build errors after cloning
+
+```bash
+# Solution: Add to your main project's README:
+# "Always clone with: git clone --recurse-submodules <url>"
+# Or after cloning: git submodule update --init --recursive
+```
 
 ### Submodule Not Initialized
 

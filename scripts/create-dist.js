@@ -275,6 +275,8 @@ This distribution includes LibreHardwareMonitor built from source:
 
 Full commit: \`${lhmCommit}\`
 
+**Note**: You can replace \`LibreHardwareMonitorLib.dll\` with a different version if needed (e.g., for bug fixes or newer hardware support). Ensure the replacement version is API-compatible. If you experience crashes, verify you have the matching .NET dependencies. For major LHM updates, rebuilding from source is recommended.
+
 ### Administrator Privileges
 
 LibreHardwareMonitor requires admin rights for hardware access:

@@ -322,9 +322,23 @@ namespace LibreHardwareMonitorNative
                 SensorType.SmallData => $"{value:F0} MB",
                 SensorType.Factor => $"{value:F3}",
                 SensorType.Frequency => $"{value:F0} Hz",
-                SensorType.Throughput => $"{value:F1} MB/s",
+                SensorType.Throughput => FormatThroughput(value.Value),
                 _ => value.ToString() ?? ""
             };
+        }
+        
+        private static string FormatThroughput(float bytesPerSecond)
+        {
+            // Format throughput with appropriate units based on magnitude
+            // This matches LibreHardwareMonitor's web server formatting
+            if (bytesPerSecond >= 1073741824) // >= 1 GB/s
+                return $"{bytesPerSecond / 1073741824:F1} GB/s";
+            if (bytesPerSecond >= 1048576) // >= 1 MB/s
+                return $"{bytesPerSecond / 1048576:F1} MB/s";
+            if (bytesPerSecond >= 1024) // >= 1 KB/s
+                return $"{bytesPerSecond / 1024:F1} KB/s";
+            
+            return $"{bytesPerSecond:F1} B/s";
         }
     }
 }

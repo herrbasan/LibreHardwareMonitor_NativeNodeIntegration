@@ -103,6 +103,18 @@ bool HardwareMonitor::Initialize(const HardwareConfig& config) {
     
     std::cout << "✓ Loaded all managed function pointers" << std::endl;
     
+    // Debug: Log hardware config being passed to C#
+    std::cout << "=== Initializing LibreHardwareMonitor ===" << std::endl;
+    std::cout << "CPU: " << (config.cpu ? "true" : "false") 
+              << ", GPU: " << (config.gpu ? "true" : "false")
+              << ", Motherboard: " << (config.motherboard ? "true" : "false") << std::endl;
+    std::cout << "Memory: " << (config.memory ? "true" : "false")
+              << ", Storage: " << (config.storage ? "true" : "false")
+              << ", Network: " << (config.network ? "true" : "false") << std::endl;
+    std::cout << "PSU: " << (config.psu ? "true" : "false")
+              << ", Controller: " << (config.controller ? "true" : "false")
+              << ", Battery: " << (config.battery ? "true" : "false") << std::endl;
+    
     // Call the managed initialization
     int result = m_initializeFn(
         config.cpu,

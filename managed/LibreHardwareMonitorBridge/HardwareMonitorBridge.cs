@@ -13,13 +13,27 @@ namespace LibreHardwareMonitorNative
     {
         private Computer? _computer;
         
-        // Delegate types for native interop
+        // Delegate types for native interop - MUST use Cdecl calling convention to match C++
+        // Use I1 (1-byte bool) to match C++ bool size
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int InitializeDelegate(
-            bool cpu, bool gpu, bool motherboard, bool memory,
-            bool storage, bool network, bool psu, bool controller, bool battery);
+            [MarshalAs(UnmanagedType.I1)] bool cpu,
+            [MarshalAs(UnmanagedType.I1)] bool gpu,
+            [MarshalAs(UnmanagedType.I1)] bool motherboard,
+            [MarshalAs(UnmanagedType.I1)] bool memory,
+            [MarshalAs(UnmanagedType.I1)] bool storage,
+            [MarshalAs(UnmanagedType.I1)] bool network,
+            [MarshalAs(UnmanagedType.I1)] bool psu,
+            [MarshalAs(UnmanagedType.I1)] bool controller,
+            [MarshalAs(UnmanagedType.I1)] bool battery);
         
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate IntPtr PollDelegate();
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void FreeStringDelegate(IntPtr ptr);
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void ShutdownDelegate();
         
         /// <summary>
@@ -39,6 +53,12 @@ namespace LibreHardwareMonitorNative
             try
             {
                 var instance = Instance;
+                
+                // Debug: Log the config being passed
+                Console.WriteLine("=== LibreHardwareMonitor Initialization ===");
+                Console.WriteLine($"CPU: {cpu}, GPU: {gpu}, Motherboard: {motherboard}");
+                Console.WriteLine($"Memory: {memory}, Storage: {storage}, Network: {network}");
+                Console.WriteLine($"PSU: {psu}, Controller: {controller}, Battery: {battery}");
                 
                 instance._computer = new Computer
                 {

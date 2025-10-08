@@ -97,37 +97,32 @@ async function createDistribution() {
         );
         console.log('   ✓ librehardwaremonitor_native.node\n');
 
-        // 4. Copy all DLL dependencies
-        console.log('4. Copying DLL dependencies...');
-        const dllFiles = [
-            'LibreHardwareMonitorLib.dll',
-            'LibreHardwareMonitorLib.deps.json',
-            'LibreHardwareMonitorBridge.dll',
-            'LibreHardwareMonitorBridge.deps.json',
-            'LibreHardwareMonitorBridge.runtimeconfig.json',
-            'HidSharp.dll',
-            'RAMSPDToolkit-NDD.dll',
-            'Mono.Posix.NETStandard.dll',
-            'MonoPosixHelper.dll',
-            'libMonoPosixHelper.dll',
-            'nethost.dll',
-            'System.Management.dll',
-            'System.IO.Ports.dll',
-            'System.Threading.AccessControl.dll',
-            'System.CodeDom.dll'
-        ];
-
+        // 4. Copy all DLL dependencies from build/Release
+        // The build process already copied everything we need there
+        console.log('4. Copying DLL dependencies from build output...');
+        
+        const buildFiles = fs.readdirSync(BUILD_DIR);
+        const dllAndConfigFiles = buildFiles.filter(f => 
+            f.endsWith('.dll') || 
+            f.endsWith('.json') || 
+            f.endsWith('.pdb')
+        );
+        
         let copiedCount = 0;
-        for (const file of dllFiles) {
+        for (const file of dllAndConfigFiles) {
             const srcPath = path.join(BUILD_DIR, file);
-            if (fs.existsSync(srcPath)) {
-                fs.copyFileSync(srcPath, path.join(DIST_DIR, file));
-                console.log(`   ✓ ${file}`);
-                copiedCount++;
-            } else {
-                console.warn(`   ⚠ ${file} not found (may be optional)`);
+            const dstPath = path.join(DIST_DIR, file);
+            
+            // Skip debug symbols (.pdb files) to reduce size
+            if (file.endsWith('.pdb')) {
+                continue;
             }
+            
+            fs.copyFileSync(srcPath, dstPath);
+            console.log(`   ✓ ${file}`);
+            copiedCount++;
         }
+        
         console.log(`   Copied ${copiedCount} files\n`);
 
         // 5. Copy JavaScript interface with modified paths

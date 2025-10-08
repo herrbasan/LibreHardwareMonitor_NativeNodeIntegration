@@ -7,7 +7,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <SelfContained>false</SelfContained>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <!-- Include nethost.dll in the output -->
+    <UseAppHost>false</UseAppHost>
+    <IncludeNetHostDll>true</IncludeNetHostDll>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,15 +22,16 @@
     <Reference Include="LibreHardwareMonitorLib">
       <HintPath>..\..\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath>
     </Reference>
-    <Reference Include="HidSharp">
-      <HintPath>..\..\deps\LibreHardwareMonitor\HidSharp.dll</HintPath>
-    </Reference>
     
     <!-- Explicitly reference dependencies that LHM needs -->
     <PackageReference Include="System.Threading.AccessControl" Version="9.0.9" />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
     <PackageReference Include="System.Management" Version="9.0.9" />
     <PackageReference Include="System.IO.Ports" Version="9.0.9" />
+    
+    <!-- Transitive dependencies from LibreHardwareMonitorLib -->
+    <PackageReference Include="RAMSPDToolkit-NDD" Version="1.3.2" />
+    <PackageReference Include="HidSharp" Version="2.6.3" />
   </ItemGroup>
 
 </Project>

@@ -50,7 +50,19 @@ async function init(config = {}) {
         battery: config.battery !== undefined ? config.battery : false
     };
     
-    return addon.init(fullConfig);
+    try {
+        return addon.init(fullConfig);
+    } catch(err) {
+        // Enhance error message for common issues
+        if (err.message && err.message.includes('.NET runtime')) {
+            throw new Error(
+                'Failed to initialize .NET runtime. ' +
+                'Please install .NET 9.0 Desktop Runtime from: ' +
+                'https://dotnet.microsoft.com/download/dotnet/9.0'
+            );
+        }
+        throw err;
+    }
 }
 
 /**

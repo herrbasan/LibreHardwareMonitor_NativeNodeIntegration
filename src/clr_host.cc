@@ -97,23 +97,43 @@ bool CLRHost::Initialize() {
         *(lastSlash + 1) = L'\0';
     }
     
-    // Build path to LibreHardwareMonitorBridge.runtimeconfig.json
-    wchar_t runtimeConfigPath[MAX_PATH];
-    wcscpy_s(runtimeConfigPath, MAX_PATH, currentPath);
-    wcscat_s(runtimeConfigPath, MAX_PATH, L"LibreHardwareMonitorBridge.runtimeconfig.json");
+    // Build path to LibreHardwareMonitorBridge.dll
+    wchar_t bridgeDllPath[MAX_PATH];
+    wcscpy_s(bridgeDllPath, MAX_PATH, currentPath);
+    wcscat_s(bridgeDllPath, MAX_PATH, L"LibreHardwareMonitorBridge.dll");
     
-    std::wcout << L"Initializing .NET runtime with config: " << runtimeConfigPath << std::endl;
+    std::wcout << L"Initializing .NET self-contained runtime for: " << bridgeDllPath << std::endl;
     
-    // Initialize the runtime
-    int rc = m_initFptr(runtimeConfigPath, nullptr, &m_hostContextHandle);
+    // For self-contained, we DON'T use runtimeconfig.json approach
+    // Instead, load with hostfxr_initialize_for_dotnet_command_line using only the DLL path
+    hostfxr_initialize_for_dotnet_command_line_fn initCmdLineFptr = 
+        (hostfxr_initialize_for_dotnet_command_line_fn)
+        GetProcAddress(m_hostfxrHandle, "hostfxr_initialize_for_dotnet_command_line");
     
-    if (rc != 0 || m_hostContextHandle == nullptr) {
-        std::wcerr << L"Failed to initialize .NET runtime. Error code: " << rc << std::endl;
-        std::wcerr << L"Make sure LibreHardwareMonitorBridge.runtimeconfig.json exists in the application directory" << std::endl;
+    if (!initCmdLineFptr) {
+        std::wcerr << L"Failed to get hostfxr_initialize_for_dotnet_command_line function" << std::endl;
         return false;
     }
     
-    std::wcout << L"✓ .NET runtime initialized successfully" << std::endl;
+    // For self-contained libraries: argv[0] = dll path, no other args
+    // The hostfxr will find the runtime DLLs in the same directory
+    const wchar_t* argv[] = { bridgeDllPath };
+    
+    hostfxr_initialize_parameters params = {};
+    params.size = sizeof(hostfxr_initialize_parameters);
+    params.host_path = bridgeDllPath;
+    params.dotnet_root = currentPath;
+    
+    // Initialize with command-line approach (supports self-contained)
+    int rc = initCmdLineFptr(1, argv, &params, &m_hostContextHandle);
+    
+    if (rc != 0 || m_hostContextHandle == nullptr) {
+        std::wcerr << L"Failed to initialize .NET runtime. Error code: 0x" << std::hex << rc << std::dec << std::endl;
+        std::wcerr << L"Make sure all .NET runtime DLLs are present in: " << currentPath << std::endl;
+        return false;
+    }
+    
+    std::wcout << L"✓ .NET self-contained runtime initialized successfully" << std::endl;
     
     return true;
 }

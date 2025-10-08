@@ -6,9 +6,6 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 
-# Distribution archive (keep dist/ folder but ignore zip archives)
-*.zip
-
 # Native addon build artifacts
 build/
 *.node
@@ -80,6 +77,6 @@ tmp/
 temp/
 *.tmp
 
-# Distribution
-dist/
+# Distribution archives (keep dist/ folder, ignore zip archives)
+librehardwaremonitor-native-*.zip
 lib/*.node

@@ -61,16 +61,25 @@ Start-Process node -ArgumentList "your-app.js" -Verb RunAs
 # <requestedExecutionLevel level="requireAdministrator" />
 ```
 
-### Optional Flattening
+### Filtering Options
 
 ```javascript
-// Hierarchical format (default)
-const raw = await monitor.poll();
+// Filter out virtual network adapters
+await monitor.init({ 
+    cpu: true, 
+    gpu: true, 
+    filterVirtualNics: true 
+});
 
-// Flattened format (23% smaller, easier to use)
-const flat = await monitor.poll({ flatten: true });
-console.log(flat.cpu[0].temperatures.cpu_core_1.data.value);
+// Filter out individual memory DIMMs (keep only total/virtual memory)
+await monitor.init({ 
+    memory: true, 
+    filterDIMMs: true 
+});
 ```
+
+**Note**: Data flattening should be implemented in your application code if needed.
+The library provides raw hierarchical JSON matching LibreHardwareMonitor's web endpoint format.
 
 ## 📦 Build From Source Alternative
 
@@ -95,6 +104,6 @@ MIT - See LICENSE file
 ---
 
 **Version**: 0.1.0  
-**Build Date**: 2025-10-07T16:53:09.041Z  
+**Build Date**: 2025-10-08T06:34:30.209Z  
 **LibreHardwareMonitor**: [`ceaf074`](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/ceaf0747589023675c0263e8115a2623fcebfb56) (2025-10-07)  
 **Repository**: https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration

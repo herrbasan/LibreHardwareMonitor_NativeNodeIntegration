@@ -134,12 +134,6 @@ async function createDistribution() {
         console.log('5. Copying JavaScript interface...');
         fs.mkdirSync(path.join(DIST_DIR, 'lib'), { recursive: true });
         
-        // Copy flatten.js as-is
-        fs.copyFileSync(
-            path.join(LIB_DIR, 'flatten.js'),
-            path.join(DIST_DIR, 'lib', 'flatten.js')
-        );
-        
         // Create modified index.js for dist (load .node from parent directory)
         const indexContent = fs.readFileSync(path.join(LIB_DIR, 'index.js'), 'utf8');
         const modifiedIndex = indexContent.replace(
@@ -151,8 +145,7 @@ async function createDistribution() {
             modifiedIndex
         );
         
-        console.log('   ✓ lib/index.js (modified for dist)');
-        console.log('   ✓ lib/flatten.js\n');
+        console.log('   ✓ lib/index.js (modified for dist)\n');
 
         // 6. Create package.json for dist
         console.log('6. Creating package.json...');
@@ -181,14 +174,25 @@ async function createDistribution() {
         console.log('7. Copying documentation...');
         const docFiles = [
             'README.md',
-            'LICENSE',
-            'SUBMODULE_INTEGRATION.md'
+            'LICENSE'
         ];
         for (const file of docFiles) {
             const srcPath = path.join(ROOT, file);
             if (fs.existsSync(srcPath)) {
                 fs.copyFileSync(srcPath, path.join(DIST_DIR, file));
                 console.log(`   ✓ ${file}`);
+            }
+        }
+        
+        // Copy docs from docs/ folder
+        const docsToInclude = [
+            'SUBMODULE_INTEGRATION.md'
+        ];
+        for (const file of docsToInclude) {
+            const srcPath = path.join(ROOT, 'docs', file);
+            if (fs.existsSync(srcPath)) {
+                fs.copyFileSync(srcPath, path.join(DIST_DIR, file));
+                console.log(`   ✓ ${file} (from docs/)`);
             }
         }
         console.log();
@@ -290,16 +294,25 @@ Start-Process node -ArgumentList "your-app.js" -Verb RunAs
 # <requestedExecutionLevel level="requireAdministrator" />
 \`\`\`
 
-### Optional Flattening
+### Filtering Options
 
 \`\`\`javascript
-// Hierarchical format (default)
-const raw = await monitor.poll();
+// Filter out virtual network adapters
+await monitor.init({ 
+    cpu: true, 
+    gpu: true, 
+    filterVirtualNics: true 
+});
 
-// Flattened format (23% smaller, easier to use)
-const flat = await monitor.poll({ flatten: true });
-console.log(flat.cpu[0].temperatures.cpu_core_1.data.value);
+// Filter out individual memory DIMMs (keep only total/virtual memory)
+await monitor.init({ 
+    memory: true, 
+    filterDIMMs: true 
+});
 \`\`\`
+
+**Note**: Data flattening should be implemented in your application code if needed.
+The library provides raw hierarchical JSON matching LibreHardwareMonitor's web endpoint format.
 
 ## 📦 Build From Source Alternative
 

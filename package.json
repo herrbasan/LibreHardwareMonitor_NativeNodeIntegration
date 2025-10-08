@@ -11,8 +11,8 @@
     "build:native": "node-gyp rebuild",
     "clean": "node-gyp clean && rimraf deps/LibreHardwareMonitor && rimraf managed/LibreHardwareMonitorBridge/bin managed/LibreHardwareMonitorBridge/obj",
     "rebuild": "npm run clean && npm run build",
-    "dist": "node scripts/create-dist.js",
-    "test": "node test/basic.js"
+    "dist": "npm run build && node scripts/create-dist.js",
+    "test": "node test/compare-web-vs-native.js"
   },
   "keywords": [
     "hardware",

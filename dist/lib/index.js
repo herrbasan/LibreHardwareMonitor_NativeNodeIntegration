@@ -3,8 +3,6 @@
  * Provides JavaScript API for native hardware monitoring addon
  */
 
-const { flatten } = require('./flatten');
-
 let nativeAddon = null;
 
 // Lazy load the native addon
@@ -56,17 +54,98 @@ async function init(config = {}) {
 }
 
 /**
+ * Filter virtual network adapters from hardware tree
+ * Removes virtual NICs like QoS schedulers, WFP filters, VirtualBox adapters, etc.
+ * @param {Object} data - Hardware tree data
+ */
+function filterVirtualNetworkAdapters(data) {
+    if (!data || !data.Children) return;
+    
+    // Recursively process all nodes
+    for (const child of data.Children) {
+        if (child.Children && Array.isArray(child.Children)) {
+            // Filter out virtual network adapters
+            child.Children = child.Children.filter(item => {
+                // Check if this is a network adapter by HardwareId
+                if (!item.HardwareId || !item.HardwareId.includes('/nic/')) {
+                    return true; // Keep non-network items
+                }
+                
+                const name = item.Text || '';
+                
+                // Filter patterns for virtual/filter adapters
+                const virtualPatterns = [
+                    '-QoS Packet Scheduler',
+                    '-WFP ',  // Windows Filtering Platform
+                    '-VirtualBox NDIS',
+                    '-Hyper-V Virtual Switch',
+                    '-Native WiFi Filter',
+                    '-Virtual WiFi Filter',
+                    'vEthernet',
+                    'vSwitch',
+                    '(Kerneldebugger)'
+                ];
+                
+                // Check if adapter name contains any virtual pattern
+                const isVirtual = virtualPatterns.some(pattern => 
+                    name.includes(pattern)
+                );
+                
+                return !isVirtual; // Keep only physical adapters
+            });
+            
+            // Recursively filter children
+            filterVirtualNetworkAdapters(child);
+        }
+    }
+}
+
+/**
+ * Filter individual RAM DIMM modules from hardware tree
+ * Keeps only aggregated Virtual Memory and Total Memory sensors
+ * @param {Object} data - Hardware tree data
+ */
+function filterIndividualDIMMs(data) {
+    if (!data || !data.Children) return;
+    
+    // Recursively process all nodes
+    for (const child of data.Children) {
+        if (child.Children && Array.isArray(child.Children)) {
+            // Filter out individual DIMM modules
+            child.Children = child.Children.filter(item => {
+                // Check if this is a memory DIMM by HardwareId
+                if (!item.HardwareId || !item.HardwareId.includes('/memory/dimm/')) {
+                    return true; // Keep non-DIMM items
+                }
+                
+                // Filter out individual DIMMs (keep only /vram and /ram)
+                return false;
+            });
+            
+            // Recursively filter children
+            filterIndividualDIMMs(child);
+        }
+    }
+}
+
+/**
  * Poll hardware sensors
  * @param {Object} options - Polling options
- * @param {boolean} options.flatten - Flatten data to simple object (optional)
- * @returns {Promise<Object>} Sensor data
+ * @param {boolean} options.filterVirtualNics - Remove virtual network adapters (optional, default: false)
+ * @param {boolean} options.filterDIMMs - Remove individual RAM DIMM sensors (optional, default: false)
+ * @returns {Promise<Object>} Sensor data matching LibreHardwareMonitor web endpoint format
  */
 async function poll(options = {}) {
     const addon = loadAddon();
     const data = addon.poll();
     
-    if (options.flatten) {
-        return flatten(data);
+    // Apply optional filters
+    if (options.filterVirtualNics) {
+        filterVirtualNetworkAdapters(data);
+    }
+    
+    if (options.filterDIMMs) {
+        filterIndividualDIMMs(data);
     }
     
     return data;

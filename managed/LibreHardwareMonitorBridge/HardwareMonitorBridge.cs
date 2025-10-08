@@ -310,35 +310,47 @@ namespace LibreHardwareMonitorNative
             return type switch
             {
                 SensorType.Voltage => $"{value:F3} V",
-                SensorType.Clock => $"{value:F0} MHz",
+                SensorType.Current => $"{value:F3} A",
+                SensorType.Clock => $"{value:F1} MHz",
                 SensorType.Temperature => $"{value:F1} °C",
                 SensorType.Load => $"{value:F1} %",
                 SensorType.Fan => $"{value:F0} RPM",
-                SensorType.Flow => $"{value:F0} L/h",
+                SensorType.Flow => $"{value:F1} L/h",
                 SensorType.Control => $"{value:F1} %",
                 SensorType.Level => $"{value:F1} %",
                 SensorType.Power => $"{value:F1} W",
-                SensorType.Data => $"{value:F0} GB",
-                SensorType.SmallData => $"{value:F0} MB",
+                SensorType.Data => $"{value:F1} GB",
+                SensorType.SmallData => $"{value:F1} MB",
                 SensorType.Factor => $"{value:F3}",
-                SensorType.Frequency => $"{value:F0} Hz",
+                SensorType.Frequency => $"{value:F1} Hz",
                 SensorType.Throughput => FormatThroughput(value.Value),
+                SensorType.TimeSpan => FormatTimeSpan(value.Value),
+                SensorType.Timing => $"{value:F3} ns",
+                SensorType.Energy => $"{value:F0} mWh",
+                SensorType.Noise => $"{value:F0} dBA",
+                SensorType.Conductivity => $"{value:F1} µS/cm",
+                SensorType.Humidity => $"{value:F0} %",
                 _ => value.ToString() ?? ""
             };
         }
         
         private static string FormatThroughput(float bytesPerSecond)
         {
-            // Format throughput with appropriate units based on magnitude
-            // This matches LibreHardwareMonitor's web server formatting
-            if (bytesPerSecond >= 1073741824) // >= 1 GB/s
-                return $"{bytesPerSecond / 1073741824:F1} GB/s";
-            if (bytesPerSecond >= 1048576) // >= 1 MB/s
-                return $"{bytesPerSecond / 1048576:F1} MB/s";
-            if (bytesPerSecond >= 1024) // >= 1 KB/s
-                return $"{bytesPerSecond / 1024:F1} KB/s";
+            // Format throughput exactly as LibreHardwareMonitor's SensorNode.ValueToString() does
+            // Value is in bytes/second, format as KB/s or MB/s based on magnitude
+            const int _1MB = 1048576; // 1 MB in bytes
             
-            return $"{bytesPerSecond:F1} B/s";
+            if (bytesPerSecond < _1MB)
+                return $"{bytesPerSecond / 1024:F1} KB/s";
+            else
+                return $"{bytesPerSecond / _1MB:F1} MB/s";
+        }
+        
+        private static string FormatTimeSpan(float seconds)
+        {
+            // Format as TimeSpan with general short format (matches {0:g})
+            var timeSpan = TimeSpan.FromSeconds(seconds);
+            return timeSpan.ToString("g");
         }
     }
 }

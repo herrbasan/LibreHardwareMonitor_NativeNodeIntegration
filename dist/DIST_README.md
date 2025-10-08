@@ -104,6 +104,6 @@ MIT - See LICENSE file
 ---
 
 **Version**: 0.1.0  
-**Build Date**: 2025-10-08T06:34:30.209Z  
+**Build Date**: 2025-10-08T06:40:36.369Z  
 **LibreHardwareMonitor**: [`ceaf074`](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/ceaf0747589023675c0263e8115a2623fcebfb56) (2025-10-07)  
 **Repository**: https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration

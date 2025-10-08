@@ -365,35 +365,14 @@ MIT - See LICENSE file
         const totalSize = getDirectorySize(DIST_DIR);
         console.log(`   Total size: ${(totalSize / 1024 / 1024).toFixed(2)} MB\n`);
 
-        // 11. Create archive (optional, if PowerShell available)
-        console.log('11. Creating archive...');
-        const archiveName = `librehardwaremonitor-native-v${VERSION}-win64.zip`;
-        const archivePath = path.join(ROOT, archiveName);
-        
-        try {
-            // Try PowerShell Compress-Archive
-            execSync(
-                `powershell -Command "Compress-Archive -Path '${DIST_DIR}\\*' -DestinationPath '${archivePath}' -Force"`,
-                { stdio: 'inherit' }
-            );
-            console.log(`   ✓ Created ${archiveName}\n`);
-        } catch (err) {
-            console.log('   ⚠ Could not create archive (PowerShell not available)');
-            console.log('   Manually zip the dist/ folder if needed\n');
-        }
-
         // Summary
         console.log('='.repeat(60));
         console.log('✓ Distribution package created successfully!\n');
         console.log('Output:');
         console.log(`  - dist/ folder (${(totalSize / 1024 / 1024).toFixed(2)} MB)`);
-        if (fs.existsSync(archivePath)) {
-            const archiveSize = fs.statSync(archivePath).size;
-            console.log(`  - ${archiveName} (${(archiveSize / 1024 / 1024).toFixed(2)} MB)`);
-        }
         console.log('\nUsage:');
-        console.log('  1. Share the dist/ folder or .zip file');
-        console.log('  2. Users extract and require: require("./dist")');
+        console.log('  1. Clone repository to get dist/ folder');
+        console.log('  2. Users require: require("./dist")');
         console.log('  3. No build tools required!\n');
 
     } catch (err) {

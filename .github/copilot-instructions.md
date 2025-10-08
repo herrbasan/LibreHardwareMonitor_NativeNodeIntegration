@@ -1,255 +1,507 @@
-# LibreHardwareMonitor Native Node Integration
+# LibreHardwareMonitor Native Node Integration# LibreHardwareMonitor Native Node Integration
 
-Direct hardware monitoring integration for Node and Electron projects, providing native access to LibreHardwareMonitor data through a Node.js addon.
 
-## Project Goals
 
-**Priority Ranking**: Reliability > Low Footprint > Performance
+Native Node.js addon providing direct access to LibreHardwareMonitor sensor data. Drop-in replacement for web endpoint polling.Direct hardware monitoring integration for Node and Electron projects, providing native access to LibreHardwareMonitor data through a Node.js addon.
 
-### Objectives
-- Produce identical JSON structure to LibreHardwareMonitor web server endpoint (`/data.json`)
-- Provide drop-in replacement for web-based polling implementations
-- Eliminate external process dependency on LibreHardwareMonitor.exe
-- High reliability with graceful degradation on failures
-- Minimal memory and CPU footprint
 
-## Architecture Decision: Standalone Library
 
-Built as standalone project for:
+## Project Status## Project Goals
+
+
+
+**Current State**: ✅ Core implementation complete, structure matches web endpoint**Priority Ranking**: Reliability > Low Footprint > Performance
+
+
+
+**What Works**:### Objectives
+
+- Native addon with CLR hosting (C++ → .NET → LibreHardwareMonitor)- Produce identical JSON structure to LibreHardwareMonitor web server endpoint (`/data.json`)
+
+- JSON output structurally identical to `/data.json` web endpoint- Provide drop-in replacement for web-based polling implementations
+
+- Hardware type filtering (CPU, GPU, motherboard, memory, storage, network)- Eliminate external process dependency on LibreHardwareMonitor.exe
+
+- Virtual NIC filtering and DIMM filtering options- High reliability with graceful degradation on failures
+
+- Async polling with libuv thread pool (non-blocking)- Minimal memory and CPU footprint
+
+- Pre-built `dist/` folder for batteries-included usage
+
+- Automatic build from LibreHardwareMonitor submodule## Architecture Decision: Standalone Library
+
+
+
+## ArchitectureBuilt as standalone project for:
+
 - **Clean Interface Contract**: Forces exact JSON format specification matching web endpoint
-- **Easy Integration**: Drop-in replacement for web-based polling
-- **Parallel Development**: Run both implementations side-by-side during transition
-- **Rollback Safety**: Fallback to web polling if native approach fails
-- **Reusability**: Ships as standalone library for any Node.js/Electron project
 
-## Implementation Plan
+```- **Easy Integration**: Drop-in replacement for web-based polling
 
-### Phase 1: Native Addon Development
-Build Node.js addon matching LibreHardwareMonitor web endpoint data format:
+JavaScript (lib/index.js)- **Parallel Development**: Run both implementations side-by-side during transition
 
-```
+    ↓ (Node-API)- **Rollback Safety**: Fallback to web polling if native approach fails
+
+Native Addon (src/addon.cc)- **Reusability**: Ships as standalone library for any Node.js/Electron project
+
+    ↓ (CLR Hosting)
+
+C# Bridge (managed/LibreHardwareMonitorBridge/)## Implementation Plan
+
+    ↓
+
+LibreHardwareMonitor.dll### Phase 1: Native Addon Development
+
+    ↓Build Node.js addon matching LibreHardwareMonitor web endpoint data format:
+
+Hardware (ring-0 drivers, SMBus, etc.)
+
+``````
+
 librehardwaremonitor-native/
-├── binding.gyp              # Native addon build config
+
+## Key Implementation Details├── binding.gyp              # Native addon build config
+
 ├── package.json
-├── README.md
-├── src/
-│   ├── addon.cc             # Node-API entry point
-│   ├── clr_host.cc          # .NET runtime hosting
-│   ├── clr_host.h
-│   ├── hardware_monitor.cc  # LibreHardwareMonitor wrapper
+
+### Output Format Contract├── README.md
+
+**Critical**: Native addon must produce byte-identical JSON structure to web endpoint.├── src/
+
+- Reference: `docs/example/librehardwaremonitor_webservice_output.json`│   ├── addon.cc             # Node-API entry point
+
+- Test: `test/compare-web-vs-native.js` validates structure match│   ├── clr_host.cc          # .NET runtime hosting
+
+- Sensor type groups ordered by enum value (`.OrderBy((int)g.Key)`)│   ├── clr_host.h
+
+- `SensorType.SmallData` maps to "Data" group name (matches web endpoint)│   ├── hardware_monitor.cc  # LibreHardwareMonitor wrapper
+
 │   ├── hardware_monitor.h
-│   ├── json_builder.cc      # Data marshaling to JSON
-│   └── json_builder.h
-├── lib/
-│   ├── index.js             # JS interface matching web endpoint format
-│   └── flatten.js           # Optional data flattening utility
-├── deps/
-│   └── LibreHardwareMonitor/  # LHM DLLs and dependencies
-├── test/
-│   ├── compatibility.js     # Validates output === web JSON
-│   └── schema.test.js       # JSON structure validation
-├── example/
+
+### File Structure (Current)│   ├── json_builder.cc      # Data marshaling to JSON
+
+```│   └── json_builder.h
+
+lib/index.js                    # JavaScript API├── lib/
+
+src/                            # Native C++ addon│   ├── index.js             # JS interface matching web endpoint format
+
+managed/LibreHardwareMonitorBridge/  # C# bridge│   └── flatten.js           # Optional data flattening utility
+
+deps/LibreHardwareMonitor-src/  # Submodule (source)├── deps/
+
+deps/LibreHardwareMonitor/      # Built DLLs (auto-generated)│   └── LibreHardwareMonitor/  # LHM DLLs and dependencies
+
+dist/                           # Pre-built binaries (batteries included)├── test/
+
+test/compare-web-vs-native.js   # Structure validation test│   ├── compatibility.js     # Validates output === web JSON
+
+docs/                           # Documentation│   └── schema.test.js       # JSON structure validation
+
+```├── example/
+
 │   └── librehardwaremonitor_webservice_output.json  # Reference output format
-├── reference/
-│   └── flatten_logic.js     # Reference flattening implementation
-└── docs/
-    ├── json_schema.md       # LibreHardwareMonitor endpoint format specification
-    └── clr_hosting.md       # CLR hosting implementation guide
+
+### Build Process├── reference/
+
+1. **LibreHardwareMonitor**: Build from submodule (`npm run build:lhm`)│   └── flatten_logic.js     # Reference flattening implementation
+
+2. **C# Bridge**: Compile bridge DLL (`npm run build:bridge`)└── docs/
+
+3. **Native Addon**: Compile C++ addon (`npm run build:native`)    ├── json_schema.md       # LibreHardwareMonitor endpoint format specification
+
+4. **Distribution**: Package for users (`npm run dist`)    └── clr_hosting.md       # CLR hosting implementation guide
+
 ```
+
+All automated via `npm run build`.
 
 ### Phase 2: Application Integration
-Integration into your Node.js or Electron application:
 
-```javascript
-// Example configuration
-{
-  "use_native_polling": false,  // Feature flag
-  "native_polling_fallback": true  // Auto-revert on failure
-}
+### Critical Code PatternsIntegration into your Node.js or Electron application:
+
+
+
+**Sensor Type Ordering** (`HardwareMonitorBridge.cs` ~line 220):```javascript
+
+```csharp// Example configuration
+
+var grouped = sensors{
+
+    .GroupBy(s => s.SensorType)  "use_native_polling": false,  // Feature flag
+
+    .OrderBy(g => (int)g.Key);  // Must match web endpoint order  "native_polling_fallback": true  // Auto-revert on failure
+
+```}
+
 ```
 
-Replace web polling implementation:
-- Swap web fetch calls for native addon
-- Maintain identical data flow to application logic
+**Sensor Type Naming** (`HardwareMonitorBridge.cs` ~line 296):
+
+```csharpReplace web polling implementation:
+
+SensorType.SmallData => "Data",  // NOT "SmallData" - matches web endpoint- Swap web fetch calls for native addon
+
+```- Maintain identical data flow to application logic
+
 - No changes to downstream data consumers
 
-### Phase 3: A/B Testing
-Long-term reliability validation:
-- Track crashes, missing sensors, memory usage
+**Async Polling** (`addon.cc`):
+
+- Uses `napi_create_async_work` for non-blocking sensor reads### Phase 3: A/B Testing
+
+- Executes on libuv thread pool (50-100ms polling time)Long-term reliability validation:
+
+- Results marshaled back to main thread- Track crashes, missing sensors, memory usage
+
 - Compare web vs native performance metrics
-- Monitor error rates across different hardware configurations
 
-### Phase 4: Production Rollout
-After proven stability:
-- Default `use_native_polling: true`
-- Remove external LibreHardwareMonitor.exe dependency
-- Keep web polling as emergency fallback
+### Dependencies & Requirements- Monitor error rates across different hardware configurations
 
-## Technology Stack
 
-### Core Architecture Decision: CLR Hosting + LibreHardwareMonitor DLL
+
+**Build Requirements**:### Phase 4: Production Rollout
+
+- .NET SDK 6.0+ (to build LibreHardwareMonitor & bridge)After proven stability:
+
+- Visual Studio 2019+ with C++ build tools- Default `use_native_polling: true`
+
+- Node.js 16.0.0+- Remove external LibreHardwareMonitor.exe dependency
+
+- Python 3.x (node-gyp dependency)- Keep web polling as emergency fallback
+
+
+
+**Runtime Requirements**:## Technology Stack
+
+- Windows 10/11 x64
+
+- .NET Runtime 6.0+ ### Core Architecture Decision: CLR Hosting + LibreHardwareMonitor DLL
+
+- **Administrator privileges** (LibreHardwareMonitor limitation - driver loading)
 
 **Chosen Approach**: Wrap LibreHardwareMonitor's C# DLL via CLR hosting in a native Node.js addon.
 
-```
-Native Node.js Addon (C++)
-    ↓ (Node-API interface)
-CLR Host Layer (embeds .NET runtime)
-    ↓
-LibreHardwareMonitor.dll
-    ↓
-Hardware (kernel drivers, SMBus, etc.)
+### Configuration Options
+
 ```
 
-### Rationale for CLR Hosting Approach
+```javascriptNative Node.js Addon (C++)
+
+await monitor.init({    ↓ (Node-API interface)
+
+  motherboard: true,CLR Host Layer (embeds .NET runtime)
+
+  cpu: true,    ↓
+
+  gpu: true,LibreHardwareMonitor.dll
+
+  memory: true,    ↓
+
+  storage: false,        // Disable HDD monitoringHardware (kernel drivers, SMBus, etc.)
+
+  network: false,        // Disable network adapters```
+
+  filterVirtualNics: true,  // Remove virtual/disabled NICs
+
+  filterDIMMs: true      // Remove individual DIMMs (keep total/virtual memory)### Rationale for CLR Hosting Approach
+
+});
 
 **Why NOT Direct WMI**:
-- WMI provides only basic sensor data (limited CPU temp, basic system info)
-- Cannot access GPU sensors, detailed motherboard sensors, fan speeds, etc.
-- **Impossible to replicate LibreHardwareMonitor's output** - LHM uses ring-0 drivers and direct hardware access
+
+const data = await monitor.poll();  // Returns hierarchical JSON- WMI provides only basic sensor data (limited CPU temp, basic system info)
+
+await monitor.shutdown();- Cannot access GPU sensors, detailed motherboard sensors, fan speeds, etc.
+
+```- **Impossible to replicate LibreHardwareMonitor's output** - LHM uses ring-0 drivers and direct hardware access
+
 - Would require reverse-engineering thousands of lines of hardware-specific code
 
+### Testing & Validation
+
 **Why Wrap LibreHardwareMonitor DLL**:
-- ✅ **Guaranteed Output Compatibility**: Exact same sensor data as web endpoint
-- ✅ **Proven Sensor Coverage**: Inherits all LHM's hardware support
-- ✅ **Maintainable**: LHM updates automatically provide new sensor support
-- ✅ **LLM-Friendly**: Wrapping existing library is tractable for AI-assisted development
-- ✅ **Lower Risk**: Leverages battle-tested hardware access code
+
+**Structure Comparison**:- ✅ **Guaranteed Output Compatibility**: Exact same sensor data as web endpoint
+
+```bash- ✅ **Proven Sensor Coverage**: Inherits all LHM's hardware support
+
+# Run web endpoint first (http://localhost:8085)- ✅ **Maintainable**: LHM updates automatically provide new sensor support
+
+node test/compare-web-vs-native.js- ✅ **LLM-Friendly**: Wrapping existing library is tractable for AI-assisted development
+
+```- ✅ **Lower Risk**: Leverages battle-tested hardware access code
+
 - ✅ **No Additional Dependencies**: .NET runtime already required for LibreHardwareMonitor.exe
 
-### Node-API (N-API) for Addon Interface
-- **Rationale**: Stable ABI across Node.js versions (vs legacy NAN)
-- **Benefit**: Survives Electron updates without recompilation
-- **Industry Standard**: Recommended approach for all new native addons
+Validates:
+
+- Hardware-by-hardware structure match### Node-API (N-API) for Addon Interface
+
+- Sensor group ordering- **Rationale**: Stable ABI across Node.js versions (vs legacy NAN)
+
+- Sensor counts per group- **Benefit**: Survives Electron updates without recompilation
+
+- Output files: `test/output/1-web-endpoint.json` vs `test/output/2-native-filtered.json`- **Industry Standard**: Recommended approach for all new native addons
+
 - **Reference Implementation**: See [drivers.gpu.control-library](https://github.com/herrbasan/drivers.gpu.control-library) for practical N-API wrapper examples
 
-### Implementation Components
+**Acceptable Differences**:
 
-1. **Native Addon Layer** (`src/hardware.cc`)
+- Missing sensors (hardware-dependent, e.g., BIOS hides certain sensors)### Implementation Components
+
+- Extra sensors (native has more data than web - OK)
+
+- Extra network adapters (real adapters, can be filtered)1. **Native Addon Layer** (`src/hardware.cc`)
+
    - Exposes JavaScript API via Node-API
-   - Manages lifecycle of CLR host
-   - Marshals data between .NET and JavaScript
 
-2. **CLR Host Layer** (`src/clr_host.cc`)
+**Unacceptable Differences**:   - Manages lifecycle of CLR host
+
+- Mismatched sensor group names   - Marshals data between .NET and JavaScript
+
+- Wrong sensor type ordering
+
+- Structural hierarchy differences2. **CLR Host Layer** (`src/clr_host.cc`)
+
    - Initializes .NET runtime using CoreCLR hosting APIs
-   - Loads LibreHardwareMonitor.dll
+
+### Common Issues & Solutions   - Loads LibreHardwareMonitor.dll
+
    - Creates Computer instance with hardware type configuration
-   - Invokes sensor polling methods
-   - Converts .NET objects to C++ structures
 
-3. **Data Marshaling** (`src/json_builder.cc`)
+**Missing Motherboard Sensors**:   - Invokes sensor polling methods
+
+- Some sensors may not appear programmatically vs web endpoint   - Converts .NET objects to C++ structures
+
+- Hardware/BIOS-dependent, cannot be fixed in code
+
+- Acceptable per project goals3. **Data Marshaling** (`src/json_builder.cc`)
+
    - Converts LibreHardwareMonitor data structures to JSON
-   - Ensures byte-identical output to web endpoint format
-   - Handles sensor hierarchies and metadata
 
-### Hardware Type Configuration
+**Virtual Network Adapters**:   - Ensures byte-identical output to web endpoint format
 
-LibreHardwareMonitor's `Computer` class supports enabling/disabling hardware types via properties:
+- Native detects all NICs (virtual, disabled, etc.)   - Handles sensor hierarchies and metadata
 
-```csharp
-// LibreHardwareMonitor C# API
+- Use `filterVirtualNics: true` to match web endpoint
+
+- Or filter in application code### Hardware Type Configuration
+
+
+
+**SmallData vs Data Naming**:LibreHardwareMonitor's `Computer` class supports enabling/disabling hardware types via properties:
+
+- ✅ **FIXED**: `SensorType.SmallData` now maps to "Data" group
+
+- Web endpoint groups SmallData TYPE sensors under "Data" NAME```csharp
+
+- Critical for structure match// LibreHardwareMonitor C# API
+
 var computer = new Computer();
-computer.IsCpuEnabled = true;
-computer.IsGpuEnabled = true;
-computer.IsMotherboardEnabled = true;
-computer.IsMemoryEnabled = true;
+
+**Administrator Privileges**:computer.IsCpuEnabled = true;
+
+- LibreHardwareMonitor requires admin for driver loadingcomputer.IsGpuEnabled = true;
+
+- No workaround - hardware access needs ring-0 driverscomputer.IsMotherboardEnabled = true;
+
+- Application must run elevated or fail gracefullycomputer.IsMemoryEnabled = true;
+
 computer.IsStorageEnabled = false;  // Disable storage monitoring
-computer.IsNetworkEnabled = false;
+
+### Distribution Strategycomputer.IsNetworkEnabled = false;
+
 computer.IsPsuEnabled = false;
-computer.IsControllerEnabled = false;
-computer.IsBatteryEnabled = false;
-computer.Open();
-```
+
+**Batteries Included**: `dist/` folder committed to repocomputer.IsControllerEnabled = false;
+
+- Users can clone and use immediatelycomputer.IsBatteryEnabled = false;
+
+- No build tools required for end userscomputer.Open();
+
+- All DLLs and runtime files included```
+
+- Modified `lib/index.js` loads from `../librehardwaremonitor_native.node`
 
 The native addon will expose these options through JavaScript configuration, translating them to the appropriate .NET property calls during CLR initialization. This replaces the XML configuration file approach used by the standalone LibreHardwareMonitor.exe application.
 
-## Memory Management
+**Build Artifacts** (gitignored):
 
-### Managed/Unmanaged Boundary
+- `build/` - node-gyp build output## Memory Management
 
-The native addon creates a boundary between Node.js (unmanaged C++) and .NET (managed):
+- `deps/LibreHardwareMonitor/` - generated DLLs
 
-```
-Node.js (unmanaged) ←→ Native Addon (C++) ←→ CLR Host ←→ LibreHardwareMonitor (managed C#)
-```
+- Bridge bin/obj folders### Managed/Unmanaged Boundary
+
+
+
+### Memory & ThreadingThe native addon creates a boundary between Node.js (unmanaged C++) and .NET (managed):
+
+
+
+**Thread Safety**:```
+
+- Async work runs on libuv pool (don't block event loop)Node.js (unmanaged) ←→ Native Addon (C++) ←→ CLR Host ←→ LibreHardwareMonitor (managed C#)
+
+- CLR calls happen on worker thread```
+
+- Results marshaled to main thread for JavaScript
 
 **Critical Cleanup Requirements**:
 
-1. **Dispose Computer Object**:
-   ```cpp
-   // In cleanup/shutdown function
+**Memory Management**:
+
+- `Computer.Close()` called on shutdown1. **Dispose Computer Object**:
+
+- CLR unloaded via `AtExit` handler   ```cpp
+
+- Reuse `Computer` instance (don't recreate per poll)   // In cleanup/shutdown function
+
    void Shutdown() {
-     if (computer != nullptr) {
-       computer->Close();  // Unloads drivers, releases hardware locks
-       delete computer;
-       computer = nullptr;
+
+**Performance**:     if (computer != nullptr) {
+
+- Polling: 50-100ms per cycle       computer->Close();  // Unloads drivers, releases hardware locks
+
+- Memory: <50MB resident       delete computer;
+
+- CPU: <1% average       computer = nullptr;
+
      }
-   }
+
+## Development Workflow   }
+
    ```
+
+### Making Changes
 
 2. **Unload CLR on Exit**:
-   ```cpp
-   // Proper CLR shutdown sequence
-   void CleanupCLR() {
-     // Dispose all managed objects first
+
+**C# Bridge Changes**:   ```cpp
+
+1. Edit `managed/LibreHardwareMonitorBridge/HardwareMonitorBridge.cs`   // Proper CLR shutdown sequence
+
+2. Run `npm run build:bridge && npm run build:native`   void CleanupCLR() {
+
+3. Test with `node test/compare-web-vs-native.js`     // Dispose all managed objects first
+
      ShutdownHardwareMonitor();
-     
-     // Then unload the CLR
-     if (clrHostHandle != nullptr) {
-       clrHostHandle->shutdown();
+
+**Native Addon Changes**:     
+
+1. Edit files in `src/`     // Then unload the CLR
+
+2. Run `npm run build:native`     if (clrHostHandle != nullptr) {
+
+3. Test with comparison script       clrHostHandle->shutdown();
+
        clrHostHandle = nullptr;
-     }
-   }
-   ```
+
+**Always Validate**:     }
+
+- Run comparison test after structural changes   }
+
+- Check sensor group ordering   ```
+
+- Verify no missing sensors (unless hardware-dependent)
 
 3. **Register Node.js Exit Handler**:
-   ```cpp
+
+### Updating LibreHardwareMonitor   ```cpp
+
    // In addon initialization
-   node::AtExit(env, [](void* arg) {
-     CleanupCLR();
-   });
-   ```
 
-### GC Pressure Mitigation
+```bash   node::AtExit(env, [](void* arg) {
 
-**Problem**: Frequent polling creates short-lived .NET objects (sensor readings, string conversions).
+cd deps/LibreHardwareMonitor-src     CleanupCLR();
 
-**Solutions**:
+git fetch origin   });
+
+git checkout <commit-hash>  # or origin/master   ```
+
+cd ../..
+
+npm run build### GC Pressure Mitigation
+
+npm run dist
+
+git add deps/LibreHardwareMonitor-src**Problem**: Frequent polling creates short-lived .NET objects (sensor readings, string conversions).
+
+git commit -m "Update LibreHardwareMonitor to <commit>"
+
+```**Solutions**:
+
 - Reuse managed objects where possible (don't recreate Computer instance per poll)
-- Pool string buffers for JSON serialization
+
+## Project Principles- Pool string buffers for JSON serialization
+
 - Call `Computer.Accept(updateVisitor)` to refresh sensors instead of recreating objects
-- Avoid boxing/unboxing in hot paths
 
-**Memory Leak Detection**:
-```javascript
-// Monitor memory growth over time
+1. **Output Format is Sacred**: Must match web endpoint exactly- Avoid boxing/unboxing in hot paths
+
+2. **No Data Transformation**: Library returns raw hierarchical JSON (flatten in app if needed)
+
+3. **Graceful Degradation**: Missing sensors OK, wrong structure NOT OK**Memory Leak Detection**:
+
+4. **Batteries Included**: Pre-built dist/ for easy adoption```javascript
+
+5. **Build from Source**: Submodule approach for reproducibility// Monitor memory growth over time
+
 const initialMemory = process.memoryUsage();
-setInterval(() => {
+
+## Quick ReferencesetInterval(() => {
+
   const current = process.memoryUsage();
-  const growth = current.heapUsed - initialMemory.heapUsed;
-  if (growth > 50 * 1024 * 1024) { // 50MB growth
-    console.warn('Possible memory leak detected');
-  }
-}, 60000);
-```
 
-## Threading Model
+**Build Commands**:  const growth = current.heapUsed - initialMemory.heapUsed;
 
-### Thread Safety Considerations
+- `npm run build` - Full build (LHM + bridge + native)  if (growth > 50 * 1024 * 1024) { // 50MB growth
 
-**Node.js Threading**:
-- JavaScript runs on single main thread
-- Native addons invoked on main thread by default
-- Long operations block the event loop
+- `npm run build:lhm` - Build LibreHardwareMonitor from submodule    console.warn('Possible memory leak detected');
 
-**LibreHardwareMonitor Threading**:
-- `Computer.Accept(visitor)` is thread-safe
-- Sensor updates happen synchronously
-- Driver communication may take 10-50ms per poll
+- `npm run build:bridge` - Build C# bridge only  }
 
-**Recommended Approach**: Use libuv thread pool for polling to avoid blocking event loop.
+- `npm run build:native` - Build native addon only}, 60000);
 
-```cpp
+- `npm run rebuild` - Clean + full build```
+
+- `npm run dist` - Create distribution package
+
+- `npm run test` - Run structure comparison test## Threading Model
+
+
+
+**Important Files**:### Thread Safety Considerations
+
+- `lib/index.js` - JavaScript API
+
+- `src/addon.cc` - Node-API entry point**Node.js Threading**:
+
+- `managed/LibreHardwareMonitorBridge/HardwareMonitorBridge.cs` - C# bridge (JSON generation)- JavaScript runs on single main thread
+
+- `test/compare-web-vs-native.js` - Structure validation- Native addons invoked on main thread by default
+
+- `dist/` - Pre-built binaries for distribution- Long operations block the event loop
+
+
+
+**Git Workflow**:**LibreHardwareMonitor Threading**:
+
+- `dist/` folder IS committed (batteries included)- `Computer.Accept(visitor)` is thread-safe
+
+- Build artifacts (`build/`, generated DLLs) are gitignored- Sensor updates happen synchronously
+
+- Submodule pinned to specific commit for reproducibility- Driver communication may take 10-50ms per poll
+
+
+
+---**Recommended Approach**: Use libuv thread pool for polling to avoid blocking event loop.
+
+
+
+**Note**: This project was 100% generated by Claude Sonnet 4.5.```cpp
+
 // Async worker pattern (Node-API)
 napi_value PollAsync(napi_env env, napi_callback_info info) {
   // Create async work

@@ -55,6 +55,13 @@ namespace LibreHardwareMonitorNative
                 
                 instance._computer.Open();
                 
+                // Debug: Log detected hardware
+                Console.WriteLine($"Hardware detection complete. Found {instance._computer.Hardware.Count()} hardware items:");
+                foreach (var hw in instance._computer.Hardware)
+                {
+                    Console.WriteLine($"  - {hw.HardwareType}: {hw.Name} ({hw.SubHardware.Count()} sub-hardware)");
+                }
+                
                 return 0; // Success
             }
             catch (Exception ex)
@@ -79,10 +86,10 @@ namespace LibreHardwareMonitorNative
                     return IntPtr.Zero;
                 }
                 
-                // Update all hardware sensors
+                // Update all hardware sensors (recursively)
                 foreach (var hardware in instance._computer.Hardware)
                 {
-                    hardware.Update();
+                    UpdateHardwareRecursive(hardware);
                 }
                 
                 // Build JSON structure matching web endpoint format
@@ -138,25 +145,50 @@ namespace LibreHardwareMonitorNative
         private static HardwareMonitorBridge? _instance;
         private static HardwareMonitorBridge Instance => _instance ??= new HardwareMonitorBridge();
         
+        // Helper method to recursively update hardware and sub-hardware
+        private static void UpdateHardwareRecursive(IHardware hardware)
+        {
+            hardware.Update();
+            foreach (var subHardware in hardware.SubHardware)
+            {
+                UpdateHardwareRecursive(subHardware);
+            }
+        }
+        
         // Helper method to build hardware tree
         private static object BuildHardwareTree(IEnumerable<IHardware> hardware)
         {
+            // Get computer name from environment
+            string computerName = Environment.MachineName;
+            
             return new
             {
                 id = 0,
                 Text = "Sensor",
-                Children = BuildHardwareNodes(hardware),
                 Min = "Min",      // Header labels for web endpoint compatibility
                 Value = "Value",
                 Max = "Max",
-                ImageURL = ""
+                ImageURL = "",
+                Children = new[]
+                {
+                    new
+                    {
+                        id = 1,
+                        Text = computerName,
+                        Min = "",
+                        Value = "",
+                        Max = "",
+                        ImageURL = "images_icon/computer.png",
+                        Children = BuildHardwareNodes(hardware, startId: 2)
+                    }
+                }
             };
         }
         
-        private static List<object> BuildHardwareNodes(IEnumerable<IHardware> hardwareList)
+        private static List<object> BuildHardwareNodes(IEnumerable<IHardware> hardwareList, int startId = 1)
         {
             var nodes = new List<object>();
-            int id = 1;
+            int id = startId;
             
             foreach (var hardware in hardwareList)
             {
@@ -184,8 +216,10 @@ namespace LibreHardwareMonitorNative
         {
             var nodes = new List<object>();
             
-            // Group sensors by type
-            var grouped = sensors.GroupBy(s => s.SensorType);
+            // Group sensors by type and sort by the enum order (matches web endpoint ordering)
+            var grouped = sensors
+                .GroupBy(s => s.SensorType)
+                .OrderBy(g => (int)g.Key);  // Sort by enum value to match web endpoint
             
             foreach (var group in grouped)
             {
@@ -260,7 +294,7 @@ namespace LibreHardwareMonitorNative
                 SensorType.Level => "Levels",
                 SensorType.Power => "Powers",
                 SensorType.Data => "Data",
-                SensorType.SmallData => "SmallData",
+                SensorType.SmallData => "Data",  // Match web endpoint - SmallData is displayed as "Data"
                 SensorType.Factor => "Factors",
                 SensorType.Frequency => "Frequencies",
                 SensorType.Throughput => "Throughput",

@@ -67,6 +67,9 @@ logs/
 coverage/
 .nyc_output/
 
+# Test output
+test/output/
+
 # Environment
 .env
 .env.local

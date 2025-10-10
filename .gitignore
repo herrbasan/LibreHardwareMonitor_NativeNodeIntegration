@@ -1,21 +1,11 @@
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-yarn.lock
-
-# Native addon build artifacts
-build/
-*.node
-*.o
-*.obj
-*.a
-*.lib
-*.exp
+# .NET CLI build artifacts
+managed/*/bin/
+managed/*/obj/
+*.exe
+*.dll
 *.pdb
-*.ilk
+*.deps.json
+*.runtimeconfig.json
 
 # LibreHardwareMonitor built DLLs (built from submodule)
 deps/LibreHardwareMonitor/
@@ -30,19 +20,11 @@ deps/LibreHardwareMonitor-src/LibreHardwareMonitor/obj/
 *.user
 *.userosscache
 *.sln.docstates
-*.vcxproj.filters
-*.vcxproj.user
 Debug/
 Release/
 x64/
 x86/
 *.tlog/
-
-# Python (node-gyp uses Python)
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
 
 # IDE
 .vscode/
@@ -60,13 +42,6 @@ Desktop.ini
 logs/
 *.log
 
-# Test coverage
-coverage/
-.nyc_output/
-
-# Test output
-test/output/
-
 # Environment
 .env
 .env.local
@@ -77,5 +52,5 @@ tmp/
 temp/
 *.tmp
 
-# Distribution - lib/*.node files excluded (built into dist/)
-lib/*.node
+# CLI distribution builds
+dist/

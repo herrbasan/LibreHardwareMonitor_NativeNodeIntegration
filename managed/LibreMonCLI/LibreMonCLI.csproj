@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    
+    <!-- NativeAOT Configuration for smallest binary and fastest performance -->
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+    <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+    
+    <!-- Size Optimization -->
+    <!-- <PublishTrimmed>true</PublishTrimmed> -->
+    <!-- <TrimMode>full</TrimMode> -->
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    
+    <!-- JSON Source Generation (no reflection) -->
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+    
+    <!-- Additional Optimizations -->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- LibreHardwareMonitor - reference built DLL -->
+    <PackageReference Include="System.Management" Version="9.0.9" />
+    <PackageReference Include="System.Threading.AccessControl" Version="9.0.9" />
+    <Reference Include="LibreHardwareMonitorLib">
+      <HintPath>..\..\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath>
+    </Reference>
+    
+    <!-- JSON Serialization with source generators -->
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+  
+  <!-- Suppress NativeAOT trim warnings for LibreHardwareMonitor (external DLL) -->
+  <ItemGroup>
+    <TrimmerRootAssembly Include="LibreHardwareMonitorLib" />
+  </ItemGroup>
+</Project>

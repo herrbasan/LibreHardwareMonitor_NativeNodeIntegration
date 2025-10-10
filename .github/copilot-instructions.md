@@ -1,134 +1,116 @@
-﻿# LibreMonCLI - LibreHardwareMonitor Command-Line Interface# LibreHardwareMonitor Native Node Integration
+﻿# LibreMonCLI - LibreHardwareMonitor Persistent Daemon
 
+Standalone .NET persistent daemon that provides hardware sensor data via stdin/stdout JSON-RPC protocol. Designed for ultra-low-latency, high-frequency polling in Electron apps and other Node.js processes.
 
+## Project Status
 
-Standalone .NET CLI tool that outputs hardware sensor data as JSON. Designed for integration with Electron apps and other processes that need hardware monitoring data.Native Node.js addon providing direct access to LibreHardwareMonitor sensor data. Drop-in replacement for web endpoint polling.
+**Current Phase**: ✅ Production Ready - CLI daemon fully implemented and tested
 
+**Architecture Decision**: Moved from N-API addon to persistent daemon with stdin/stdout protocol for:
+- Ultra-low latency (2-5ms poll vs 50-100ms process spawn)
+- Minimal footprint (6.4MB binary with NativeAOT)
+- High-frequency polling support (sub-second intervals)
+- Reliable newline-delimited JSON communication
+- See `archive/WHY_CLI_NOT_NAPI.md` for N-API comparison
 
+**Implementation Status**:
+- ✅ Persistent daemon with --daemon flag
+- ✅ Demo mode (no arguments) for quick hardware overview
+- ✅ JSON-RPC protocol (init, poll, shutdown, version commands)
+- ✅ Raw mode (web service format matching)
+- ✅ Flat mode (transformed output)
+- ✅ NativeAOT compilation (6.4MB binary)
+- ✅ All hardware categories working (CPU, GPU, Motherboard, Memory, Storage, Network)
+- ✅ Build automation with PowerShell scripts
+- ✅ Node.js integration tests
 
-## Project Status## Project Status
+## Project Purpose
 
+This daemon provides hardware monitoring data by:
+1. Building LibreHardwareMonitor from submodule
+2. Creating a persistent .NET daemon using LibreHardwareMonitor
+3. Communicating via stdin/stdout using newline-delimited JSON-RPC
+4. Supporting both raw (web service format) and flat (transformed) output modes
 
+**Key Design Goals**:
+- **Ultra-low latency**: 2-5ms poll time (no process spawn overhead)
+- **Minimal footprint**: 5-8MB binary (NativeAOT), <15MB memory
+- **High-frequency polling**: Optimized for 500ms-1s intervals
+- **Output format matches LibreHardwareMonitor web endpoint exactly** (raw mode)
+- Support both raw (web service format) and flat (transformed) output modes
+- Process isolation (daemon crashes don't affect Node.js parent)
+- Simple deployment (single executable, no runtime dependencies)
+- Administrator privileges required (hardware access)
 
-**Current Phase**: Implementation of CLI from specification**Current State**: Core implementation complete, structure matches web endpoint
-
-
-
-**Architecture Decision**: Moved from N-API addon to standalone CLI executable for better isolation, simpler deployment, and easier maintenance. See `archive/WHY_CLI_NOT_NAPI.md` for rationale.**What Works**:
-
-- Native addon with CLR hosting (C++ to .NET to LibreHardwareMonitor)
-
-## Project Purpose- JSON output structurally identical to /data.json web endpoint
-
-- Hardware type filtering (CPU, GPU, motherboard, memory, storage, network)
-
-This CLI tool provides hardware monitoring data by:- Virtual NIC filtering and DIMM filtering options
-
-1. Building LibreHardwareMonitor from submodule- Async polling with libuv thread pool (non-blocking)
-
-2. Creating a .NET console application that uses LibreHardwareMonitor- Pre-built dist/ folder for batteries-included usage
-
-3. Outputting sensor data as JSON to stdout- Automatic build from LibreHardwareMonitor submodule
-
-
-
-**Key Design Goals**:## Architecture
-
-- Output format matches LibreHardwareMonitor web endpoint exactly
-
-- Support both raw (web service format) and flat (transformed) output modes```
-
-- Process isolation (crashes don't affect parent process)JavaScript (lib/index.js)
-
-- Simple deployment (no Node.js version coupling)    (Node-API)
-
-- Administrator privileges required (hardware access)Native Addon (src/addon.cc)
-
-    (CLR Hosting)
-
-## ArchitectureC# Bridge (managed/LibreHardwareMonitorBridge/)
-
-    
-
-```LibreHardwareMonitor.dll
-
-Electron/Node.js App    
-
-    (child_process.spawn)Hardware (ring-0 drivers, SMBus, etc.)
-
-LibreMonCLI.exe```
-
-    ↓
-
-LibreHardwareMonitor.dll## Key Implementation Details
-
-    ↓
-
-Hardware (ring-0 drivers, SMBus, etc.)### Output Format Contract
+## Architecture
 
 ```
+Node.js App (Electron/Node.js)
+    ↓ (spawn once)
+LibreMonCLI.exe --daemon
+    ↓ (stdin/stdout JSON-RPC)
+    {"cmd":"init","flags":["cpu","gpu"]}\n → {"success":true}\n
+    {"cmd":"poll"}\n → {"success":true,"data":{...}}\n
+    ↓
+LibreHardwareMonitor.dll
+    ↓
+Hardware (ring-0 drivers, SMBus, etc.)
+```
 
-**Critical**: Native addon must produce byte-identical JSON structure to web endpoint.
+**Communication Protocol**:
+- Newline-delimited JSON (one JSON object per line)
+- Commands sent to stdin: `{"cmd":"init","flags":["cpu","gpu"]}\n`
+- Responses written to stdout: `{"success":true,"data":{...}}\n`
+- Errors written to stderr (debug info only)
 
-## Complete Specification
+## Key Implementation Details
 
-- Reference: docs/example/librehardwaremonitor_webservice_output.json
+### Output Format Contract
 
-**See `LIBREMON_CLI_DEV_PLAN.md`** for comprehensive implementation details including:- Test: test/compare-web-vs-native.js validates structure match
+**Critical**: Daemon must produce byte-identical JSON structure to web endpoint in raw mode.
 
-- Command-line arguments and options- Sensor type groups ordered by enum value (.OrderBy((int)g.Key))
+- Sensor type groups ordered by enum value (`.OrderBy(g => (int)g.Key)`)
+- SensorType.SmallData maps to "Data" group name (matches web endpoint)
+- Flat mode transforms via DataFlattener (reference: `archive/napi-approach/reference/libre_hardware_flatten.js`)
 
-- Output format specifications (raw and flat modes)- SensorType.SmallData maps to "Data" group name (matches web endpoint)
+### File Structure
 
-- TypeScript interfaces for consumers
+```
+lib/index.js                         # Node.js client wrapper (TO BE CREATED - optional)
+managed/LibreMonCLI/                 # CLI daemon project (✅ IMPLEMENTED)
+├── LibreMonCLI.csproj              # NativeAOT project file
+├── Program.cs                       # Daemon loop, stdin/stdout handler, demo mode
+├── CommandHandler.cs                # Command routing (init, poll, shutdown, version)
+├── HardwareMonitor.cs               # LibreHardwareMonitor singleton wrapper
+├── DataFlattener.cs                 # Flat mode transformation
+├── JsonContext.cs                   # JSON source generators
+└── Models/                          # Command/response models
+    ├── Command.cs                   # InitCommand, PollCommand, etc.
+    ├── Response.cs                  # InitResponse, PollResponse, etc.
+    ├── RawDataStructure.cs          # Web endpoint format models
+    └── FlatDataStructure.cs         # Flattened format models
+deps/LibreHardwareMonitor-src/       # Submodule (source)
+deps/LibreHardwareMonitor/           # Built DLLs (auto-generated)
+dist/                                # Distribution folder
+└── LibreMonCLI.exe                  # NativeAOT binary (6.4MB) + dependencies
+archive/
+├── napi-approach/                   # Complete N-API implementation (reference)
+├── WHY_CLI_NOT_NAPI.md             # Architecture decision rationale
+└── LIBREMON_CLI_DEV_PLAN.md        # Original development plan (completed)
+scripts/
+└── build-cli.ps1                    # Build automation (PowerShell)
+test/
+└── simple-storage-test.js           # Node.js integration tests
+```
 
-- C# implementation guidance### File Structure
+### Build Process
 
-- DataFlattener class specification
+1. Build LibreHardwareMonitor: `dotnet build deps/LibreHardwareMonitor-src/LibreHardwareMonitorLib/`
+2. Copy DLLs to deps/LibreHardwareMonitor/
+3. Build CLI with NativeAOT: `dotnet publish managed/LibreMonCLI/ -c Release -r win-x64 -o dist/`
+4. Result: `dist/LibreMonCLI.exe` (single binary, 6.4MB)
 
-- Integration examples```
-
-lib/index.js                         # JavaScript API
-
-## Current File Structuresrc/                                 # Native C++ addon
-
-managed/LibreHardwareMonitorBridge/  # C# bridge
-
-```deps/LibreHardwareMonitor-src/       # Submodule (source)
-
-managed/LibreHardwareMonitorBridge/  # Legacy bridge code (to be restructured)deps/LibreHardwareMonitor/           # Built DLLs (auto-generated)
-
-deps/LibreHardwareMonitor-src/       # Submodule (LibreHardwareMonitor source)dist/                                # Pre-built binaries (batteries included)
-
-deps/LibreHardwareMonitor/           # Built DLLs (auto-generated, gitignored)test/compare-web-vs-native.js        # Structure validation test
-
-archive/napi-approach/               # Complete N-API implementation (preserved)docs/                                # Documentation
-
-archive/WHY_CLI_NOT_NAPI.md          # Decision rationale```
-
-LIBREMON_CLI_DEV_PLAN.md            # Complete CLI specification
-
-```### Build Process
-
-
-
-## Target File Structure1. LibreHardwareMonitor: Build from submodule (npm run build:lhm)
-
-2. C# Bridge: Compile bridge DLL (npm run build:bridge)
-
-```3. Native Addon: Compile C++ addon (npm run build:native)
-
-managed/LibreMonCLI/                 # CLI project4. Distribution: Package for users (npm run dist)
-
-├── LibreMonCLI.csproj              # Project file
-
-├── Program.cs                       # Entry point, argument parsingAll automated via npm run build.
-
-├── HardwareMonitor.cs               # LibreHardwareMonitor wrapper
-
-├── OutputFormatter.cs               # Raw mode JSON output### Critical Code Patterns
-
-└── DataFlattener.cs                 # Flat mode transformation
+**Current state**: ✅ Fully implemented and tested. Use `.\scripts\build-cli.ps1` for automated builds.
 
 deps/LibreHardwareMonitor-src/       # Submodule**Sensor Type Ordering** (HardwareMonitorBridge.cs ~line 220):
 
@@ -460,23 +442,67 @@ SensorType.SmallData => "Data",  // NOT "SmallData"```
 4. **Batteries Included**: Pre-built dist/ for easy adoption
 5. **Build from Source**: Submodule approach for reproducibility
 
+## Development Workflow
+
+### Making Changes
+
+**C# Daemon Changes**:
+1. Edit files in managed/LibreMonCLI/
+2. Run `.\scripts\build-cli.ps1 -SkipLHM` (faster, skips LibreHardwareMonitor rebuild)
+3. Test with `.\dist\LibreMonCLI.exe` or `node test/simple-storage-test.js`
+
+**Always Validate**:
+- Run demo mode to verify output: `.\dist\LibreMonCLI.exe`
+- Test daemon mode with Node.js: `node test/simple-storage-test.js`
+- Check for compilation warnings
+
+### Updating LibreHardwareMonitor
+
+```bash
+cd deps/LibreHardwareMonitor-src
+git fetch origin
+git checkout <commit-hash>
+cd ../..
+.\scripts\build-cli.ps1
+```
+
+## Project Principles
+
+1. **Output Format is Sacred**: Raw mode must match web endpoint exactly
+2. **Graceful Degradation**: Missing sensors OK, wrong structure NOT OK
+3. **Batteries Included**: Pre-built dist/ for easy adoption
+4. **Build from Source**: Submodule approach for reproducibility
+5. **Reference DEV_PLAN**: Don't duplicate specification - it's archived in `archive/LIBREMON_CLI_DEV_PLAN.md`
+6. **Archive is Read-Only**: Learn from archive, don't modify it
+
 ## Quick Reference
 
 ### Build Commands
 
-- npm run build - Full build (LHM + bridge + native)
-- npm run build:lhm - Build LibreHardwareMonitor from submodule
-- npm run build:bridge - Build C# bridge only
-- npm run build:native - Build native addon only
-- npm run rebuild - Clean + full build
-- npm run dist - Create distribution package
-- npm run test - Run structure comparison test
+- `.\scripts\build-cli.ps1` - Full build (LibreHardwareMonitor + CLI)
+- `.\scripts\build-cli.ps1 -SkipLHM` - Build CLI only (faster)
+- `.\scripts\build-cli.ps1 -Clean` - Clean build
+- `.\scripts\build-cli.ps1 -Verbose` - Verbose output
+
+### Testing Commands
+
+- `.\dist\LibreMonCLI.exe` - Demo mode (show all sensors)
+- `.\dist\LibreMonCLI.exe --daemon` - Start daemon
+- `.\dist\LibreMonCLI.exe --version` - Version info
+- `node test/simple-storage-test.js` - Integration test
 
 ### Important Files
 
-- lib/index.js - JavaScript API
-- src/addon.cc - Node-API entry point
-- managed/LibreHardwareMonitorBridge/HardwareMonitorBridge.cs - C# bridge
+- `managed/LibreMonCLI/Program.cs` - Entry point, daemon loop
+- `managed/LibreMonCLI/CommandHandler.cs` - Command routing
+- `managed/LibreMonCLI/HardwareMonitor.cs` - LibreHardwareMonitor wrapper
+- `managed/LibreMonCLI/DataFlattener.cs` - Flat mode logic
+- `scripts/build-cli.ps1` - Build automation
+- `test/simple-storage-test.js` - Node.js integration test
+
+---
+
+**Note**: This project pivoted from N-API addon to CLI daemon architecture. All N-API code is preserved in `archive/napi-approach/` for reference.
 - test/compare-web-vs-native.js - Structure validation
 - dist/ - Pre-built binaries for distribution
 

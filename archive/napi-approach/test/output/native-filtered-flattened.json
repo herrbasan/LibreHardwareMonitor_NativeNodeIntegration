@@ -1,0 +1,3652 @@
+{
+  "mainboard": [
+    {
+      "controls": {
+        "fan-1": {
+          "SensorId": "/lpc/nct6798d/0/control/0",
+          "ImageURL": "",
+          "name": "Fan #1",
+          "data": {
+            "value": 65.9,
+            "type": "%",
+            "max": 65.9,
+            "min": 65.9
+          }
+        },
+        "fan-2": {
+          "SensorId": "/lpc/nct6798d/0/control/1",
+          "ImageURL": "",
+          "name": "Fan #2",
+          "data": {
+            "value": 32.2,
+            "type": "%",
+            "max": 32.2,
+            "min": 32.2
+          }
+        },
+        "fan-3": {
+          "SensorId": "/lpc/nct6798d/0/control/2",
+          "ImageURL": "",
+          "name": "Fan #3",
+          "data": {
+            "value": 20,
+            "type": "%",
+            "max": 20,
+            "min": 20
+          }
+        },
+        "fan-4": {
+          "SensorId": "/lpc/nct6798d/0/control/3",
+          "ImageURL": "",
+          "name": "Fan #4",
+          "data": {
+            "value": 29.8,
+            "type": "%",
+            "max": 29.8,
+            "min": 29.8
+          }
+        },
+        "fan-5": {
+          "SensorId": "/lpc/nct6798d/0/control/4",
+          "ImageURL": "",
+          "name": "Fan #5",
+          "data": {
+            "value": 65.9,
+            "type": "%",
+            "max": 65.9,
+            "min": 65.9
+          }
+        },
+        "fan-6": {
+          "SensorId": "/lpc/nct6798d/0/control/5",
+          "ImageURL": "",
+          "name": "Fan #6",
+          "data": {
+            "value": 29.8,
+            "type": "%",
+            "max": 29.8,
+            "min": 29.8
+          }
+        },
+        "fan-7": {
+          "SensorId": "/lpc/nct6798d/0/control/6",
+          "ImageURL": "",
+          "name": "Fan #7",
+          "data": {
+            "value": 100,
+            "type": "%",
+            "max": 100,
+            "min": 100
+          }
+        },
+        "name": "Controls"
+      },
+      "voltages": {
+        "vcore": {
+          "SensorId": "/lpc/nct6798d/0/voltage/0",
+          "ImageURL": "",
+          "name": "Vcore",
+          "data": {
+            "value": 0.696,
+            "type": "V",
+            "max": 1.176,
+            "min": 0.696
+          }
+        },
+        "voltage-2": {
+          "SensorId": "/lpc/nct6798d/0/voltage/1",
+          "ImageURL": "",
+          "name": "Voltage #2",
+          "data": {
+            "value": 1.008,
+            "type": "V",
+            "max": 1.008,
+            "min": 1.008
+          }
+        },
+        "avcc": {
+          "SensorId": "/lpc/nct6798d/0/voltage/2",
+          "ImageURL": "",
+          "name": "AVCC",
+          "data": {
+            "value": 3.408,
+            "type": "V",
+            "max": 3.408,
+            "min": 3.408
+          }
+        },
+        "33v": {
+          "SensorId": "/lpc/nct6798d/0/voltage/3",
+          "ImageURL": "",
+          "name": "+3.3V",
+          "data": {
+            "value": 3.296,
+            "type": "V",
+            "max": 3.296,
+            "min": 3.296
+          }
+        },
+        "voltage-5": {
+          "SensorId": "/lpc/nct6798d/0/voltage/4",
+          "ImageURL": "",
+          "name": "Voltage #5",
+          "data": {
+            "value": 1.008,
+            "type": "V",
+            "max": 1.008,
+            "min": 1.008
+          }
+        },
+        "voltage-6": {
+          "SensorId": "/lpc/nct6798d/0/voltage/5",
+          "ImageURL": "",
+          "name": "Voltage #6",
+          "data": {
+            "value": 0.616,
+            "type": "V",
+            "max": 0.616,
+            "min": 0.616
+          }
+        },
+        "3v-standby": {
+          "SensorId": "/lpc/nct6798d/0/voltage/7",
+          "ImageURL": "",
+          "name": "+3V Standby",
+          "data": {
+            "value": 3.408,
+            "type": "V",
+            "max": 3.408,
+            "min": 3.408
+          }
+        },
+        "cmos-battery": {
+          "SensorId": "/lpc/nct6798d/0/voltage/8",
+          "ImageURL": "",
+          "name": "CMOS Battery",
+          "data": {
+            "value": 3.168,
+            "type": "V",
+            "max": 3.184,
+            "min": 3.168
+          }
+        },
+        "cpu-termination": {
+          "SensorId": "/lpc/nct6798d/0/voltage/9",
+          "ImageURL": "",
+          "name": "CPU Termination",
+          "data": {
+            "value": 0.52,
+            "type": "V",
+            "max": 0.52,
+            "min": 0.52
+          }
+        },
+        "voltage-11": {
+          "SensorId": "/lpc/nct6798d/0/voltage/10",
+          "ImageURL": "",
+          "name": "Voltage #11",
+          "data": {
+            "value": 0.504,
+            "type": "V",
+            "max": 0.504,
+            "min": 0.504
+          }
+        },
+        "voltage-12": {
+          "SensorId": "/lpc/nct6798d/0/voltage/11",
+          "ImageURL": "",
+          "name": "Voltage #12",
+          "data": {
+            "value": 0.072,
+            "type": "V",
+            "max": 0.072,
+            "min": 0.072
+          }
+        },
+        "voltage-13": {
+          "SensorId": "/lpc/nct6798d/0/voltage/12",
+          "ImageURL": "",
+          "name": "Voltage #13",
+          "data": {
+            "value": 1.056,
+            "type": "V",
+            "max": 1.056,
+            "min": 1.056
+          }
+        },
+        "voltage-14": {
+          "SensorId": "/lpc/nct6798d/0/voltage/13",
+          "ImageURL": "",
+          "name": "Voltage #14",
+          "data": {
+            "value": 0.392,
+            "type": "V",
+            "max": 0.392,
+            "min": 0.392
+          }
+        },
+        "voltage-15": {
+          "SensorId": "/lpc/nct6798d/0/voltage/14",
+          "ImageURL": "",
+          "name": "Voltage #15",
+          "data": {
+            "value": 0.888,
+            "type": "V",
+            "max": 0.896,
+            "min": 0.888
+          }
+        },
+        "name": "Voltages"
+      },
+      "temperatures": {
+        "temperature-1": {
+          "SensorId": "/lpc/nct6798d/0/temperature/1",
+          "ImageURL": "",
+          "name": "Temperature #1",
+          "data": {
+            "value": 35,
+            "type": "°C",
+            "max": 35,
+            "min": 35
+          }
+        },
+        "temperature-2": {
+          "SensorId": "/lpc/nct6798d/0/temperature/2",
+          "ImageURL": "",
+          "name": "Temperature #2",
+          "data": {
+            "value": 38,
+            "type": "°C",
+            "max": 38,
+            "min": 38
+          }
+        },
+        "temperature-4": {
+          "SensorId": "/lpc/nct6798d/0/temperature/4",
+          "ImageURL": "",
+          "name": "Temperature #4",
+          "data": {
+            "value": 26,
+            "type": "°C",
+            "max": 26,
+            "min": 26
+          }
+        },
+        "temperature-6": {
+          "SensorId": "/lpc/nct6798d/0/temperature/6",
+          "ImageURL": "",
+          "name": "Temperature #6",
+          "data": {
+            "value": 32,
+            "type": "°C",
+            "max": 32,
+            "min": 32
+          }
+        },
+        "temperature-5": {
+          "SensorId": "/lpc/nct6798d/0/temperature/5",
+          "ImageURL": "",
+          "name": "Temperature #5",
+          "data": {
+            "value": 118,
+            "type": "°C",
+            "max": 118,
+            "min": 118
+          }
+        },
+        "name": "Temperatures"
+      },
+      "fans": {
+        "fan-1": {
+          "SensorId": "/lpc/nct6798d/0/fan/0",
+          "ImageURL": "",
+          "name": "Fan #1",
+          "data": {
+            "value": 0,
+            "type": "RPM",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "fan-2": {
+          "SensorId": "/lpc/nct6798d/0/fan/1",
+          "ImageURL": "",
+          "name": "Fan #2",
+          "data": {
+            "value": 801,
+            "type": "RPM",
+            "max": 801,
+            "min": 801
+          }
+        },
+        "fan-3": {
+          "SensorId": "/lpc/nct6798d/0/fan/2",
+          "ImageURL": "",
+          "name": "Fan #3",
+          "data": {
+            "value": 832,
+            "type": "RPM",
+            "max": 841,
+            "min": 832
+          }
+        },
+        "fan-4": {
+          "SensorId": "/lpc/nct6798d/0/fan/3",
+          "ImageURL": "",
+          "name": "Fan #4",
+          "data": {
+            "value": 1103,
+            "type": "RPM",
+            "max": 1103,
+            "min": 1093
+          }
+        },
+        "fan-5": {
+          "SensorId": "/lpc/nct6798d/0/fan/4",
+          "ImageURL": "",
+          "name": "Fan #5",
+          "data": {
+            "value": 0,
+            "type": "RPM",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "fan-6": {
+          "SensorId": "/lpc/nct6798d/0/fan/5",
+          "ImageURL": "",
+          "name": "Fan #6",
+          "data": {
+            "value": 1127,
+            "type": "RPM",
+            "max": 1128,
+            "min": 1127
+          }
+        },
+        "fan-7": {
+          "SensorId": "/lpc/nct6798d/0/fan/6",
+          "ImageURL": "",
+          "name": "Fan #7",
+          "data": {
+            "value": 2922,
+            "type": "RPM",
+            "max": 2935,
+            "min": 2922
+          }
+        },
+        "name": "Fans"
+      },
+      "name": "ASUS ROG STRIX Z690-F GAMING WIFI",
+      "id": 2
+    }
+  ],
+  "cpu": [
+    {
+      "load": {
+        "cpu-core-1-thread-1": {
+          "SensorId": "/intelcpu/0/load/2",
+          "ImageURL": "",
+          "name": "CPU Core #1 Thread #1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 8.7,
+            "min": 0
+          }
+        },
+        "cpu-core-1-thread-2": {
+          "SensorId": "/intelcpu/0/load/3",
+          "ImageURL": "",
+          "name": "CPU Core #1 Thread #2",
+          "data": {
+            "value": 9.4,
+            "type": "%",
+            "max": 9.4,
+            "min": 0
+          }
+        },
+        "cpu-core-2-thread-1": {
+          "SensorId": "/intelcpu/0/load/4",
+          "ImageURL": "",
+          "name": "CPU Core #2 Thread #1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 5.7,
+            "min": 0
+          }
+        },
+        "cpu-core-2-thread-2": {
+          "SensorId": "/intelcpu/0/load/5",
+          "ImageURL": "",
+          "name": "CPU Core #2 Thread #2",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0.8,
+            "min": 0
+          }
+        },
+        "cpu-core-3-thread-1": {
+          "SensorId": "/intelcpu/0/load/6",
+          "ImageURL": "",
+          "name": "CPU Core #3 Thread #1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1.8,
+            "min": 0
+          }
+        },
+        "cpu-core-3-thread-2": {
+          "SensorId": "/intelcpu/0/load/7",
+          "ImageURL": "",
+          "name": "CPU Core #3 Thread #2",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1.3,
+            "min": 0
+          }
+        },
+        "cpu-core-4-thread-1": {
+          "SensorId": "/intelcpu/0/load/8",
+          "ImageURL": "",
+          "name": "CPU Core #4 Thread #1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0.5,
+            "min": 0
+          }
+        },
+        "cpu-core-4-thread-2": {
+          "SensorId": "/intelcpu/0/load/9",
+          "ImageURL": "",
+          "name": "CPU Core #4 Thread #2",
+          "data": {
+            "value": 9.4,
+            "type": "%",
+            "max": 15.7,
+            "min": 0
+          }
+        },
+        "cpu-core-5-thread-1": {
+          "SensorId": "/intelcpu/0/load/10",
+          "ImageURL": "",
+          "name": "CPU Core #5 Thread #1",
+          "data": {
+            "value": 6.2,
+            "type": "%",
+            "max": 26,
+            "min": 0
+          }
+        },
+        "cpu-core-5-thread-2": {
+          "SensorId": "/intelcpu/0/load/11",
+          "ImageURL": "",
+          "name": "CPU Core #5 Thread #2",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1,
+            "min": 0
+          }
+        },
+        "cpu-core-6-thread-1": {
+          "SensorId": "/intelcpu/0/load/12",
+          "ImageURL": "",
+          "name": "CPU Core #6 Thread #1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1.8,
+            "min": 0
+          }
+        },
+        "cpu-core-6-thread-2": {
+          "SensorId": "/intelcpu/0/load/13",
+          "ImageURL": "",
+          "name": "CPU Core #6 Thread #2",
+          "data": {
+            "value": 15.6,
+            "type": "%",
+            "max": 23.6,
+            "min": 0
+          }
+        },
+        "cpu-core-7-thread-1": {
+          "SensorId": "/intelcpu/0/load/14",
+          "ImageURL": "",
+          "name": "CPU Core #7 Thread #1",
+          "data": {
+            "value": 6.2,
+            "type": "%",
+            "max": 12.9,
+            "min": 0
+          }
+        },
+        "cpu-core-7-thread-2": {
+          "SensorId": "/intelcpu/0/load/15",
+          "ImageURL": "",
+          "name": "CPU Core #7 Thread #2",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1.5,
+            "min": 0
+          }
+        },
+        "cpu-core-8-thread-1": {
+          "SensorId": "/intelcpu/0/load/16",
+          "ImageURL": "",
+          "name": "CPU Core #8 Thread #1",
+          "data": {
+            "value": 6.2,
+            "type": "%",
+            "max": 14.4,
+            "min": 0
+          }
+        },
+        "cpu-core-8-thread-2": {
+          "SensorId": "/intelcpu/0/load/17",
+          "ImageURL": "",
+          "name": "CPU Core #8 Thread #2",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1,
+            "min": 0
+          }
+        },
+        "cpu-core-9": {
+          "SensorId": "/intelcpu/0/load/18",
+          "ImageURL": "",
+          "name": "CPU Core #9",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1,
+            "min": 0
+          }
+        },
+        "cpu-core-10": {
+          "SensorId": "/intelcpu/0/load/19",
+          "ImageURL": "",
+          "name": "CPU Core #10",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "cpu-core-11": {
+          "SensorId": "/intelcpu/0/load/20",
+          "ImageURL": "",
+          "name": "CPU Core #11",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1.5,
+            "min": 0
+          }
+        },
+        "cpu-core-12": {
+          "SensorId": "/intelcpu/0/load/21",
+          "ImageURL": "",
+          "name": "CPU Core #12",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1.5,
+            "min": 0
+          }
+        },
+        "cpu-core-13": {
+          "SensorId": "/intelcpu/0/load/22",
+          "ImageURL": "",
+          "name": "CPU Core #13",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 1,
+            "min": 0
+          }
+        },
+        "cpu-core-14": {
+          "SensorId": "/intelcpu/0/load/23",
+          "ImageURL": "",
+          "name": "CPU Core #14",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0.3,
+            "min": 0
+          }
+        },
+        "cpu-core-15": {
+          "SensorId": "/intelcpu/0/load/24",
+          "ImageURL": "",
+          "name": "CPU Core #15",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0.5,
+            "min": 0
+          }
+        },
+        "cpu-core-16": {
+          "SensorId": "/intelcpu/0/load/25",
+          "ImageURL": "",
+          "name": "CPU Core #16",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 3.1,
+            "min": 0
+          }
+        },
+        "cpu-total": {
+          "SensorId": "/intelcpu/0/load/0",
+          "ImageURL": "",
+          "name": "CPU Total",
+          "data": {
+            "value": 2.2,
+            "type": "%",
+            "max": 5.4,
+            "min": 0
+          }
+        },
+        "cpu-core-max": {
+          "SensorId": "/intelcpu/0/load/1",
+          "ImageURL": "",
+          "name": "CPU Core Max",
+          "data": {
+            "value": 15.6,
+            "type": "%",
+            "max": 26,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "temperatures": {
+        "core-max": {
+          "SensorId": "/intelcpu/0/temperature/0",
+          "ImageURL": "",
+          "name": "Core Max",
+          "data": {
+            "value": 42,
+            "type": "°C",
+            "max": 52,
+            "min": 42
+          }
+        },
+        "core-average": {
+          "SensorId": "/intelcpu/0/temperature/1",
+          "ImageURL": "",
+          "name": "Core Average",
+          "data": {
+            "value": 37.4,
+            "type": "°C",
+            "max": 38.8,
+            "min": 37.4
+          }
+        },
+        "cpu-core-1": {
+          "SensorId": "/intelcpu/0/temperature/2",
+          "ImageURL": "",
+          "name": "CPU Core #1",
+          "data": {
+            "value": 38,
+            "type": "°C",
+            "max": 42,
+            "min": 38
+          }
+        },
+        "cpu-core-2": {
+          "SensorId": "/intelcpu/0/temperature/3",
+          "ImageURL": "",
+          "name": "CPU Core #2",
+          "data": {
+            "value": 40,
+            "type": "°C",
+            "max": 40,
+            "min": 38
+          }
+        },
+        "cpu-core-3": {
+          "SensorId": "/intelcpu/0/temperature/4",
+          "ImageURL": "",
+          "name": "CPU Core #3",
+          "data": {
+            "value": 35,
+            "type": "°C",
+            "max": 38,
+            "min": 35
+          }
+        },
+        "cpu-core-4": {
+          "SensorId": "/intelcpu/0/temperature/5",
+          "ImageURL": "",
+          "name": "CPU Core #4",
+          "data": {
+            "value": 38,
+            "type": "°C",
+            "max": 39,
+            "min": 36
+          }
+        },
+        "cpu-core-5": {
+          "SensorId": "/intelcpu/0/temperature/6",
+          "ImageURL": "",
+          "name": "CPU Core #5",
+          "data": {
+            "value": 37,
+            "type": "°C",
+            "max": 38,
+            "min": 37
+          }
+        },
+        "cpu-core-6": {
+          "SensorId": "/intelcpu/0/temperature/7",
+          "ImageURL": "",
+          "name": "CPU Core #6",
+          "data": {
+            "value": 42,
+            "type": "°C",
+            "max": 52,
+            "min": 42
+          }
+        },
+        "cpu-core-7": {
+          "SensorId": "/intelcpu/0/temperature/8",
+          "ImageURL": "",
+          "name": "CPU Core #7",
+          "data": {
+            "value": 36,
+            "type": "°C",
+            "max": 38,
+            "min": 36
+          }
+        },
+        "cpu-core-8": {
+          "SensorId": "/intelcpu/0/temperature/9",
+          "ImageURL": "",
+          "name": "CPU Core #8",
+          "data": {
+            "value": 40,
+            "type": "°C",
+            "max": 40,
+            "min": 35
+          }
+        },
+        "cpu-core-9": {
+          "SensorId": "/intelcpu/0/temperature/10",
+          "ImageURL": "",
+          "name": "CPU Core #9",
+          "data": {
+            "value": 37,
+            "type": "°C",
+            "max": 38,
+            "min": 37
+          }
+        },
+        "cpu-core-10": {
+          "SensorId": "/intelcpu/0/temperature/11",
+          "ImageURL": "",
+          "name": "CPU Core #10",
+          "data": {
+            "value": 37,
+            "type": "°C",
+            "max": 38,
+            "min": 37
+          }
+        },
+        "cpu-core-11": {
+          "SensorId": "/intelcpu/0/temperature/12",
+          "ImageURL": "",
+          "name": "CPU Core #11",
+          "data": {
+            "value": 37,
+            "type": "°C",
+            "max": 38,
+            "min": 37
+          }
+        },
+        "cpu-core-12": {
+          "SensorId": "/intelcpu/0/temperature/13",
+          "ImageURL": "",
+          "name": "CPU Core #12",
+          "data": {
+            "value": 37,
+            "type": "°C",
+            "max": 38,
+            "min": 37
+          }
+        },
+        "cpu-core-13": {
+          "SensorId": "/intelcpu/0/temperature/14",
+          "ImageURL": "",
+          "name": "CPU Core #13",
+          "data": {
+            "value": 36,
+            "type": "°C",
+            "max": 38,
+            "min": 36
+          }
+        },
+        "cpu-core-14": {
+          "SensorId": "/intelcpu/0/temperature/15",
+          "ImageURL": "",
+          "name": "CPU Core #14",
+          "data": {
+            "value": 36,
+            "type": "°C",
+            "max": 38,
+            "min": 36
+          }
+        },
+        "cpu-core-15": {
+          "SensorId": "/intelcpu/0/temperature/16",
+          "ImageURL": "",
+          "name": "CPU Core #15",
+          "data": {
+            "value": 36,
+            "type": "°C",
+            "max": 38,
+            "min": 36
+          }
+        },
+        "cpu-core-16": {
+          "SensorId": "/intelcpu/0/temperature/17",
+          "ImageURL": "",
+          "name": "CPU Core #16",
+          "data": {
+            "value": 36,
+            "type": "°C",
+            "max": 38,
+            "min": 36
+          }
+        },
+        "cpu-package": {
+          "SensorId": "/intelcpu/0/temperature/18",
+          "ImageURL": "",
+          "name": "CPU Package",
+          "data": {
+            "value": 42,
+            "type": "°C",
+            "max": 47,
+            "min": 42
+          }
+        },
+        "cpu-core-1-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/19",
+          "ImageURL": "",
+          "name": "CPU Core #1 Distance to TjMax",
+          "data": {
+            "value": 62,
+            "type": "°C",
+            "max": 62,
+            "min": 58
+          }
+        },
+        "cpu-core-2-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/20",
+          "ImageURL": "",
+          "name": "CPU Core #2 Distance to TjMax",
+          "data": {
+            "value": 60,
+            "type": "°C",
+            "max": 62,
+            "min": 60
+          }
+        },
+        "cpu-core-3-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/21",
+          "ImageURL": "",
+          "name": "CPU Core #3 Distance to TjMax",
+          "data": {
+            "value": 65,
+            "type": "°C",
+            "max": 65,
+            "min": 62
+          }
+        },
+        "cpu-core-4-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/22",
+          "ImageURL": "",
+          "name": "CPU Core #4 Distance to TjMax",
+          "data": {
+            "value": 62,
+            "type": "°C",
+            "max": 64,
+            "min": 61
+          }
+        },
+        "cpu-core-5-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/23",
+          "ImageURL": "",
+          "name": "CPU Core #5 Distance to TjMax",
+          "data": {
+            "value": 63,
+            "type": "°C",
+            "max": 63,
+            "min": 62
+          }
+        },
+        "cpu-core-6-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/24",
+          "ImageURL": "",
+          "name": "CPU Core #6 Distance to TjMax",
+          "data": {
+            "value": 58,
+            "type": "°C",
+            "max": 58,
+            "min": 48
+          }
+        },
+        "cpu-core-7-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/25",
+          "ImageURL": "",
+          "name": "CPU Core #7 Distance to TjMax",
+          "data": {
+            "value": 64,
+            "type": "°C",
+            "max": 64,
+            "min": 62
+          }
+        },
+        "cpu-core-8-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/26",
+          "ImageURL": "",
+          "name": "CPU Core #8 Distance to TjMax",
+          "data": {
+            "value": 60,
+            "type": "°C",
+            "max": 65,
+            "min": 60
+          }
+        },
+        "cpu-core-9-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/27",
+          "ImageURL": "",
+          "name": "CPU Core #9 Distance to TjMax",
+          "data": {
+            "value": 63,
+            "type": "°C",
+            "max": 63,
+            "min": 62
+          }
+        },
+        "cpu-core-10-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/28",
+          "ImageURL": "",
+          "name": "CPU Core #10 Distance to TjMax",
+          "data": {
+            "value": 63,
+            "type": "°C",
+            "max": 63,
+            "min": 62
+          }
+        },
+        "cpu-core-11-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/29",
+          "ImageURL": "",
+          "name": "CPU Core #11 Distance to TjMax",
+          "data": {
+            "value": 63,
+            "type": "°C",
+            "max": 63,
+            "min": 62
+          }
+        },
+        "cpu-core-12-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/30",
+          "ImageURL": "",
+          "name": "CPU Core #12 Distance to TjMax",
+          "data": {
+            "value": 63,
+            "type": "°C",
+            "max": 63,
+            "min": 62
+          }
+        },
+        "cpu-core-13-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/31",
+          "ImageURL": "",
+          "name": "CPU Core #13 Distance to TjMax",
+          "data": {
+            "value": 64,
+            "type": "°C",
+            "max": 64,
+            "min": 62
+          }
+        },
+        "cpu-core-14-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/32",
+          "ImageURL": "",
+          "name": "CPU Core #14 Distance to TjMax",
+          "data": {
+            "value": 64,
+            "type": "°C",
+            "max": 64,
+            "min": 62
+          }
+        },
+        "cpu-core-15-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/33",
+          "ImageURL": "",
+          "name": "CPU Core #15 Distance to TjMax",
+          "data": {
+            "value": 64,
+            "type": "°C",
+            "max": 64,
+            "min": 62
+          }
+        },
+        "cpu-core-16-distance-to-tjmax": {
+          "SensorId": "/intelcpu/0/temperature/34",
+          "ImageURL": "",
+          "name": "CPU Core #16 Distance to TjMax",
+          "data": {
+            "value": 64,
+            "type": "°C",
+            "max": 64,
+            "min": 62
+          }
+        },
+        "name": "Temperatures"
+      },
+      "clocks": {
+        "cpu-core-1": {
+          "SensorId": "/intelcpu/0/clock/1",
+          "ImageURL": "",
+          "name": "CPU Core #1",
+          "data": {
+            "value": 2111,
+            "type": "MHz",
+            "max": 5328,
+            "min": 804
+          }
+        },
+        "cpu-core-2": {
+          "SensorId": "/intelcpu/0/clock/2",
+          "ImageURL": "",
+          "name": "CPU Core #2",
+          "data": {
+            "value": 2010,
+            "type": "MHz",
+            "max": 4624,
+            "min": 2010
+          }
+        },
+        "cpu-core-3": {
+          "SensorId": "/intelcpu/0/clock/3",
+          "ImageURL": "",
+          "name": "CPU Core #3",
+          "data": {
+            "value": 1106,
+            "type": "MHz",
+            "max": 2010,
+            "min": 1106
+          }
+        },
+        "cpu-core-4": {
+          "SensorId": "/intelcpu/0/clock/4",
+          "ImageURL": "",
+          "name": "CPU Core #4",
+          "data": {
+            "value": 1106,
+            "type": "MHz",
+            "max": 1910,
+            "min": 1106
+          }
+        },
+        "cpu-core-5": {
+          "SensorId": "/intelcpu/0/clock/5",
+          "ImageURL": "",
+          "name": "CPU Core #5",
+          "data": {
+            "value": 1106,
+            "type": "MHz",
+            "max": 1307,
+            "min": 1106
+          }
+        },
+        "cpu-core-6": {
+          "SensorId": "/intelcpu/0/clock/6",
+          "ImageURL": "",
+          "name": "CPU Core #6",
+          "data": {
+            "value": 1106,
+            "type": "MHz",
+            "max": 2111,
+            "min": 1106
+          }
+        },
+        "cpu-core-7": {
+          "SensorId": "/intelcpu/0/clock/7",
+          "ImageURL": "",
+          "name": "CPU Core #7",
+          "data": {
+            "value": 1106,
+            "type": "MHz",
+            "max": 1508,
+            "min": 1106
+          }
+        },
+        "cpu-core-8": {
+          "SensorId": "/intelcpu/0/clock/8",
+          "ImageURL": "",
+          "name": "CPU Core #8",
+          "data": {
+            "value": 1106,
+            "type": "MHz",
+            "max": 1307,
+            "min": 1106
+          }
+        },
+        "cpu-core-9": {
+          "SensorId": "/intelcpu/0/clock/9",
+          "ImageURL": "",
+          "name": "CPU Core #9",
+          "data": {
+            "value": 804,
+            "type": "MHz",
+            "max": 804,
+            "min": 804
+          }
+        },
+        "cpu-core-10": {
+          "SensorId": "/intelcpu/0/clock/10",
+          "ImageURL": "",
+          "name": "CPU Core #10",
+          "data": {
+            "value": 804,
+            "type": "MHz",
+            "max": 4121,
+            "min": 804
+          }
+        },
+        "cpu-core-11": {
+          "SensorId": "/intelcpu/0/clock/11",
+          "ImageURL": "",
+          "name": "CPU Core #11",
+          "data": {
+            "value": 804,
+            "type": "MHz",
+            "max": 4121,
+            "min": 804
+          }
+        },
+        "cpu-core-12": {
+          "SensorId": "/intelcpu/0/clock/12",
+          "ImageURL": "",
+          "name": "CPU Core #12",
+          "data": {
+            "value": 804,
+            "type": "MHz",
+            "max": 3518,
+            "min": 804
+          }
+        },
+        "cpu-core-13": {
+          "SensorId": "/intelcpu/0/clock/13",
+          "ImageURL": "",
+          "name": "CPU Core #13",
+          "data": {
+            "value": 4121,
+            "type": "MHz",
+            "max": 4121,
+            "min": 804
+          }
+        },
+        "cpu-core-14": {
+          "SensorId": "/intelcpu/0/clock/14",
+          "ImageURL": "",
+          "name": "CPU Core #14",
+          "data": {
+            "value": 4121,
+            "type": "MHz",
+            "max": 4121,
+            "min": 1005
+          }
+        },
+        "cpu-core-15": {
+          "SensorId": "/intelcpu/0/clock/15",
+          "ImageURL": "",
+          "name": "CPU Core #15",
+          "data": {
+            "value": 4121,
+            "type": "MHz",
+            "max": 4121,
+            "min": 804
+          }
+        },
+        "cpu-core-16": {
+          "SensorId": "/intelcpu/0/clock/16",
+          "ImageURL": "",
+          "name": "CPU Core #16",
+          "data": {
+            "value": 4121,
+            "type": "MHz",
+            "max": 4121,
+            "min": 804
+          }
+        },
+        "bus-speed": {
+          "SensorId": "/intelcpu/0/clock/0",
+          "ImageURL": "",
+          "name": "Bus Speed",
+          "data": {
+            "value": 101,
+            "type": "MHz",
+            "max": 101,
+            "min": 101
+          }
+        },
+        "name": "Clocks"
+      },
+      "powers": {
+        "cpu-package": {
+          "SensorId": "/intelcpu/0/power/0",
+          "ImageURL": "",
+          "name": "CPU Package",
+          "data": {
+            "value": 18.5,
+            "type": "W",
+            "max": 23,
+            "min": 14.3
+          }
+        },
+        "cpu-cores": {
+          "SensorId": "/intelcpu/0/power/1",
+          "ImageURL": "",
+          "name": "CPU Cores",
+          "data": {
+            "value": 11.6,
+            "type": "W",
+            "max": 16.1,
+            "min": 7.7
+          }
+        },
+        "cpu-memory": {
+          "SensorId": "/intelcpu/0/power/3",
+          "ImageURL": "",
+          "name": "CPU Memory",
+          "data": {
+            "value": 0,
+            "type": "W",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "cpu-platform": {
+          "SensorId": "/intelcpu/0/power/4",
+          "ImageURL": "",
+          "name": "CPU Platform",
+          "data": {
+            "value": 0,
+            "type": "W",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Powers"
+      },
+      "voltages": {
+        "cpu-core": {
+          "SensorId": "/intelcpu/0/voltage/0",
+          "ImageURL": "",
+          "name": "CPU Core",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.766
+          }
+        },
+        "cpu-core-1": {
+          "SensorId": "/intelcpu/0/voltage/1",
+          "ImageURL": "",
+          "name": "CPU Core #1",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.766
+          }
+        },
+        "cpu-core-2": {
+          "SensorId": "/intelcpu/0/voltage/2",
+          "ImageURL": "",
+          "name": "CPU Core #2",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.766
+          }
+        },
+        "cpu-core-3": {
+          "SensorId": "/intelcpu/0/voltage/3",
+          "ImageURL": "",
+          "name": "CPU Core #3",
+          "data": {
+            "value": 1.354,
+            "type": "V",
+            "max": 1.354,
+            "min": 0.766
+          }
+        },
+        "cpu-core-4": {
+          "SensorId": "/intelcpu/0/voltage/4",
+          "ImageURL": "",
+          "name": "CPU Core #4",
+          "data": {
+            "value": 1.354,
+            "type": "V",
+            "max": 1.354,
+            "min": 0.766
+          }
+        },
+        "cpu-core-5": {
+          "SensorId": "/intelcpu/0/voltage/5",
+          "ImageURL": "",
+          "name": "CPU Core #5",
+          "data": {
+            "value": 1.334,
+            "type": "V",
+            "max": 1.334,
+            "min": 0.766
+          }
+        },
+        "cpu-core-6": {
+          "SensorId": "/intelcpu/0/voltage/6",
+          "ImageURL": "",
+          "name": "CPU Core #6",
+          "data": {
+            "value": 1.359,
+            "type": "V",
+            "max": 1.359,
+            "min": 0.766
+          }
+        },
+        "cpu-core-7": {
+          "SensorId": "/intelcpu/0/voltage/7",
+          "ImageURL": "",
+          "name": "CPU Core #7",
+          "data": {
+            "value": 1.359,
+            "type": "V",
+            "max": 1.359,
+            "min": 0.764
+          }
+        },
+        "cpu-core-8": {
+          "SensorId": "/intelcpu/0/voltage/8",
+          "ImageURL": "",
+          "name": "CPU Core #8",
+          "data": {
+            "value": 1.334,
+            "type": "V",
+            "max": 1.334,
+            "min": 0.764
+          }
+        },
+        "cpu-core-9": {
+          "SensorId": "/intelcpu/0/voltage/9",
+          "ImageURL": "",
+          "name": "CPU Core #9",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.764
+          }
+        },
+        "cpu-core-10": {
+          "SensorId": "/intelcpu/0/voltage/10",
+          "ImageURL": "",
+          "name": "CPU Core #10",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.764
+          }
+        },
+        "cpu-core-11": {
+          "SensorId": "/intelcpu/0/voltage/11",
+          "ImageURL": "",
+          "name": "CPU Core #11",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.764
+          }
+        },
+        "cpu-core-12": {
+          "SensorId": "/intelcpu/0/voltage/12",
+          "ImageURL": "",
+          "name": "CPU Core #12",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.764
+          }
+        },
+        "cpu-core-13": {
+          "SensorId": "/intelcpu/0/voltage/13",
+          "ImageURL": "",
+          "name": "CPU Core #13",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.766
+          }
+        },
+        "cpu-core-14": {
+          "SensorId": "/intelcpu/0/voltage/14",
+          "ImageURL": "",
+          "name": "CPU Core #14",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.766
+          }
+        },
+        "cpu-core-15": {
+          "SensorId": "/intelcpu/0/voltage/15",
+          "ImageURL": "",
+          "name": "CPU Core #15",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.766
+          }
+        },
+        "cpu-core-16": {
+          "SensorId": "/intelcpu/0/voltage/16",
+          "ImageURL": "",
+          "name": "CPU Core #16",
+          "data": {
+            "value": 1.349,
+            "type": "V",
+            "max": 1.349,
+            "min": 0.771
+          }
+        },
+        "name": "Voltages"
+      },
+      "name": "13th Gen Intel Core i7-13700K",
+      "id": 3
+    }
+  ],
+  "ram": [
+    {
+      "data": {
+        "memory-used": {
+          "SensorId": "/vram/data/2",
+          "ImageURL": "",
+          "name": "Memory Used",
+          "data": {
+            "value": 26,
+            "type": "GB",
+            "max": 26,
+            "min": 26
+          }
+        },
+        "memory-available": {
+          "SensorId": "/vram/data/3",
+          "ImageURL": "",
+          "name": "Memory Available",
+          "data": {
+            "value": 61,
+            "type": "GB",
+            "max": 61,
+            "min": 61
+          }
+        },
+        "name": "Data"
+      },
+      "load": {
+        "memory": {
+          "SensorId": "/vram/load/1",
+          "ImageURL": "",
+          "name": "Memory",
+          "data": {
+            "value": 30.1,
+            "type": "%",
+            "max": 30.1,
+            "min": 30.1
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Virtual Memory",
+      "id": 108
+    },
+    {
+      "data": {
+        "memory-used": {
+          "SensorId": "/ram/data/0",
+          "ImageURL": "",
+          "name": "Memory Used",
+          "data": {
+            "value": 21,
+            "type": "GB",
+            "max": 21,
+            "min": 21
+          }
+        },
+        "memory-available": {
+          "SensorId": "/ram/data/1",
+          "ImageURL": "",
+          "name": "Memory Available",
+          "data": {
+            "value": 43,
+            "type": "GB",
+            "max": 43,
+            "min": 43
+          }
+        },
+        "name": "Data"
+      },
+      "load": {
+        "memory": {
+          "SensorId": "/ram/load/0",
+          "ImageURL": "",
+          "name": "Memory",
+          "data": {
+            "value": 33,
+            "type": "%",
+            "max": 33,
+            "min": 33
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Total Memory",
+      "id": 114
+    }
+  ],
+  "gpu": [
+    {
+      "temperatures": {
+        "gpu-core": {
+          "SensorId": "/gpu-nvidia/0/temperature/0",
+          "ImageURL": "",
+          "name": "GPU Core",
+          "data": {
+            "value": 37,
+            "type": "°C",
+            "max": 37,
+            "min": 37
+          }
+        },
+        "gpu-hot-spot": {
+          "SensorId": "/gpu-nvidia/0/temperature/2",
+          "ImageURL": "",
+          "name": "GPU Hot Spot",
+          "data": {
+            "value": 46.9,
+            "type": "°C",
+            "max": 46.9,
+            "min": 46.7
+          }
+        },
+        "gpu-memory-junction": {
+          "SensorId": "/gpu-nvidia/0/temperature/3",
+          "ImageURL": "",
+          "name": "GPU Memory Junction",
+          "data": {
+            "value": 40,
+            "type": "°C",
+            "max": 40,
+            "min": 40
+          }
+        },
+        "name": "Temperatures"
+      },
+      "clocks": {
+        "gpu-core": {
+          "SensorId": "/gpu-nvidia/0/clock/0",
+          "ImageURL": "",
+          "name": "GPU Core",
+          "data": {
+            "value": 2520,
+            "type": "MHz",
+            "max": 2520,
+            "min": 2520
+          }
+        },
+        "gpu-memory": {
+          "SensorId": "/gpu-nvidia/0/clock/4",
+          "ImageURL": "",
+          "name": "GPU Memory",
+          "data": {
+            "value": 10502,
+            "type": "MHz",
+            "max": 10502,
+            "min": 10502
+          }
+        },
+        "name": "Clocks"
+      },
+      "fans": {
+        "gpu-fan-1": {
+          "SensorId": "/gpu-nvidia/0/fan/1",
+          "ImageURL": "",
+          "name": "GPU Fan 1",
+          "data": {
+            "value": 1115,
+            "type": "RPM",
+            "max": 1118,
+            "min": 1114
+          }
+        },
+        "gpu-fan-2": {
+          "SensorId": "/gpu-nvidia/0/fan/2",
+          "ImageURL": "",
+          "name": "GPU Fan 2",
+          "data": {
+            "value": 1101,
+            "type": "RPM",
+            "max": 1101,
+            "min": 1100
+          }
+        },
+        "name": "Fans"
+      },
+      "controls": {
+        "gpu-fan-1": {
+          "SensorId": "/gpu-nvidia/0/control/1",
+          "ImageURL": "",
+          "name": "GPU Fan 1",
+          "data": {
+            "value": 30,
+            "type": "%",
+            "max": 30,
+            "min": 30
+          }
+        },
+        "gpu-fan-2": {
+          "SensorId": "/gpu-nvidia/0/control/2",
+          "ImageURL": "",
+          "name": "GPU Fan 2",
+          "data": {
+            "value": 30,
+            "type": "%",
+            "max": 30,
+            "min": 30
+          }
+        },
+        "name": "Controls"
+      },
+      "load": {
+        "gpu-core": {
+          "SensorId": "/gpu-nvidia/0/load/0",
+          "ImageURL": "",
+          "name": "GPU Core",
+          "data": {
+            "value": 2,
+            "type": "%",
+            "max": 3,
+            "min": 2
+          }
+        },
+        "gpu-memory-controller": {
+          "SensorId": "/gpu-nvidia/0/load/1",
+          "ImageURL": "",
+          "name": "GPU Memory Controller",
+          "data": {
+            "value": 1,
+            "type": "%",
+            "max": 1,
+            "min": 1
+          }
+        },
+        "gpu-video-engine": {
+          "SensorId": "/gpu-nvidia/0/load/2",
+          "ImageURL": "",
+          "name": "GPU Video Engine",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "gpu-bus": {
+          "SensorId": "/gpu-nvidia/0/load/3",
+          "ImageURL": "",
+          "name": "GPU Bus",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "gpu-power": {
+          "SensorId": "/gpu-nvidia/0/load/4",
+          "ImageURL": "",
+          "name": "GPU Power",
+          "data": {
+            "value": 11.8,
+            "type": "%",
+            "max": 12.5,
+            "min": 11.7
+          }
+        },
+        "gpu-board-power": {
+          "SensorId": "/gpu-nvidia/0/load/5",
+          "ImageURL": "",
+          "name": "GPU Board Power",
+          "data": {
+            "value": 11.9,
+            "type": "%",
+            "max": 12.3,
+            "min": 11.6
+          }
+        },
+        "d3d-3d": {
+          "SensorId": "/gpu-nvidia/0/load/7",
+          "ImageURL": "",
+          "name": "D3D 3D",
+          "data": {
+            "value": 3.9,
+            "type": "%",
+            "max": 6.5,
+            "min": 3.5
+          }
+        },
+        "d3d-compute_0": {
+          "SensorId": "/gpu-nvidia/0/load/8",
+          "ImageURL": "",
+          "name": "D3D Compute_0",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-overlay": {
+          "SensorId": "/gpu-nvidia/0/load/19",
+          "ImageURL": "",
+          "name": "D3D Overlay",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-video-decode": {
+          "SensorId": "/gpu-nvidia/0/load/21",
+          "ImageURL": "",
+          "name": "D3D Video Decode",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-copy": {
+          "SensorId": "/gpu-nvidia/0/load/10",
+          "ImageURL": "",
+          "name": "D3D Copy",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-security": {
+          "SensorId": "/gpu-nvidia/0/load/20",
+          "ImageURL": "",
+          "name": "D3D Security",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-video-encode": {
+          "SensorId": "/gpu-nvidia/0/load/22",
+          "ImageURL": "",
+          "name": "D3D Video Encode",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-ofa_0": {
+          "SensorId": "/gpu-nvidia/0/load/18",
+          "ImageURL": "",
+          "name": "D3D OFA_0",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-graphics_1": {
+          "SensorId": "/gpu-nvidia/0/load/17",
+          "ImageURL": "",
+          "name": "D3D Graphics_1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-cuda": {
+          "SensorId": "/gpu-nvidia/0/load/16",
+          "ImageURL": "",
+          "name": "D3D Cuda",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-compute_1": {
+          "SensorId": "/gpu-nvidia/0/load/9",
+          "ImageURL": "",
+          "name": "D3D Compute_1",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-vr": {
+          "SensorId": "/gpu-nvidia/0/load/26",
+          "ImageURL": "",
+          "name": "D3D VR",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "gpu-memory": {
+          "SensorId": "/gpu-nvidia/0/load/3",
+          "ImageURL": "",
+          "name": "GPU Memory",
+          "data": {
+            "value": 7.7,
+            "type": "%",
+            "max": 7.7,
+            "min": 7.7
+          }
+        },
+        "name": "Load"
+      },
+      "smalldata": {
+        "d3d-dedicated-memory-used": {
+          "SensorId": "/gpu-nvidia/0/smalldata/3",
+          "ImageURL": "",
+          "name": "D3D Dedicated Memory Used",
+          "data": {
+            "value": 1477,
+            "type": "MB",
+            "max": 1486,
+            "min": 1477
+          }
+        },
+        "d3d-shared-memory-used": {
+          "SensorId": "/gpu-nvidia/0/smalldata/4",
+          "ImageURL": "",
+          "name": "D3D Shared Memory Used",
+          "data": {
+            "value": 103,
+            "type": "MB",
+            "max": 104,
+            "min": 103
+          }
+        },
+        "gpu-memory-total": {
+          "SensorId": "/gpu-nvidia/0/smalldata/2",
+          "ImageURL": "",
+          "name": "GPU Memory Total",
+          "data": {
+            "value": 24564,
+            "type": "MB",
+            "max": 24564,
+            "min": 24564
+          }
+        },
+        "gpu-memory-free": {
+          "SensorId": "/gpu-nvidia/0/smalldata/0",
+          "ImageURL": "",
+          "name": "GPU Memory Free",
+          "data": {
+            "value": 22671,
+            "type": "MB",
+            "max": 22671,
+            "min": 22663
+          }
+        },
+        "gpu-memory-used": {
+          "SensorId": "/gpu-nvidia/0/smalldata/1",
+          "ImageURL": "",
+          "name": "GPU Memory Used",
+          "data": {
+            "value": 1892,
+            "type": "MB",
+            "max": 1900,
+            "min": 1892
+          }
+        },
+        "name": "SmallData"
+      },
+      "powers": {
+        "gpu-package": {
+          "SensorId": "/gpu-nvidia/0/power/0",
+          "ImageURL": "",
+          "name": "GPU Package",
+          "data": {
+            "value": 53.6,
+            "type": "W",
+            "max": 54.2,
+            "min": 53.6
+          }
+        },
+        "name": "Powers"
+      },
+      "throughput": {
+        "gpu-pcie-rx": {
+          "SensorId": "/gpu-nvidia/0/throughput/0",
+          "ImageURL": "",
+          "name": "GPU PCIe Rx",
+          "data": {
+            "value": 10899456,
+            "type": "MB/s",
+            "max": 10899456,
+            "min": 5549056
+          }
+        },
+        "gpu-pcie-tx": {
+          "SensorId": "/gpu-nvidia/0/throughput/1",
+          "ImageURL": "",
+          "name": "GPU PCIe Tx",
+          "data": {
+            "value": 999424,
+            "type": "MB/s",
+            "max": 1899520,
+            "min": 999424
+          }
+        },
+        "name": "Throughput"
+      },
+      "name": "NVIDIA GeForce RTX 4090",
+      "id": 204
+    },
+    {
+      "powers": {
+        "gpu-power": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/power/0",
+          "ImageURL": "",
+          "name": "GPU Power",
+          "data": {
+            "value": 0,
+            "type": "W",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Powers"
+      },
+      "smalldata": {
+        "d3d-shared-memory-total": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/smalldata/2",
+          "ImageURL": "",
+          "name": "D3D Shared Memory Total",
+          "data": {
+            "value": 32639,
+            "type": "MB",
+            "max": 32639,
+            "min": 32639
+          }
+        },
+        "d3d-shared-memory-free": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/smalldata/1",
+          "ImageURL": "",
+          "name": "D3D Shared Memory Free",
+          "data": {
+            "value": 32619,
+            "type": "MB",
+            "max": 32619,
+            "min": 32619
+          }
+        },
+        "d3d-shared-memory-used": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/smalldata/0",
+          "ImageURL": "",
+          "name": "D3D Shared Memory Used",
+          "data": {
+            "value": 19,
+            "type": "MB",
+            "max": 19,
+            "min": 19
+          }
+        },
+        "name": "SmallData"
+      },
+      "load": {
+        "d3d-3d": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/load/7",
+          "ImageURL": "",
+          "name": "D3D 3D",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-video-decode": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/load/10",
+          "ImageURL": "",
+          "name": "D3D Video Decode",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-copy": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/load/8",
+          "ImageURL": "",
+          "name": "D3D Copy",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-video-processing": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/load/12",
+          "ImageURL": "",
+          "name": "D3D Video Processing",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/load/0",
+          "ImageURL": "",
+          "name": "D3D ",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "d3d-overlay": {
+          "SensorId": "/gpu-intel-integrated/%5C%5C%3F%5CPCI%23VEN_8086%26DEV_A780%26SUBSYS_86941043%26REV_04%233%2611583659%260%2610%23%7B1ca05180-a699-450a-9a0c-de4fbe3ddd89%7D/load/9",
+          "ImageURL": "",
+          "name": "D3D Overlay",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Intel(R) UHD Graphics 770",
+      "id": 257
+    }
+  ],
+  "hdd": [
+    {
+      "temperatures": {
+        "temperature": {
+          "SensorId": "/nvme/2/temperature/0",
+          "ImageURL": "",
+          "name": "Temperature",
+          "data": {
+            "value": 41,
+            "type": "°C",
+            "max": 41,
+            "min": 0
+          }
+        },
+        "temperature-1": {
+          "SensorId": "/nvme/2/temperature/6",
+          "ImageURL": "",
+          "name": "Temperature 1",
+          "data": {
+            "value": 41,
+            "type": "°C",
+            "max": 41,
+            "min": 0
+          }
+        },
+        "temperature-2": {
+          "SensorId": "/nvme/2/temperature/7",
+          "ImageURL": "",
+          "name": "Temperature 2",
+          "data": {
+            "value": 45,
+            "type": "°C",
+            "max": 45,
+            "min": 0
+          }
+        },
+        "name": "Temperatures"
+      },
+      "levels": {
+        "available-spare": {
+          "SensorId": "/nvme/2/level/1",
+          "ImageURL": "",
+          "name": "Available Spare",
+          "data": {
+            "value": 100,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "available-spare-threshold": {
+          "SensorId": "/nvme/2/level/2",
+          "ImageURL": "",
+          "name": "Available Spare Threshold",
+          "data": {
+            "value": 10,
+            "type": "%",
+            "max": 10,
+            "min": 0
+          }
+        },
+        "percentage-used": {
+          "SensorId": "/nvme/2/level/3",
+          "ImageURL": "",
+          "name": "Percentage Used",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Levels"
+      },
+      "data": {
+        "data-read": {
+          "SensorId": "/nvme/2/data/4",
+          "ImageURL": "",
+          "name": "Data Read",
+          "data": {
+            "value": 31680,
+            "type": "GB",
+            "max": 31680,
+            "min": 0
+          }
+        },
+        "data-written": {
+          "SensorId": "/nvme/2/data/5",
+          "ImageURL": "",
+          "name": "Data Written",
+          "data": {
+            "value": 10409,
+            "type": "GB",
+            "max": 10409,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "load": {
+        "used-space": {
+          "SensorId": "/nvme/2/load/0",
+          "ImageURL": "",
+          "name": "Used Space",
+          "data": {
+            "value": 61.7,
+            "type": "%",
+            "max": 61.7,
+            "min": 61.7
+          }
+        },
+        "read-activity": {
+          "SensorId": "/nvme/2/load/31",
+          "ImageURL": "",
+          "name": "Read Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-activity": {
+          "SensorId": "/nvme/2/load/32",
+          "ImageURL": "",
+          "name": "Write Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "total-activity": {
+          "SensorId": "/nvme/2/load/33",
+          "ImageURL": "",
+          "name": "Total Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "throughput": {
+        "read-rate": {
+          "SensorId": "/nvme/2/throughput/34",
+          "ImageURL": "",
+          "name": "Read Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-rate": {
+          "SensorId": "/nvme/2/throughput/35",
+          "ImageURL": "",
+          "name": "Write Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "name": "Samsung SSD 980 PRO 1TB",
+      "id": 278
+    },
+    {
+      "temperatures": {
+        "temperature": {
+          "SensorId": "/hdd/0/temperature/0",
+          "ImageURL": "",
+          "name": "Temperature",
+          "data": {
+            "value": 33,
+            "type": "°C",
+            "max": 33,
+            "min": 33
+          }
+        },
+        "name": "Temperatures"
+      },
+      "load": {
+        "used-space": {
+          "SensorId": "/hdd/0/load/0",
+          "ImageURL": "",
+          "name": "Used Space",
+          "data": {
+            "value": 11.8,
+            "type": "%",
+            "max": 11.8,
+            "min": 11.8
+          }
+        },
+        "read-activity": {
+          "SensorId": "/hdd/0/load/31",
+          "ImageURL": "",
+          "name": "Read Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-activity": {
+          "SensorId": "/hdd/0/load/32",
+          "ImageURL": "",
+          "name": "Write Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "total-activity": {
+          "SensorId": "/hdd/0/load/33",
+          "ImageURL": "",
+          "name": "Total Activity",
+          "data": {
+            "value": 0.2,
+            "type": "%",
+            "max": 100,
+            "min": 0.2
+          }
+        },
+        "name": "Load"
+      },
+      "throughput": {
+        "read-rate": {
+          "SensorId": "/hdd/0/throughput/34",
+          "ImageURL": "",
+          "name": "Read Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-rate": {
+          "SensorId": "/hdd/0/throughput/35",
+          "ImageURL": "",
+          "name": "Write Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "name": "Patriot Burst",
+      "id": 298
+    },
+    {
+      "temperatures": {
+        "temperature": {
+          "SensorId": "/nvme/4/temperature/0",
+          "ImageURL": "",
+          "name": "Temperature",
+          "data": {
+            "value": 39,
+            "type": "°C",
+            "max": 39,
+            "min": 0
+          }
+        },
+        "temperature-1": {
+          "SensorId": "/nvme/4/temperature/6",
+          "ImageURL": "",
+          "name": "Temperature 1",
+          "data": {
+            "value": 39,
+            "type": "°C",
+            "max": 39,
+            "min": 0
+          }
+        },
+        "name": "Temperatures"
+      },
+      "levels": {
+        "available-spare": {
+          "SensorId": "/nvme/4/level/1",
+          "ImageURL": "",
+          "name": "Available Spare",
+          "data": {
+            "value": 100,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "available-spare-threshold": {
+          "SensorId": "/nvme/4/level/2",
+          "ImageURL": "",
+          "name": "Available Spare Threshold",
+          "data": {
+            "value": 5,
+            "type": "%",
+            "max": 5,
+            "min": 0
+          }
+        },
+        "percentage-used": {
+          "SensorId": "/nvme/4/level/3",
+          "ImageURL": "",
+          "name": "Percentage Used",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Levels"
+      },
+      "data": {
+        "data-read": {
+          "SensorId": "/nvme/4/data/4",
+          "ImageURL": "",
+          "name": "Data Read",
+          "data": {
+            "value": 43144,
+            "type": "GB",
+            "max": 43144,
+            "min": 0
+          }
+        },
+        "data-written": {
+          "SensorId": "/nvme/4/data/5",
+          "ImageURL": "",
+          "name": "Data Written",
+          "data": {
+            "value": 3180,
+            "type": "GB",
+            "max": 3180,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "load": {
+        "used-space": {
+          "SensorId": "/nvme/4/load/0",
+          "ImageURL": "",
+          "name": "Used Space",
+          "data": {
+            "value": 64.4,
+            "type": "%",
+            "max": 64.4,
+            "min": 64.4
+          }
+        },
+        "read-activity": {
+          "SensorId": "/nvme/4/load/31",
+          "ImageURL": "",
+          "name": "Read Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-activity": {
+          "SensorId": "/nvme/4/load/32",
+          "ImageURL": "",
+          "name": "Write Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "total-activity": {
+          "SensorId": "/nvme/4/load/33",
+          "ImageURL": "",
+          "name": "Total Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "throughput": {
+        "read-rate": {
+          "SensorId": "/nvme/4/throughput/34",
+          "ImageURL": "",
+          "name": "Read Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-rate": {
+          "SensorId": "/nvme/4/throughput/35",
+          "ImageURL": "",
+          "name": "Write Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "name": "KIOXIA-EXCERIA PLUS G3 SSD",
+      "id": 309
+    },
+    {
+      "temperatures": {
+        "temperature": {
+          "SensorId": "/nvme/3/temperature/0",
+          "ImageURL": "",
+          "name": "Temperature",
+          "data": {
+            "value": 42,
+            "type": "°C",
+            "max": 42,
+            "min": 0
+          }
+        },
+        "temperature-1": {
+          "SensorId": "/nvme/3/temperature/6",
+          "ImageURL": "",
+          "name": "Temperature 1",
+          "data": {
+            "value": 42,
+            "type": "°C",
+            "max": 42,
+            "min": 0
+          }
+        },
+        "temperature-2": {
+          "SensorId": "/nvme/3/temperature/7",
+          "ImageURL": "",
+          "name": "Temperature 2",
+          "data": {
+            "value": 46,
+            "type": "°C",
+            "max": 46,
+            "min": 0
+          }
+        },
+        "name": "Temperatures"
+      },
+      "levels": {
+        "available-spare": {
+          "SensorId": "/nvme/3/level/1",
+          "ImageURL": "",
+          "name": "Available Spare",
+          "data": {
+            "value": 100,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "available-spare-threshold": {
+          "SensorId": "/nvme/3/level/2",
+          "ImageURL": "",
+          "name": "Available Spare Threshold",
+          "data": {
+            "value": 10,
+            "type": "%",
+            "max": 10,
+            "min": 0
+          }
+        },
+        "percentage-used": {
+          "SensorId": "/nvme/3/level/3",
+          "ImageURL": "",
+          "name": "Percentage Used",
+          "data": {
+            "value": 13,
+            "type": "%",
+            "max": 13,
+            "min": 0
+          }
+        },
+        "name": "Levels"
+      },
+      "data": {
+        "data-read": {
+          "SensorId": "/nvme/3/data/4",
+          "ImageURL": "",
+          "name": "Data Read",
+          "data": {
+            "value": 41146,
+            "type": "GB",
+            "max": 41146,
+            "min": 0
+          }
+        },
+        "data-written": {
+          "SensorId": "/nvme/3/data/5",
+          "ImageURL": "",
+          "name": "Data Written",
+          "data": {
+            "value": 69691,
+            "type": "GB",
+            "max": 69691,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "load": {
+        "used-space": {
+          "SensorId": "/nvme/3/load/0",
+          "ImageURL": "",
+          "name": "Used Space",
+          "data": {
+            "value": 54.5,
+            "type": "%",
+            "max": 54.5,
+            "min": 54.5
+          }
+        },
+        "read-activity": {
+          "SensorId": "/nvme/3/load/31",
+          "ImageURL": "",
+          "name": "Read Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-activity": {
+          "SensorId": "/nvme/3/load/32",
+          "ImageURL": "",
+          "name": "Write Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "total-activity": {
+          "SensorId": "/nvme/3/load/33",
+          "ImageURL": "",
+          "name": "Total Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "throughput": {
+        "read-rate": {
+          "SensorId": "/nvme/3/throughput/34",
+          "ImageURL": "",
+          "name": "Read Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-rate": {
+          "SensorId": "/nvme/3/throughput/35",
+          "ImageURL": "",
+          "name": "Write Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "name": "Samsung SSD 980 PRO with Heatsink 1TB",
+      "id": 328
+    },
+    {
+      "temperatures": {
+        "temperature": {
+          "SensorId": "/ssd/1/temperature/0",
+          "ImageURL": "",
+          "name": "Temperature",
+          "data": {
+            "value": 33,
+            "type": "°C",
+            "max": 33,
+            "min": 33
+          }
+        },
+        "name": "Temperatures"
+      },
+      "data": {
+        "total-bytes-written": {
+          "SensorId": "/ssd/1/data/0",
+          "ImageURL": "",
+          "name": "Total Bytes Written",
+          "data": {
+            "value": 10479,
+            "type": "GB",
+            "max": 10479,
+            "min": 10479
+          }
+        },
+        "name": "Data"
+      },
+      "load": {
+        "used-space": {
+          "SensorId": "/ssd/1/load/0",
+          "ImageURL": "",
+          "name": "Used Space",
+          "data": {
+            "value": 70.2,
+            "type": "%",
+            "max": 70.2,
+            "min": 70.2
+          }
+        },
+        "read-activity": {
+          "SensorId": "/ssd/1/load/31",
+          "ImageURL": "",
+          "name": "Read Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-activity": {
+          "SensorId": "/ssd/1/load/32",
+          "ImageURL": "",
+          "name": "Write Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "total-activity": {
+          "SensorId": "/ssd/1/load/33",
+          "ImageURL": "",
+          "name": "Total Activity",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 100,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "throughput": {
+        "read-rate": {
+          "SensorId": "/ssd/1/throughput/34",
+          "ImageURL": "",
+          "name": "Read Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "write-rate": {
+          "SensorId": "/ssd/1/throughput/35",
+          "ImageURL": "",
+          "name": "Write Rate",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "name": "Samsung SSD 850 PRO 1TB",
+      "id": 348
+    }
+  ],
+  "nic": [
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7B49D682B7-3B62-49CB-92D6-88AAD68B75F6%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7B49D682B7-3B62-49CB-92D6-88AAD68B75F6%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7B49D682B7-3B62-49CB-92D6-88AAD68B75F6%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7B49D682B7-3B62-49CB-92D6-88AAD68B75F6%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7B49D682B7-3B62-49CB-92D6-88AAD68B75F6%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Bluetooth-Netzwerkverbindung",
+      "id": 361
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7BF1F36E58-0667-493A-85F7-50AC5A195FC1%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 36,
+            "type": "GB",
+            "max": 36,
+            "min": 36
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7BF1F36E58-0667-493A-85F7-50AC5A195FC1%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 25,
+            "type": "GB",
+            "max": 25,
+            "min": 25
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7BF1F36E58-0667-493A-85F7-50AC5A195FC1%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 335.9,
+            "type": "MB/s",
+            "max": 335.9,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7BF1F36E58-0667-493A-85F7-50AC5A195FC1%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 573.8,
+            "type": "MB/s",
+            "max": 3016.1,
+            "min": 573.8
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7BF1F36E58-0667-493A-85F7-50AC5A195FC1%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Ethernet",
+      "id": 370
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7BEA2E8FBA-059A-4439-A612-CCC99EFE1955%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7BEA2E8FBA-059A-4439-A612-CCC99EFE1955%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7BEA2E8FBA-059A-4439-A612-CCC99EFE1955%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7BEA2E8FBA-059A-4439-A612-CCC99EFE1955%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "Min": "",
+          "Max": "",
+          "SensorId": "/nic/%7BEA2E8FBA-059A-4439-A612-CCC99EFE1955%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": null,
+            "type": "%"
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Ethernet 3",
+      "id": 388
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7BA87384E3-6EC1-4ACD-81CD-ED25630270B4%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7BA87384E3-6EC1-4ACD-81CD-ED25630270B4%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7BA87384E3-6EC1-4ACD-81CD-ED25630270B4%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7BA87384E3-6EC1-4ACD-81CD-ED25630270B4%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7BA87384E3-6EC1-4ACD-81CD-ED25630270B4%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "Ethernet 4",
+      "id": 397
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7B35A73F7B-97C0-4A60-960D-438A20DE3E5E%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7B35A73F7B-97C0-4A60-960D-438A20DE3E5E%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7B35A73F7B-97C0-4A60-960D-438A20DE3E5E%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7B35A73F7B-97C0-4A60-960D-438A20DE3E5E%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7B35A73F7B-97C0-4A60-960D-438A20DE3E5E%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung",
+      "id": 469
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7BAEC01899-5636-4FAE-AF4E-50D282957E0A%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7BAEC01899-5636-4FAE-AF4E-50D282957E0A%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7BAEC01899-5636-4FAE-AF4E-50D282957E0A%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7BAEC01899-5636-4FAE-AF4E-50D282957E0A%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7BAEC01899-5636-4FAE-AF4E-50D282957E0A%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung* 10",
+      "id": 514
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7B3BC90C3C-F8FE-4F13-8E4D-5DB3BFB4311F%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7B3BC90C3C-F8FE-4F13-8E4D-5DB3BFB4311F%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7B3BC90C3C-F8FE-4F13-8E4D-5DB3BFB4311F%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7B3BC90C3C-F8FE-4F13-8E4D-5DB3BFB4311F%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7B3BC90C3C-F8FE-4F13-8E4D-5DB3BFB4311F%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung* 5",
+      "id": 568
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7BE08F6479-6404-4109-9327-8701BC36B302%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7BE08F6479-6404-4109-9327-8701BC36B302%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7BE08F6479-6404-4109-9327-8701BC36B302%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7BE08F6479-6404-4109-9327-8701BC36B302%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7BE08F6479-6404-4109-9327-8701BC36B302%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung* 6",
+      "id": 577
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7BE1EED70A-B974-4132-8754-6AA6CD11C646%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7BE1EED70A-B974-4132-8754-6AA6CD11C646%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7BE1EED70A-B974-4132-8754-6AA6CD11C646%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7BE1EED70A-B974-4132-8754-6AA6CD11C646%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7BE1EED70A-B974-4132-8754-6AA6CD11C646%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung* 7",
+      "id": 604
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7B067DF568-6E5E-46BB-ACB7-BB2DF2D3FA38%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7B067DF568-6E5E-46BB-ACB7-BB2DF2D3FA38%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7B067DF568-6E5E-46BB-ACB7-BB2DF2D3FA38%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7B067DF568-6E5E-46BB-ACB7-BB2DF2D3FA38%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7B067DF568-6E5E-46BB-ACB7-BB2DF2D3FA38%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung* 8",
+      "id": 631
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7B2A873DC2-08B7-4470-8D24-FD6664E0BF48%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7B2A873DC2-08B7-4470-8D24-FD6664E0BF48%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7B2A873DC2-08B7-4470-8D24-FD6664E0BF48%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7B2A873DC2-08B7-4470-8D24-FD6664E0BF48%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7B2A873DC2-08B7-4470-8D24-FD6664E0BF48%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "LAN-Verbindung* 9",
+      "id": 658
+    },
+    {
+      "data": {
+        "data-uploaded": {
+          "SensorId": "/nic/%7B28A22C62-6E33-4D21-A4B4-66A7676E460C%7D/data/2",
+          "ImageURL": "",
+          "name": "Data Uploaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "data-downloaded": {
+          "SensorId": "/nic/%7B28A22C62-6E33-4D21-A4B4-66A7676E460C%7D/data/3",
+          "ImageURL": "",
+          "name": "Data Downloaded",
+          "data": {
+            "value": 0,
+            "type": "GB",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Data"
+      },
+      "throughput": {
+        "upload-speed": {
+          "SensorId": "/nic/%7B28A22C62-6E33-4D21-A4B4-66A7676E460C%7D/throughput/7",
+          "ImageURL": "",
+          "name": "Upload Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "download-speed": {
+          "SensorId": "/nic/%7B28A22C62-6E33-4D21-A4B4-66A7676E460C%7D/throughput/8",
+          "ImageURL": "",
+          "name": "Download Speed",
+          "data": {
+            "value": 0,
+            "type": "MB/s",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Throughput"
+      },
+      "load": {
+        "network-utilization": {
+          "SensorId": "/nic/%7B28A22C62-6E33-4D21-A4B4-66A7676E460C%7D/load/1",
+          "ImageURL": "",
+          "name": "Network Utilization",
+          "data": {
+            "value": 0,
+            "type": "%",
+            "max": 0,
+            "min": 0
+          }
+        },
+        "name": "Load"
+      },
+      "name": "WLAN",
+      "id": 775
+    }
+  ]
+}

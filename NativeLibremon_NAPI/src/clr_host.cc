@@ -11,6 +11,7 @@ int g_module_marker = 0;
 CLRHost::CLRHost()
 	: m_hostfxrHandle(nullptr)
 	, m_hostContextHandle(nullptr)
+	, m_moduleDirectory()
 	, m_initFptr(nullptr)
 	, m_getDelegateFptr(nullptr)
 	, m_closeFptr(nullptr)
@@ -22,20 +23,36 @@ CLRHost::~CLRHost() {
 }
 
 bool CLRHost::LoadHostFxr() {
-	// Get path to hostfxr.dll
-	wchar_t hostfxrPath[MAX_PATH];
-	if (!GetHostFxrPath(hostfxrPath, MAX_PATH)) {
-		std::wcerr << L"Failed to find hostfxr.dll. Is .NET Runtime installed?" << std::endl;
-		return false;
+	// Attempt to load bundled hostfxr.dll first
+	if (!m_moduleDirectory.empty()) {
+		std::wstring localHostFxr = m_moduleDirectory + L"hostfxr.dll";
+		DWORD attrs = GetFileAttributesW(localHostFxr.c_str());
+		if (attrs != INVALID_FILE_ATTRIBUTES) {
+			m_hostfxrHandle = LoadLibraryW(localHostFxr.c_str());
+			if (!m_hostfxrHandle) {
+				std::wcerr << L"Found bundled hostfxr.dll but failed to load from: " << localHostFxr << std::endl;
+			}
+			else {
+				std::wcout << L"Using bundled hostfxr.dll from: " << localHostFxr << std::endl;
+			}
+		}
 	}
-    
-	// Load hostfxr.dll
-	m_hostfxrHandle = LoadLibraryW(hostfxrPath);
+
 	if (!m_hostfxrHandle) {
-		std::wcerr << L"Failed to load hostfxr.dll from: " << hostfxrPath << std::endl;
-		return false;
+		wchar_t hostfxrPath[MAX_PATH];
+		if (!GetHostFxrPath(hostfxrPath, MAX_PATH)) {
+			std::wcerr << L"Failed to locate hostfxr.dll. Ensure the bundled runtime is present or install the .NET runtime." << std::endl;
+			return false;
+		}
+
+		m_hostfxrHandle = LoadLibraryW(hostfxrPath);
+		if (!m_hostfxrHandle) {
+			std::wcerr << L"Failed to load hostfxr.dll from: " << hostfxrPath << std::endl;
+			return false;
+		}
+		std::wcout << L"Using system hostfxr.dll from: " << hostfxrPath << std::endl;
 	}
-    
+
 	// Get function pointers
 	m_initFptr = (hostfxr_initialize_for_runtime_config_fn)
 		GetProcAddress(m_hostfxrHandle, "hostfxr_initialize_for_runtime_config");
@@ -43,14 +60,14 @@ bool CLRHost::LoadHostFxr() {
 		GetProcAddress(m_hostfxrHandle, "hostfxr_get_runtime_delegate");
 	m_closeFptr = (hostfxr_close_fn)
 		GetProcAddress(m_hostfxrHandle, "hostfxr_close");
-    
+
 	if (!m_initFptr || !m_getDelegateFptr || !m_closeFptr) {
 		std::wcerr << L"Failed to get hostfxr function pointers" << std::endl;
 		FreeLibrary(m_hostfxrHandle);
 		m_hostfxrHandle = nullptr;
 		return false;
 	}
-    
+
 	return true;
 }
 
@@ -71,37 +88,37 @@ bool CLRHost::Initialize() {
 	if (m_hostContextHandle != nullptr) {
 		return true; // Already initialized
 	}
+
+	if (m_moduleDirectory.empty()) {
+		HMODULE hModule = nullptr;
+		if (!GetModuleHandleExW(
+			GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+			(LPCWSTR)&g_module_marker,
+			&hModule)) {
+			std::wcerr << L"Failed to get module handle" << std::endl;
+			return false;
+		}
+
+		wchar_t modulePath[MAX_PATH];
+		DWORD len = GetModuleFileNameW(hModule, modulePath, MAX_PATH);
+		if (len == 0 || len >= MAX_PATH) {
+			std::wcerr << L"Failed to get module path" << std::endl;
+			return false;
+		}
+
+		wchar_t* lastSlash = wcsrchr(modulePath, L'\\');
+		if (lastSlash) {
+			*(lastSlash + 1) = L'\0';
+		}
+		m_moduleDirectory.assign(modulePath);
+	}
     
 	// Load hostfxr
 	if (!LoadHostFxr()) {
 		return false;
 	}
     
-	// Get the path to our .node addon (not node.exe)
-	// We need to use the HMODULE of our DLL
-	HMODULE hModule = nullptr;
-	if (!GetModuleHandleExW(
-		GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-		(LPCWSTR)&g_module_marker,  // Address of global variable in our module
-		&hModule)) {
-		std::wcerr << L"Failed to get module handle" << std::endl;
-		return false;
-	}
-    
-	wchar_t currentPath[MAX_PATH];
-	GetModuleFileNameW(hModule, currentPath, MAX_PATH);
-    
-	// Remove filename to get directory
-	wchar_t* lastSlash = wcsrchr(currentPath, L'\\');
-	if (lastSlash) {
-		*(lastSlash + 1) = L'\0';
-	}
-    
-	// Build path to LibreHardwareMonitorBridge.dll
-	wchar_t bridgeDllPath[MAX_PATH];
-	wcscpy_s(bridgeDllPath, MAX_PATH, currentPath);
-	wcscat_s(bridgeDllPath, MAX_PATH, L"LibreHardwareMonitorBridge.dll");
-    
+	std::wstring bridgeDllPath = m_moduleDirectory + L"LibreHardwareMonitorBridge.dll";
 	std::wcout << L"Initializing .NET self-contained runtime for: " << bridgeDllPath << std::endl;
     
 	// For self-contained, we DON'T use runtimeconfig.json approach
@@ -117,19 +134,19 @@ bool CLRHost::Initialize() {
     
 	// For self-contained libraries: argv[0] = dll path, no other args
 	// The hostfxr will find the runtime DLLs in the same directory
-	const wchar_t* argv[] = { bridgeDllPath };
+	const wchar_t* argv[] = { bridgeDllPath.c_str() };
     
 	hostfxr_initialize_parameters params = {};
 	params.size = sizeof(hostfxr_initialize_parameters);
-	params.host_path = bridgeDllPath;
-	params.dotnet_root = currentPath;
+	params.host_path = bridgeDllPath.c_str();
+	params.dotnet_root = m_moduleDirectory.c_str();
     
 	// Initialize with command-line approach (supports self-contained)
 	int rc = initCmdLineFptr(1, argv, &params, &m_hostContextHandle);
     
 	if (rc != 0 || m_hostContextHandle == nullptr) {
 		std::wcerr << L"Failed to initialize .NET runtime. Error code: 0x" << std::hex << rc << std::dec << std::endl;
-		std::wcerr << L"Make sure all .NET runtime DLLs are present in: " << currentPath << std::endl;
+		std::wcerr << L"Make sure all .NET runtime DLLs are present in: " << m_moduleDirectory << std::endl;
 		return false;
 	}
     

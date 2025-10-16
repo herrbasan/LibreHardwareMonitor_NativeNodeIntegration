@@ -65,6 +65,7 @@ public:
 private:
 	HMODULE m_hostfxrHandle;
 	void* m_hostContextHandle;
+	std::wstring m_moduleDirectory;
     
 	hostfxr_initialize_for_runtime_config_fn m_initFptr;
 	hostfxr_get_runtime_delegate_fn m_getDelegateFptr;

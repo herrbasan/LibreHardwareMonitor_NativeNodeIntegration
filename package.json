@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "description": "Standalone CLI for LibreHardwareMonitor - outputs hardware sensor data as JSON",
   "scripts": {
-    "build": "npm run build:lhm && npm run build:cli",
-    "build:lhm": "node scripts/build-lhm.js",
-    "build:cli": "dotnet publish managed/LibreMonCLI/LibreMonCLI.csproj -c Release -o dist",
-    "clean": "rimraf deps/LibreHardwareMonitor && rimraf managed/*/bin managed/*/obj && rimraf dist",
+  "build": "npm run build:lhm && npm run build:cli",
+  "build:lhm": "node scripts/build-lhm.js",
+  "build:cli": "dotnet publish NativeLibremon_CLI/LibreMonCLI.csproj -c Release -o dist",
+  "build:napi": "(cd NativeLibremon_NAPI && npm install && node-gyp rebuild)",
+  "clean": "rimraf deps/LibreHardwareMonitor && rimraf NativeLibremon_CLI/**/bin NativeLibremon_CLI/**/obj && rimraf dist",
     "rebuild": "npm run clean && npm run build",
-    "test": "node test/compare-web-vs-native.js"
+    "test": "node test/compare-web-vs-native.js",
+    "dist:split": "node scripts/split-dist.js",
+    "dist:prune-napi": "node scripts/prune-dist-napi.js"
   },
   "keywords": [
     "hardware",

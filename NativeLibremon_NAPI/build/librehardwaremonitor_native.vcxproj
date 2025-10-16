@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C4B5ACD8-601B-895A-1F8B-031703270208}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>librehardwaremonitor_native</RootNamespace>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Locals">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props"/>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\bin\;$(MSBuildProjectDirectory)\..\bin\</ExecutablePath>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.node</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.node</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.node</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.node</TargetExt>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetPath>$(OutDir)\$(ProjectName).node</TargetPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\include\node;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\src;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\config;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\openssl\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\uv\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\zlib;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\v8\include;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\node_modules\node-addon-api;..\src;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.9\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.10\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.8\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus -std:c++20 /Zm2000 /std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=librehardwaremonitor_native;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;_FILE_OFFSET_BITS=64;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;UNICODE;_UNICODE;WIN32_LEAN_AND_MEAN;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <StringPooling>true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\dave\\AppData\\Local\\node-gyp\\Cache\\24.5.0\\x64\\node.lib&quot;;nethost.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native;C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.10/runtimes/win-x64/native;C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.8/runtimes/win-x64/native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)$(ProjectName).node</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetExt>.node</TargetExt>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\include\node;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\src;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\config;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\openssl\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\uv\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\zlib;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\v8\include;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\node_modules\node-addon-api;..\src;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.9\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.10\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.8\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=librehardwaremonitor_native;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;_FILE_OFFSET_BITS=64;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;UNICODE;_UNICODE;WIN32_LEAN_AND_MEAN;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\include\node;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\src;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\config;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\openssl\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\uv\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\zlib;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\v8\include;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\node_modules\node-addon-api;..\src;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.9\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.10\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.8\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus -std:c++20 /Zm2000 /std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OmitFramePointers>true</OmitFramePointers>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=librehardwaremonitor_native;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;_FILE_OFFSET_BITS=64;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;UNICODE;_UNICODE;WIN32_LEAN_AND_MEAN;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\dave\\AppData\\Local\\node-gyp\\Cache\\24.5.0\\x64\\node.lib&quot;;nethost.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native;C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.10/runtimes/win-x64/native;C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.8/runtimes/win-x64/native;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)$(ProjectName).node</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetExt>.node</TargetExt>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\include\node;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\src;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\config;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\openssl\openssl\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\uv\include;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\zlib;C:\Users\dave\AppData\Local\node-gyp\Cache\24.5.0\deps\v8\include;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\node_modules\node-addon-api;..\src;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.9\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.10\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.8\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\9.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.0\runtimes\win-x64\native;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=librehardwaremonitor_native;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;_FILE_OFFSET_BITS=64;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;UNICODE;_UNICODE;WIN32_LEAN_AND_MEAN;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\binding.gyp"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\addon.cc">
+      <ObjectFileName>$(IntDir)\src\addon.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\clr_host.cc">
+      <ObjectFileName>$(IntDir)\src\clr_host.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\hardware_monitor.cc">
+      <ObjectFileName>$(IntDir)\src\hardware_monitor.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\src\json_builder.cc">
+      <ObjectFileName>$(IntDir)\src\json_builder.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dave\AppData\Roaming\npm\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorLib.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorLib.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\LibreHardwareMonitorBridge.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\LibreHardwareMonitorBridge.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorBridge.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/LibreHardwareMonitorBridge.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorBridge.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.Management.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.Management.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.Management.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/System.Management.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.Management.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.IO.Ports.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.IO.Ports.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.IO.Ports.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/System.IO.Ports.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.IO.Ports.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.Threading.AccessControl.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.Threading.AccessControl.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.Threading.AccessControl.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/System.Threading.AccessControl.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.Threading.AccessControl.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.CodeDom.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\System.CodeDom.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.CodeDom.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/System.CodeDom.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\System.CodeDom.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\RAMSPDToolkit-NDD.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\RAMSPDToolkit-NDD.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\RAMSPDToolkit-NDD.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/RAMSPDToolkit-NDD.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\RAMSPDToolkit-NDD.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\HidSharp.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\HidSharp.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\HidSharp.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/HidSharp.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\HidSharp.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\hostfxr.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\hostfxr.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\hostfxr.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/hostfxr.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\hostfxr.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\LibreHardwareMonitorBridge.deps.json">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\LibreHardwareMonitorBridge.deps.json&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorBridge.deps.json&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/LibreHardwareMonitorBridge.deps.json to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorBridge.deps.json</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\LibreHardwareMonitorBridge.runtimeconfig.json">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\LibreHardwareMonitorBridge.runtimeconfig.json&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorBridge.runtimeconfig.json&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/LibreHardwareMonitorBridge.runtimeconfig.json to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\LibreHardwareMonitorBridge.runtimeconfig.json</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\hostpolicy.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\hostpolicy.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\hostpolicy.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/hostpolicy.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\hostpolicy.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\coreclr.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\coreclr.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\coreclr.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/coreclr.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\coreclr.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\clrjit.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\clrjit.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\clrjit.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/clrjit.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\clrjit.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\mscordbi.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\mscordbi.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\mscordbi.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/mscordbi.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\mscordbi.dll</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\mscordaccore.dll">
+      <FileType>Document</FileType>
+      <Command>call mkdir &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release&quot; 2&gt;nul &amp; set ERRORLEVEL=0 &amp; copy /Y &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish\mscordaccore.dll&quot; &quot;D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\mscordaccore.dll&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Copying D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI/../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish/mscordaccore.dll to D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release</Message>
+      <Outputs>D:\Work\_GIT\LibreHardwareMonitor_NativeNodeIntegration\NativeLibremon_NAPI\build\Release\mscordaccore.dll</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="node_modules\node-addon-api\nothing.vcxproj">
+      <Project>{7B16C356-7E7F-1F85-E286-AA58B87E1342}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+</Project>

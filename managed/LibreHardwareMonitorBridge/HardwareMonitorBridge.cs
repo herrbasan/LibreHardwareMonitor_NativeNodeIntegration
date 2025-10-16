@@ -73,6 +73,7 @@ namespace LibreHardwareMonitorNative
                     IsBatteryEnabled = battery
                 };
                 
+                Console.WriteLine($"DEBUG: Opening computer with storage enabled: {instance._computer.IsStorageEnabled}");
                 instance._computer.Open();
                 
                 // Debug: Log detected hardware
@@ -80,6 +81,10 @@ namespace LibreHardwareMonitorNative
                 foreach (var hw in instance._computer.Hardware)
                 {
                     Console.WriteLine($"  - {hw.HardwareType}: {hw.Name} ({hw.SubHardware.Count()} sub-hardware)");
+                    if (hw.HardwareType == LibreHardwareMonitor.Hardware.HardwareType.Storage)
+                    {
+                        Console.WriteLine($"DEBUG: STORAGE HARDWARE FOUND: {hw.Name}");
+                    }
                 }
                 
                 return 0; // Success

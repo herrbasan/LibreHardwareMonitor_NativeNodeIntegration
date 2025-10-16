@@ -1,10 +1,34 @@
 #include <napi.h>
 #include "clr_host.h"
 #include "hardware_monitor.h"
+#include <string>
+#include <algorithm>
 
 // Global instances
 static CLRHost* g_clrHost = nullptr;
 static HardwareMonitor* g_hardwareMonitor = nullptr;
+
+static bool getBoolOrDefault(Napi::Env env, const Napi::Object& obj, const char* key, bool defVal) {
+  if (!obj.Has(key)) return defVal;
+  Napi::Value v = obj.Get(key);
+  if (v.IsBoolean()) return v.As<Napi::Boolean>().Value();
+  if (v.IsNumber()) return v.As<Napi::Number>().Int64Value() != 0;
+  if (v.IsNull() || v.IsUndefined()) return defVal;
+  if (v.IsString()) {
+    std::string s = v.As<Napi::String>().Utf8Value();
+    // trim
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch){ return !std::isspace(ch); }));
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch){ return !std::isspace(ch); }).base(), s.end());
+    std::string sl = s;
+    std::transform(sl.begin(), sl.end(), sl.begin(), [](unsigned char c){ return (char)std::tolower(c); });
+    if (sl == "false" || sl == "0" || sl == "off" || sl == "no" || sl == "") return false;
+    if (sl == "true" || sl == "1" || sl == "on" || sl == "yes") return true;
+    // Fallback to JS ToBoolean semantics
+    return v.ToBoolean().Value();
+  }
+  // Fallback
+  return v.ToBoolean().Value();
+}
 
 Napi::Value Init(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
@@ -26,15 +50,20 @@ Napi::Value Init(const Napi::CallbackInfo& info) {
     Napi::Object config = info[0].As<Napi::Object>();
 
     HardwareConfig hwConfig;
-    hwConfig.cpu = config.Get("cpu").ToBoolean().Value();
-    hwConfig.gpu = config.Get("gpu").ToBoolean().Value();
-    hwConfig.motherboard = config.Get("motherboard").ToBoolean().Value();
-    hwConfig.memory = config.Get("memory").ToBoolean().Value();
-    hwConfig.storage = config.Get("storage").ToBoolean().Value();
-    hwConfig.network = config.Get("network").ToBoolean().Value();
-    hwConfig.psu = config.Get("psu").ToBoolean().Value();
-    hwConfig.controller = config.Get("controller").ToBoolean().Value();
-    hwConfig.battery = config.Get("battery").ToBoolean().Value();
+    hwConfig.cpu = getBoolOrDefault(env, config, "cpu", false);
+    hwConfig.gpu = getBoolOrDefault(env, config, "gpu", false);
+    hwConfig.motherboard = getBoolOrDefault(env, config, "motherboard", false);
+    hwConfig.memory = getBoolOrDefault(env, config, "memory", false);
+    hwConfig.storage = getBoolOrDefault(env, config, "storage", false);
+    hwConfig.network = getBoolOrDefault(env, config, "network", false);
+    hwConfig.psu = getBoolOrDefault(env, config, "psu", false);
+    hwConfig.controller = getBoolOrDefault(env, config, "controller", false);
+    hwConfig.battery = getBoolOrDefault(env, config, "battery", false);
+
+    // Debug: print resolved flags to stderr
+    fprintf(stderr,
+      "[NAPI] init flags: cpu=%d gpu=%d motherboard=%d memory=%d storage=%d network=%d psu=%d controller=%d battery=%d\n",
+      hwConfig.cpu, hwConfig.gpu, hwConfig.motherboard, hwConfig.memory, hwConfig.storage, hwConfig.network, hwConfig.psu, hwConfig.controller, hwConfig.battery);
 
     if (g_clrHost == nullptr) {
       g_clrHost = new CLRHost();

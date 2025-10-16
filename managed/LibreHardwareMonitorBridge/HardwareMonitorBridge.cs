@@ -115,10 +115,24 @@ namespace LibreHardwareMonitorNative
                 {
                     return IntPtr.Zero;
                 }
+
+                // Debug: summarize hardware before update
+                try
+                {
+                    int total = instance._computer.Hardware.Count();
+                    int storageCount = instance._computer.Hardware.Count(h => h.HardwareType == HardwareType.Storage);
+                    Console.WriteLine($"DEBUG: Poll start. storageEnabled={_storageEnabled}, hardwareCount={total}, storageHardware={storageCount}");
+                }
+                catch { /* best-effort logging */ }
                 
                 // Update all hardware sensors (recursively)
                 foreach (var hardware in instance._computer.Hardware)
                 {
+                    if (ShouldSkipHardware(hardware))
+                    {
+                        try { Console.WriteLine($"DEBUG: Skipping update for hardware {hardware.Name} ({hardware.HardwareType})"); } catch { }
+                        continue;
+                    }
                     UpdateHardwareRecursive(hardware);
                 }
                 
@@ -182,6 +196,7 @@ namespace LibreHardwareMonitorNative
         {
             if (ShouldSkipHardware(hardware))
             {
+                try { Console.WriteLine($"DEBUG: Skipping recursive update for {hardware.Name} ({hardware.HardwareType})"); } catch { }
                 return;
             }
 
@@ -231,6 +246,7 @@ namespace LibreHardwareMonitorNative
             {
                 if (ShouldSkipHardware(hardware))
                 {
+                    try { Console.WriteLine($"DEBUG: Skipping emit for hardware {hardware.Name} ({hardware.HardwareType})"); } catch { }
                     continue;
                 }
 

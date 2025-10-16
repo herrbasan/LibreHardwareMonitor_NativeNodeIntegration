@@ -501,7 +501,7 @@
     "globalconfig": "C:\\Users\\dave\\AppData\\Roaming\\npm\\etc\\npmrc",
     "global_prefix": "C:\\Users\\dave\\AppData\\Roaming\\npm",
     "init_module": "C:\\Users\\dave\\.npm-init.js",
-    "local_prefix": "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_NAPI",
+    "local_prefix": "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration",
     "node_gyp": "C:\\Users\\dave\\AppData\\Roaming\\npm\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
     "npm_version": "11.4.1",
     "prefix": "C:\\Users\\dave\\AppData\\Roaming\\npm",

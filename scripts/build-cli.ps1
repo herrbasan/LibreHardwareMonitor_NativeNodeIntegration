@@ -14,7 +14,7 @@ $RootDir = Split-Path -Parent $PSScriptRoot
 $LHMSourceDir = Join-Path $RootDir "deps\LibreHardwareMonitor-src\LibreHardwareMonitorLib"
 $LHMOutputDir = Join-Path $RootDir "deps\LibreHardwareMonitor"
 $CLIProjectDir = Join-Path $RootDir "managed\LibreMonCLI"
-$DistDir = Join-Path $RootDir "dist"
+$DistDir = Join-Path $RootDir "dist\NativeLibre_CLI"
 
 Write-Host "==================================" -ForegroundColor Cyan
 Write-Host "LibreMonCLI Build Script" -ForegroundColor Cyan
@@ -129,7 +129,7 @@ if (-not (Test-Path $CLIProjectDir)) {
     exit 1
 }
 
-# Create dist directory
+# Create dist directory (scoped subfolder)
 if (-not (Test-Path $DistDir)) {
     New-Item -ItemType Directory -Path $DistDir -Force | Out-Null
 }

@@ -42,12 +42,10 @@ Migration note: This restructure duplicates original source into the new folders
 **How to run with admin:**
 ```powershell
 # PowerShell - Right-click and "Run as Administrator"
-.\dist\LibreMonCLI.exe --daemon
-.\dist\NativeLibremon_CLI\LibreMonCLI.exe --daemon
+.\dist\NativeLibre_CLI\LibreMonCLI.exe --daemon
 # Or from Node.js with elevation check
 const { spawn } = require('child_process');
-const daemon = spawn('dist/LibreMonCLI.exe', ['--daemon']);
-const daemon = spawn('dist/NativeLibremon_CLI/LibreMonCLI.exe', ['--daemon']);
+const daemon = spawn('dist/NativeLibre_CLI/LibreMonCLI.exe', ['--daemon']);
 
 See [Hardware Support Documentation](HARDWARE_SUPPORT.md) for detailed category requirements.
 
@@ -97,7 +95,7 @@ This shows CPU temps, GPU stats, motherboard sensors, memory, network, and stora
 const { spawn } = require('child_process');
 
 // Spawn daemon once
-const daemon = spawn('dist/LibreMonCLI.exe', ['--daemon']);
+const daemon = spawn('dist/NativeLibre_CLI/LibreMonCLI.exe', ['--daemon']);
 
 // Initialize hardware monitoring
 daemon.stdin.write(JSON.stringify({
@@ -131,15 +129,15 @@ process.on('exit', () => {
 
 ## Dist layout
 
-The repository separates built distributions for the two delivery formats:
+Run the PowerShell helpers in `scripts/` to populate the distribution folders:
 
-- `dist/NativeLibremon_CLI` — full self-contained CLI publish (LibreMonCLI.exe + runtime)
-- `dist/NativeLibremon_NAPI` — minimal N-API runtime (native `.node`, managed bridge DLLs, and required native runtime DLLs)
+- `scripts/build-cli.ps1` builds the NativeAOT daemon and writes the signed binaries to `dist/NativeLibre_CLI`.
+- `scripts/build-napi.ps1` rebuilds the native addon, copies the publish output to `dist/NativeLibremon_NAPI`, and drops a ready-to-require `index.js` entry point. Pass `-Prune` to strip build artifacts (IPDB, IOBJ, etc.).
 
-Use the scripts in `scripts/` to split an existing `dist/` into these folders and to prune intermediate build artifacts:
+The resulting directories contain everything needed to consume each variant:
 
-- `node scripts/split-dist.js` — move existing `dist/` files into `dist/NativeLibremon_CLI` and copy `NativeLibremon_NAPI/build/Release` into `dist/NativeLibremon_NAPI`.
-- `node scripts/prune-dist-napi.js` — remove build intermediate files from `dist/NativeLibremon_NAPI`.
+- `dist/NativeLibre_CLI/LibreMonCLI.exe` — self-contained CLI daemon.
+- `dist/NativeLibremon_NAPI/` — `.node` binary, bridge DLLs, runtime dependencies, and JS entrypoint for direct `require()` usage.
 
 
 ## 🏗️ Architecture
@@ -188,25 +186,28 @@ Hardware (drivers, SMBus, MSRs, WMI)
 ## 📁 Project Structure
 
 ```
-LibreMonCLI/
+repo root
 ├── dist/
-│   └── LibreMonCLI.exe              # Self-contained executable (6.4 MB)
-├── managed/LibreMonCLI/             # C# daemon source code
+│   ├── NativeLibre_CLI/             # NativeAOT daemon publish (LibreMonCLI.exe)
+│   └── NativeLibremon_NAPI/         # N-API addon bundle (node module + deps)
+├── managed/LibreMonCLI/             # Primary CLI project + Node wrapper (`lib/`)
 │   ├── Program.cs                   # Entry point + daemon loop
-│   ├── CommandHandler.cs            # Command routing
-│   ├── HardwareMonitor.cs           # LibreHardwareMonitor wrapper
-│   ├── DataFlattener.cs             # Optional flat output mode
-│   └── Models/                      # JSON request/response models
+│   ├── CommandHandler.cs            # JSON-RPC command routing
+│   ├── HardwareMonitor.cs           # LibreHardwareMonitor integration
+│   ├── DataFlattener.cs             # Flat output transformation
+│   └── lib/                         # Node.js client (`require('./managed/LibreMonCLI/lib')`)
+├── NativeLibremon_NAPI/             # Native addon sources (bridge + node-gyp)
 ├── deps/
-│   ├── LibreHardwareMonitor-src/    # Git submodule (source)
-│   └── LibreHardwareMonitor/        # Compiled DLLs
+│   ├── LibreHardwareMonitor-src/    # Git submodule (upstream source)
+│   └── LibreHardwareMonitor/        # Built DLLs consumed by both variants
 ├── scripts/
-│   └── build-cli.ps1                # Build automation
-├── test/
-│   └── simple-storage-test.js       # Integration tests
-├── HARDWARE_SUPPORT.md              # Detailed hardware compatibility
-└── README.md                        # This file
+│   ├── build-cli.ps1                # Builds CLI into dist/NativeLibre_CLI
+│   └── build-napi.ps1               # Builds addon into dist/NativeLibremon_NAPI
+├── archive/                         # Legacy docs, tests, and helper scripts
+└── README.md                        # You are here
 ```
+
+> **Note**: All legacy documentation (e.g., detailed hardware support matrices, migration notes, and historical tests) now lives under `archive/` for reference.
 
 ## 🔧 Building from Source
 
@@ -220,7 +221,7 @@ cd LibreHardwareMonitor_NativeNodeIntegration
 # Build everything (LibreHardwareMonitor + CLI)
 .\scripts\build-cli.ps1
 
-# Output: dist/LibreMonCLI.exe (6.4 MB)
+# Output: dist/NativeLibre_CLI/LibreMonCLI.exe (6.4 MB)
 ```
 
 ### Build Options
@@ -238,7 +239,7 @@ cd LibreHardwareMonitor_NativeNodeIntegration
 
 ### Build Output
 
-- **Binary**: `dist/LibreMonCLI.exe` (6.4 MB with NativeAOT)
+- **Binary**: `dist/NativeLibre_CLI/LibreMonCLI.exe` (6.4 MB with NativeAOT)
 - **Dependencies**: Self-contained (no .NET runtime required)
 - **Build time**: ~10-15 seconds (incremental)
 

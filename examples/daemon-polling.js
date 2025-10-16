@@ -4,7 +4,7 @@
  * This demonstrates the persistent daemon approach with 1-second polling interval
  */
 
-const { LibreMonClient } = require('../lib');
+const { LibreMonClient } = require('../managed/LibreMonCLI/lib');
 
 async function main() {
   const client = new LibreMonClient();

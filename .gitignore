@@ -52,5 +52,3 @@ tmp/
 temp/
 *.tmp
 
-# CLI distribution builds
-dist/

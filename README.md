@@ -8,6 +8,18 @@ High-performance Windows hardware monitoring daemon with JSON-RPC interface for 
 
 A standalone .NET daemon that provides real-time hardware sensor data through a simple stdin/stdout JSON protocol. Designed for ultra-low-latency, high-frequency polling in Electron apps and Node.js processes.
 
+## ⚖️ Project Variants
+
+This repository now hosts two maintained, side-by-side variants that share logic where possible:
+
+- `NativeLibremon_CLI/` - The CLI/.NET daemon variant (originally in `managed/LibreMonCLI`).
+- `NativeLibremon_NAPI/` - The N-API native addon variant (originally in `archive/napi-approach`).
+
+Each variant lives in its own root folder. Shared scripts and reference code remain at the repository root (for example `scripts/`). See each folder's README for variant-specific build instructions.
+
+Migration note: This restructure duplicates original source into the new folders as placeholders. Replace placeholder files with the originals from `managed/LibreMonCLI` and `archive/napi-approach` where full fidelity is required.
+
+
 **Why use this instead of spawning LibreHardwareMonitor.exe?**
 - **50-100x faster**: 2-5ms poll time vs 100-500ms process spawn
 - **Small footprint**: 6.4MB binary (NativeAOT), ~15MB memory
@@ -31,28 +43,25 @@ A standalone .NET daemon that provides real-time hardware sensor data through a 
 ```powershell
 # PowerShell - Right-click and "Run as Administrator"
 .\dist\LibreMonCLI.exe --daemon
-
+.\dist\NativeLibremon_CLI\LibreMonCLI.exe --daemon
 # Or from Node.js with elevation check
 const { spawn } = require('child_process');
 const daemon = spawn('dist/LibreMonCLI.exe', ['--daemon']);
-```
+const daemon = spawn('dist/NativeLibremon_CLI/LibreMonCLI.exe', ['--daemon']);
 
 See [Hardware Support Documentation](HARDWARE_SUPPORT.md) for detailed category requirements.
 
 ## 📋 Prerequisites
 
-### System Requirements
-
 - **Operating System**: Windows 10/11 (64-bit)
 - **Administrator Privileges**: Required for hardware access
-- **No runtime dependencies**: Self-contained executable (no .NET installation needed)
 
 ### Build Requirements (Only for building from source)
 
 - **.NET SDK 9.0** ([Download](https://dotnet.microsoft.com/download/dotnet/9.0))
 - **Windows SDK**: For native compilation
 
-## 🚀 Quick Start
+LibreMonCLI.exe
 
 ### Download Pre-built Binary
 
@@ -77,7 +86,7 @@ Run the executable without arguments to see all your hardware sensors:
 # ============
 # {"success":true,"timestamp":...,"data":{...full sensor tree...}}
 # 
-# Press Enter to exit...
+├── managed/NativeLibremon_CLI/      # C# daemon source code
 ```
 
 This shows CPU temps, GPU stats, motherboard sensors, memory, network, and storage info in one shot.
@@ -119,6 +128,19 @@ process.on('exit', () => {
   daemon.stdin.write(JSON.stringify({ cmd: 'shutdown' }) + '\n');
 });
 ```
+
+## Dist layout
+
+The repository separates built distributions for the two delivery formats:
+
+- `dist/NativeLibremon_CLI` — full self-contained CLI publish (LibreMonCLI.exe + runtime)
+- `dist/NativeLibremon_NAPI` — minimal N-API runtime (native `.node`, managed bridge DLLs, and required native runtime DLLs)
+
+Use the scripts in `scripts/` to split an existing `dist/` into these folders and to prune intermediate build artifacts:
+
+- `node scripts/split-dist.js` — move existing `dist/` files into `dist/NativeLibremon_CLI` and copy `NativeLibremon_NAPI/build/Release` into `dist/NativeLibremon_NAPI`.
+- `node scripts/prune-dist-napi.js` — remove build intermediate files from `dist/NativeLibremon_NAPI`.
+
 
 ## 🏗️ Architecture
 

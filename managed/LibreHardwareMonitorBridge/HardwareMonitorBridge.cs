@@ -1,6 +1,8 @@
 using System;
-using System.Text.Json;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using LibreHardwareMonitor.Hardware;
 
 namespace LibreHardwareMonitorNative
@@ -12,6 +14,8 @@ namespace LibreHardwareMonitorNative
     public class HardwareMonitorBridge
     {
         private Computer? _computer;
+        // Track storage flag to avoid polling HDD sensors when excluded
+        private static bool _storageEnabled;
         
         // Delegate types for native interop - MUST use Cdecl calling convention to match C++
         // Use I1 (1-byte bool) to match C++ bool size
@@ -53,6 +57,7 @@ namespace LibreHardwareMonitorNative
             try
             {
                 var instance = Instance;
+                _storageEnabled = storage;
                 
                 // Debug: Log the config being passed
                 Console.WriteLine("=== LibreHardwareMonitor Initialization ===");
@@ -159,6 +164,8 @@ namespace LibreHardwareMonitorNative
                     instance._computer.Close();
                     instance._computer = null;
                 }
+
+                _storageEnabled = false;
             }
             catch (Exception ex)
             {
@@ -173,6 +180,11 @@ namespace LibreHardwareMonitorNative
         // Helper method to recursively update hardware and sub-hardware
         private static void UpdateHardwareRecursive(IHardware hardware)
         {
+            if (ShouldSkipHardware(hardware))
+            {
+                return;
+            }
+
             hardware.Update();
             foreach (var subHardware in hardware.SubHardware)
             {
@@ -217,6 +229,11 @@ namespace LibreHardwareMonitorNative
             
             foreach (var hardware in hardwareList)
             {
+                if (ShouldSkipHardware(hardware))
+                {
+                    continue;
+                }
+
                 var hwNode = new
                 {
                     id = id++,
@@ -235,6 +252,11 @@ namespace LibreHardwareMonitorNative
             }
             
             return nodes;
+        }
+
+        private static bool ShouldSkipHardware(IHardware hardware)
+        {
+            return !_storageEnabled && hardware.HardwareType == HardwareType.Storage;
         }
         
         private static List<object> BuildSensorNodes(IEnumerable<ISensor> sensors, ref int id)

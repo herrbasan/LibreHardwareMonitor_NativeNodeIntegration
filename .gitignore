@@ -26,6 +26,12 @@ x64/
 x86/
 *.tlog/
 
+# node-gyp build artifacts
+**/build/*.sln
+**/build/*.vcxproj
+**/build/*.vcxproj.filters
+**/build/config.gypi
+
 # IDE
 .vscode/
 .idea/

@@ -59,12 +59,6 @@ namespace LibreHardwareMonitorNative
                 var instance = Instance;
                 _storageEnabled = storage;
                 
-                // Debug: Log the config being passed
-                Console.WriteLine("=== LibreHardwareMonitor Initialization ===");
-                Console.WriteLine($"CPU: {cpu}, GPU: {gpu}, Motherboard: {motherboard}");
-                Console.WriteLine($"Memory: {memory}, Storage: {storage}, Network: {network}");
-                Console.WriteLine($"PSU: {psu}, Controller: {controller}, Battery: {battery}");
-                
                 instance._computer = new Computer
                 {
                     IsCpuEnabled = cpu,
@@ -78,19 +72,7 @@ namespace LibreHardwareMonitorNative
                     IsBatteryEnabled = battery
                 };
                 
-                Console.WriteLine($"DEBUG: Opening computer with storage enabled: {instance._computer.IsStorageEnabled}");
                 instance._computer.Open();
-                
-                // Debug: Log detected hardware
-                Console.WriteLine($"Hardware detection complete. Found {instance._computer.Hardware.Count()} hardware items:");
-                foreach (var hw in instance._computer.Hardware)
-                {
-                    Console.WriteLine($"  - {hw.HardwareType}: {hw.Name} ({hw.SubHardware.Count()} sub-hardware)");
-                    if (hw.HardwareType == LibreHardwareMonitor.Hardware.HardwareType.Storage)
-                    {
-                        Console.WriteLine($"DEBUG: STORAGE HARDWARE FOUND: {hw.Name}");
-                    }
-                }
                 
                 return 0; // Success
             }
@@ -115,22 +97,12 @@ namespace LibreHardwareMonitorNative
                 {
                     return IntPtr.Zero;
                 }
-
-                // Debug: summarize hardware before update
-                try
-                {
-                    int total = instance._computer.Hardware.Count();
-                    int storageCount = instance._computer.Hardware.Count(h => h.HardwareType == HardwareType.Storage);
-                    Console.WriteLine($"DEBUG: Poll start. storageEnabled={_storageEnabled}, hardwareCount={total}, storageHardware={storageCount}");
-                }
-                catch { /* best-effort logging */ }
                 
                 // Update all hardware sensors (recursively)
                 foreach (var hardware in instance._computer.Hardware)
                 {
                     if (ShouldSkipHardware(hardware))
                     {
-                        try { Console.WriteLine($"DEBUG: Skipping update for hardware {hardware.Name} ({hardware.HardwareType})"); } catch { }
                         continue;
                     }
                     UpdateHardwareRecursive(hardware);
@@ -196,7 +168,6 @@ namespace LibreHardwareMonitorNative
         {
             if (ShouldSkipHardware(hardware))
             {
-                try { Console.WriteLine($"DEBUG: Skipping recursive update for {hardware.Name} ({hardware.HardwareType})"); } catch { }
                 return;
             }
 
@@ -246,7 +217,6 @@ namespace LibreHardwareMonitorNative
             {
                 if (ShouldSkipHardware(hardware))
                 {
-                    try { Console.WriteLine($"DEBUG: Skipping emit for hardware {hardware.Name} ({hardware.HardwareType})"); } catch { }
                     continue;
                 }
 

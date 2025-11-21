@@ -29,7 +29,8 @@ namespace LibreHardwareMonitorNative
             [MarshalAs(UnmanagedType.I1)] bool network,
             [MarshalAs(UnmanagedType.I1)] bool psu,
             [MarshalAs(UnmanagedType.I1)] bool controller,
-            [MarshalAs(UnmanagedType.I1)] bool battery);
+            [MarshalAs(UnmanagedType.I1)] bool battery,
+            [MarshalAs(UnmanagedType.I1)] bool dimmDetection);
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate IntPtr PollDelegate();
@@ -52,7 +53,8 @@ namespace LibreHardwareMonitorNative
             bool network,
             bool psu,
             bool controller,
-            bool battery)
+            bool battery,
+            bool dimmDetection)
         {
             try
             {
@@ -65,6 +67,7 @@ namespace LibreHardwareMonitorNative
                     IsGpuEnabled = gpu,
                     IsMotherboardEnabled = motherboard,
                     IsMemoryEnabled = memory,
+                    IsDimmDetectionEnabled = dimmDetection,
                     IsStorageEnabled = storage,
                     IsNetworkEnabled = network,
                     IsPsuEnabled = psu,

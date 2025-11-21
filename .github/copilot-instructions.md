@@ -283,6 +283,11 @@ Without admin:
 - Cause: Bridge didn't copy dependency
 - Fix: Add to `binding.gyp` copy list, rebuild
 
+**`too many arguments for call` when adding new C# parameter**
+- Cause: C++ function pointer typedef doesn't match new signature
+- Fix: Update typedef in `hardware_monitor.h` to include new parameter
+- Example: When adding `dimmDetection` parameter, update `LHM_InitializeFn` typedef from 9 to 10 parameters
+
 ### Runtime Errors
 
 **`The specified module could not be found`**
@@ -297,12 +302,92 @@ Without admin:
 - Cause: GPU detection requires CPU/Motherboard initialization
 - Fix: `monitor.init({ cpu: true, gpu: true, motherboard: true })`
 
+### DLL Synchronization Issues
+
+**Changes to C# code not reflected after N-API rebuild**
+- **Critical**: `node-gyp rebuild` only rebuilds C++ addon, NOT managed assemblies
+- **Root Cause**: N-API build script assumes DLLs in `deps/` and bridge publish folder are current
+- **Symptoms**: 
+  - New C# features don't work despite successful build
+  - Different MD5 hashes between `deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll` and `dist/NativeLibremon_NAPI/LibreHardwareMonitorLib.dll`
+  - Runtime behavior doesn't match code changes
+- **Fix**: Always rebuild in correct order:
+  1. `dotnet build` LibreHardwareMonitorLib project
+  2. `Copy-Item` built DLL to `deps/LibreHardwareMonitor/`
+  3. `dotnet publish` LibreHardwareMonitorBridge (references updated DLL)
+  4. `.\scripts\build-napi.ps1` (copies all DLLs to dist)
+- **Verification**: Compare DLL hashes: `Get-FileHash -Algorithm MD5 <path>`
+- **Lesson**: When debugging "feature not working", verify DLL timestamps/hashes FIRST before investigating code logic
+
 ## Performance
 
 - **Poll latency**: 50-150ms (depends on enabled categories)
 - **Memory**: ~50MB (includes .NET runtime)
 - **CPU overhead**: <1% during 1Hz polling
 - **Async**: Non-blocking, event loop stays responsive
+
+## DIMM Detection Feature
+
+### Overview
+
+The `dimmDetection` parameter (added November 2025) allows disabling expensive per-DIMM SPD sensor detection while keeping basic Virtual Memory and Total Memory sensors.
+
+### Implementation Chain
+
+1. **JavaScript** (`lib/index.js`): Parse `dimmDetection` from config (default: false)
+2. **C++ N-API** (`hardware_monitor.cc`): Pass to `HardwareConfig.dimmDetection` → managed bridge
+3. **Bridge** (`HardwareMonitorBridge.cs`): Pass to `Computer.IsDimmDetectionEnabled` property
+4. **LibreHardwareMonitor** (`Computer.cs` line 533): Pass to `MemoryGroup` constructor
+5. **MemoryGroup** (`MemoryGroup.cs` lines 40-42): Early return if disabled, skipping RAMSPDToolkit initialization
+
+### Behavior
+
+**`dimmDetection: false` (default)**
+- Shows: Virtual Memory + Total Memory only (2 items)
+- Sensors: ~3 per item (Load, Used, Available)
+- Poll time: Fast (~50-100ms)
+- No driver loading required
+
+**`dimmDetection: true`**
+- Shows: Virtual Memory + Total Memory + Individual DIMMs (6+ items)
+- Sensors: ~20 per DIMM (Temperature, Capacity, 17 timing parameters)
+- Poll time: Slow (~150-250ms per poll due to SMBus I2C reads)
+- **Requires**: RAMSPDToolkit driver must load successfully
+- **Known Issue**: Driver may fail silently on some systems (lines 52-55 in MemoryGroup.cs)
+
+### Testing Limitations
+
+**CLR Reinitialization**: Cannot test both `dimmDetection: true` and `false` in same Node.js process
+- CLR (.NET runtime) doesn't support reinitialization after shutdown
+- **Solution**: Create separate test files for each scenario
+
+**Async Requirement**: `monitor.poll()` returns a Promise that MUST be awaited
+- Wrong: `const data = monitor.poll();` → returns empty `{}`
+- Correct: `const data = await monitor.poll();` → returns full sensor tree
+
+### Debugging Checklist
+
+When adding new parameters to the stack:
+
+1. ✅ Update C++ typedef in `hardware_monitor.h` (LHM_InitializeFn signature)
+2. ✅ Update C++ call site in `hardware_monitor.cc` (m_initializeFn arguments)
+3. ✅ Update JavaScript parser in `lib/index.js` (config object)
+4. ✅ Update C# bridge signature in `HardwareMonitorBridge.cs` (Initialize method)
+5. ✅ Update C# usage in `Computer.cs` (pass to hardware groups)
+6. ✅ Rebuild ALL layers (LHM DLL → copy → Bridge → N-API)
+7. ✅ Verify DLL hashes match between `deps/` and `dist/`
+8. ✅ Test in fresh Node.js process (CLR can't reinitialize)
+
+### Performance Impact
+
+Measured with 4x 32GB DIMMs (2x Corsair CMW64GX4M2D3600C18, 2x G.Skill F4-4400C19-32GTZR):
+
+| Configuration | Hardware Items | Total Sensors | Poll Latency | RAM Read Access |
+|--------------|----------------|---------------|--------------|-----------------|
+| `dimmDetection: false` | 2 | ~6 | 50-100ms | None (WMI only) |
+| `dimmDetection: true` | 6 | ~86 | 150-250ms | SMBus I2C per poll |
+
+**Recommendation**: Use `dimmDetection: false` for production dashboards polling at 1Hz or faster.
 
 ## Security Considerations
 
@@ -319,8 +404,65 @@ Without admin:
 - [ ] Delta updates (only changed sensors)
 - [ ] Multi-language support (currently English only)
 - [ ] Linux support (would require different LHM backend)
+- [ ] Fix RAMSPDToolkit driver loading (investigate silent failures in MemoryGroup.cs lines 52-55)
+
+## Lessons Learned
+
+### DLL Synchronization is Critical
+
+The build chain involves multiple independent compilation steps. Changes to C# code require rebuilding:
+1. LibreHardwareMonitorLib.dll
+2. Copying to deps/
+3. LibreHardwareMonitorBridge.dll (self-contained publish)
+4. N-API addon build (copies all DLLs to dist/)
+
+**Key Insight**: `node-gyp rebuild` only rebuilds C++ code - it does NOT recompile managed assemblies. Old DLLs will be copied to dist/ unless manually rebuilt first.
+
+**Diagnostic Tool**: Always compare MD5 hashes when debugging "code changes not working":
+```powershell
+Get-FileHash -Path "deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll" -Algorithm MD5
+Get-FileHash -Path "dist/NativeLibremon_NAPI/LibreHardwareMonitorLib.dll" -Algorithm MD5
+```
+
+Different hashes = stale DLLs in dist folder.
+
+### Function Pointer Signatures Must Match Exactly
+
+When adding parameters to managed bridge functions:
+- C++ typedef must match the C# signature EXACTLY
+- Example: Adding `dimmDetection` required updating `LHM_InitializeFn` from 9 to 10 parameters
+- Compiler error: "too many arguments for call" means typedef is out of sync
+
+### CLR Cannot Be Reinitialized
+
+The .NET runtime can only be initialized once per process. After `shutdown()`:
+- Cannot call `init()` again in same Node.js process
+- Test files must be run in separate processes
+- Use `powershell -Command` or create separate test scripts for different configurations
+
+### Async Patterns in N-API
+
+`monitor.poll()` returns a Promise because it uses `Napi::AsyncWorker`:
+- Must use `await` or `.then()` to get results
+- Synchronous access returns empty `{}` because Promise hasn't resolved
+- This is BY DESIGN for non-blocking hardware access
+
+### Silent Failures in Hardware Detection
+
+LibreHardwareMonitor silently skips hardware that fails to initialize:
+- MemoryGroup constructor returns early if driver fails (no exception, no log)
+- RAMSPDToolkit driver loading can fail without visible error
+- **Debug Strategy**: Add console output in managed code to trace initialization flow
+- Hardware count mismatches often indicate silent initialization failures, not logic bugs
+
+### Testing Requires Administrator Rights
+
+DIMM detection uses kernel drivers (RAMSPDToolkit) requiring admin privileges:
+- Driver loads silently fail without admin rights
+- No error messages - hardware simply doesn't appear
+- Always test with elevated PowerShell session
 
 ---
 
 **Status**: ✅ Production Ready  
-**Last Updated**: November 2025
+**Last Updated**: November 21, 2025

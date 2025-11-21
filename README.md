@@ -38,7 +38,8 @@ monitor.init({
   motherboard: true,
   memory: true,
   storage: false,
-  network: false
+  network: false,
+  dimmDetection: false  // Optional: disable expensive per-DIMM sensors
 });
 
 // Poll sensors (async, non-blocking)
@@ -85,14 +86,14 @@ Hardware Drivers & WMI
 
 ## 📊 Hardware Support
 
-| Category | Status | Admin Required | Intel GPU VRAM |
-|----------|--------|----------------|----------------|
-| **CPU** | ✅ Full | Yes | - |
-| **GPU** | ✅ Full | Yes | ✅ **Yes** |
-| **Motherboard** | ✅ Full | Yes | - |
-| **Memory** | ✅ Full | Yes | - |
-| **Storage** | ✅ Full | Yes | - |
-| **Network** | ✅ Full | No | - |
+| Category | Status | Admin Required | Intel GPU VRAM | Notes |
+|----------|--------|----------------|----------------|-------|
+| **CPU** | ✅ Full | Yes | - | Temp, load, clocks, power |
+| **GPU** | ✅ Full | Yes | ✅ **Yes** | Intel Arc VRAM support |
+| **Motherboard** | ✅ Full | Yes | - | Voltage, fans, temps |
+| **Memory** | ✅ Full | Yes | - | See DIMM detection below |
+| **Storage** | ✅ Full | Yes | - | SMART, temps, activity |
+| **Network** | ✅ Full | No | - | Bandwidth monitoring |
 
 ### Intel GPU VRAM Monitoring
 
@@ -103,6 +104,23 @@ The custom LibreHardwareMonitor fork adds:
 - **GPU Memory Controller Load** (%)
 
 Supported on Intel Arc GPUs and integrated graphics.
+
+### Memory / DIMM Detection
+
+Memory monitoring has two modes controlled by `dimmDetection`:
+
+**`dimmDetection: false` (default - recommended)**
+- Shows: Virtual Memory + Total Memory only
+- Sensors: Load, Used, Available (~6 sensors total)
+- Poll latency: Fast (~50-100ms)
+- **Use for**: Production dashboards polling at 1Hz or faster
+
+**`dimmDetection: true` (detailed)**
+- Shows: Virtual Memory + Total Memory + Individual DIMMs
+- Sensors: Temperature, Capacity, 17 timing parameters per DIMM (~20 sensors/DIMM)
+- Poll latency: Slow (~150-250ms due to SMBus I2C reads)
+- Requires: RAMSPDToolkit driver (may fail silently on some systems)
+- **Use for**: Diagnostics or when DIMM details are essential
 
 ## 🔧 API Reference
 
@@ -120,9 +138,12 @@ monitor.init({
   network: boolean,    // Network bandwidth
   controller: boolean, // HID controllers
   psu: boolean,        // Power supply (if supported)
-  battery: boolean     // Battery status (laptops)
+  battery: boolean,    // Battery status (laptops)
+  dimmDetection: boolean // Optional: Enable per-DIMM sensors (default: false)
 });
 ```
+
+**Performance Note**: `dimmDetection: true` enables detailed DIMM sensors (temperature, timing parameters) but adds ~100-150ms polling latency due to SMBus I2C reads. Use `false` (default) for production dashboards.
 
 ### `await monitor.poll()`
 
@@ -243,6 +264,13 @@ Solution: Enable CPU and Motherboard flags - GPU detection often requires these:
 monitor.init({ cpu: true, gpu: true, motherboard: true })
 ```
 
+**Problem**: DIMM detection not working (dimmDetection: true)
+```
+Solution: RAMSPDToolkit driver may fail silently on some systems
+This is a known limitation - use dimmDetection: false for basic memory monitoring
+Basic Virtual Memory and Total Memory sensors always work without driver
+```
+
 ## 📝 Example: GPU Monitor
 
 See `test/gpu-poll.js` for a complete example that:
@@ -308,4 +336,4 @@ MIT License - See LICENSE file
 
 **Status**: ✅ Production Ready  
 **Architecture**: N-API addon with async polling  
-**Last Updated**: November 2025
+**Last Updated**: November 21, 2025

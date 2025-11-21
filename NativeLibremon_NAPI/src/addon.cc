@@ -59,11 +59,12 @@ Napi::Value Init(const Napi::CallbackInfo& info) {
     hwConfig.psu = getBoolOrDefault(env, config, "psu", false);
     hwConfig.controller = getBoolOrDefault(env, config, "controller", false);
     hwConfig.battery = getBoolOrDefault(env, config, "battery", false);
+    hwConfig.dimmDetection = getBoolOrDefault(env, config, "dimmDetection", false);
 
     // Debug: print resolved flags to stderr
     fprintf(stderr,
-      "[NAPI] init flags: cpu=%d gpu=%d motherboard=%d memory=%d storage=%d network=%d psu=%d controller=%d battery=%d\n",
-      hwConfig.cpu, hwConfig.gpu, hwConfig.motherboard, hwConfig.memory, hwConfig.storage, hwConfig.network, hwConfig.psu, hwConfig.controller, hwConfig.battery);
+      "[NAPI] init flags: cpu=%d gpu=%d motherboard=%d memory=%d storage=%d network=%d psu=%d controller=%d battery=%d dimmDetection=%d\n",
+      hwConfig.cpu, hwConfig.gpu, hwConfig.motherboard, hwConfig.memory, hwConfig.storage, hwConfig.network, hwConfig.psu, hwConfig.controller, hwConfig.battery, hwConfig.dimmDetection);
 
     if (g_clrHost == nullptr) {
       g_clrHost = new CLRHost();

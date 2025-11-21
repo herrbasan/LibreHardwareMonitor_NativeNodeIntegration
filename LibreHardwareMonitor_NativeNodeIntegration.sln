@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibreMonCLI", "NativeLibremon_CLI\LibreMonCLI.csproj", "{0EA6C817-99AD-EEB5-2A61-59B198A16972}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "managed", "managed", "{6ADED3C3-491D-A43A-93DD-4F324D3E0A3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibreHardwareMonitorBridge", "managed\LibreHardwareMonitorBridge\LibreHardwareMonitorBridge.csproj", "{B439E209-87FE-98CD-409B-C591FDCDFE53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibreMonCLI", "managed\LibreMonCLI\LibreMonCLI.csproj", "{42A53BE3-BBD0-1F0C-86B6-00DA74E452D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EA6C817-99AD-EEB5-2A61-59B198A16972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EA6C817-99AD-EEB5-2A61-59B198A16972}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EA6C817-99AD-EEB5-2A61-59B198A16972}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EA6C817-99AD-EEB5-2A61-59B198A16972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B439E209-87FE-98CD-409B-C591FDCDFE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B439E209-87FE-98CD-409B-C591FDCDFE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B439E209-87FE-98CD-409B-C591FDCDFE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B439E209-87FE-98CD-409B-C591FDCDFE53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A53BE3-BBD0-1F0C-86B6-00DA74E452D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A53BE3-BBD0-1F0C-86B6-00DA74E452D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A53BE3-BBD0-1F0C-86B6-00DA74E452D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A53BE3-BBD0-1F0C-86B6-00DA74E452D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B439E209-87FE-98CD-409B-C591FDCDFE53} = {6ADED3C3-491D-A43A-93DD-4F324D3E0A3F}
+		{42A53BE3-BBD0-1F0C-86B6-00DA74E452D7} = {6ADED3C3-491D-A43A-93DD-4F324D3E0A3F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67AD5370-38F6-4306-8469-E9F59A272C56}
+	EndGlobalSection
+EndGlobal

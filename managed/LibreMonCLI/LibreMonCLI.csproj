@@ -27,8 +27,13 @@
 
   <ItemGroup>
     <!-- LibreHardwareMonitor - reference built DLL -->
-    <PackageReference Include="System.Management" Version="9.0.9" />
-    <PackageReference Include="System.Threading.AccessControl" Version="9.0.9" />
+    <PackageReference Include="System.Management" Version="10.0.0" />
+    <PackageReference Include="System.Threading.AccessControl" Version="10.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.0" />
+    <PackageReference Include="DiskInfoToolkit" Version="1.0.6" />
+    <PackageReference Include="HidSharp" Version="2.6.4" />
+    <PackageReference Include="RAMSPDToolkit-NDD" Version="1.4.1" />
+    
     <Reference Include="LibreHardwareMonitorLib">
       <HintPath>..\..\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath>
     </Reference>

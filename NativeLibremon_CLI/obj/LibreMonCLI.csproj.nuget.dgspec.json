@@ -1,28 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj": {}
+    "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj": {}
   },
   "projects": {
-    "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj": {
+    "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj",
+        "projectUniqueName": "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj",
         "projectName": "LibreMonCLI",
-        "projectPath": "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj",
+        "projectPath": "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\LibreMonCLI.csproj",
         "packagesPath": "C:\\Users\\dave\\.nuget\\packages\\",
-        "outputPath": "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\obj\\",
+        "outputPath": "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\NativeLibremon_CLI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\NuGet.Config",
+          "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\NuGet.Config",
           "C:\\Users\\dave\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "D:\\Work\\_GIT\\LibreHardwareMonitor_NativeNodeIntegration\\deps\\LibreHardwareMonitor": {},
-          "https://api.nuget.org/v3/index.json": {},
+          "D:\\DEV\\LibreHardwareMonitor_NativeNodeIntegration\\deps\\LibreHardwareMonitor": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -41,7 +40,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -65,16 +64,20 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[9.0.10, 9.0.10]"
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.11, 9.0.11]"
             },
             {
-              "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[9.0.10, 9.0.10]"
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[9.0.11, 9.0.11]"
             },
             {
-              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[9.0.10, 9.0.10]"
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.11, 9.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.11, 9.0.11]"
             }
           ],
           "frameworkReferences": {
@@ -82,12 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

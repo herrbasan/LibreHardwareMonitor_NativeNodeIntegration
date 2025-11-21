@@ -51,6 +51,24 @@ Copy-Item -Path (Join-Path $releaseDir '*') -Destination $distDir -Recurse -Forc
 
 Write-Host "  Copied contents from $releaseDir" -ForegroundColor Gray
 
+# Copy all files from Bridge publish directory (needed for self-contained runtime)
+$bridgePublishDir = Join-Path $root "managed\LibreHardwareMonitorBridge\bin\Release\net9.0\win-x64\publish"
+if (Test-Path $bridgePublishDir) {
+    Copy-Item -Path (Join-Path $bridgePublishDir '*') -Destination $distDir -Recurse -Force
+    Write-Host "  Copied self-contained runtime files from $bridgePublishDir" -ForegroundColor Gray
+} else {
+    Write-Host "WARNING: Bridge publish directory not found at $bridgePublishDir" -ForegroundColor Yellow
+}
+
+# Copy nethost.dll
+$nethostPath = Get-ChildItem -Path "C:\Program Files\dotnet\packs" -Filter "nethost.dll" -Recurse | Select-Object -First 1 -ExpandProperty FullName
+if ($nethostPath) {
+    Copy-Item -Path $nethostPath -Destination $distDir -Force
+    Write-Host "  Copied nethost.dll from $nethostPath" -ForegroundColor Gray
+} else {
+    Write-Host "WARNING: nethost.dll not found in dotnet packs" -ForegroundColor Yellow
+}
+
 # Copy JavaScript entrypoint (adjust require path for dist layout)
 $entrySrc = Join-Path $projectDir "lib\index.js"
 if (Test-Path $entrySrc) {

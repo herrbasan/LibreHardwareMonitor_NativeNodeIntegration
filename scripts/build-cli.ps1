@@ -65,7 +65,8 @@ if (-not $SkipLHM) {
     $buildArgs = @(
         "build",
         $LHMProject,
-        "-c", "Release"
+        "-c", "Release",
+        "-p:Platform=x64"
     )
     
     if ($Verbose) {
@@ -86,7 +87,8 @@ if (-not $SkipLHM) {
     Write-Host "[2/3] Copying LibreHardwareMonitor DLLs..." -ForegroundColor Cyan
     
     # Find the built DLLs
-    $LHMBuildDir = Join-Path $LHMSourceDir "bin\Release"
+    # Output is in ../bin/Release/x64 because of Platform=x64
+    $LHMBuildDir = Join-Path $LHMSourceDir "..\bin\Release\x64"
     $NetFolders = Get-ChildItem -Path $LHMBuildDir -Directory -Filter "net*" | Sort-Object Name -Descending
     
     if ($NetFolders.Count -eq 0) {

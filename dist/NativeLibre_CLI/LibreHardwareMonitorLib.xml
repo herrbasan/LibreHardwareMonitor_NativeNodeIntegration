@@ -4,15 +4,6 @@
         <name>LibreHardwareMonitorLib</name>
     </assembly>
     <members>
-        <member name="P:LibreHardwareMonitor.Hardware.Battery.BatteryGroup.Hardware">
-            <inheritdoc />
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Battery.BatteryGroup.Close">
-            <inheritdoc />
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Battery.BatteryGroup.GetReport">
-            <inheritdoc />
-        </member>
         <member name="T:LibreHardwareMonitor.Hardware.Computer">
             <summary>
             Stores all hardware groups and decides which devices should be enabled and updated.
@@ -883,6 +874,11 @@
         <member name="M:LibreHardwareMonitor.Hardware.Motherboard.Lpc.W836XX.Close">
             <inheritdoc />
         </member>
+        <member name="T:LibreHardwareMonitor.Hardware.Motherboard.Model">
+            <summary>
+            Known motherboard models detected/recognized by LibreHardwareMonitor.
+            </summary>
+        </member>
         <member name="T:LibreHardwareMonitor.Hardware.Motherboard.Motherboard">
             <summary>
             Represents the motherboard of a computer with its <see cref="T:LibreHardwareMonitor.Hardware.Motherboard.Lpc.LpcIO" /> and <see cref="T:LibreHardwareMonitor.Hardware.Motherboard.Lpc.EC.EmbeddedController" /> as <see cref="P:LibreHardwareMonitor.Hardware.Motherboard.Motherboard.SubHardware" />.
@@ -1564,58 +1560,16 @@
             </summary>
             <returns>A formatted text string with computer information and the entire SMBIOS table.</returns>
         </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.AbstractStorage.Close">
-            <inheritdoc />
-        </member>
-        <member name="T:LibreHardwareMonitor.Hardware.Storage.AbstractStorage.PerformanceValue">
+        <member name="P:LibreHardwareMonitor.Hardware.Storage.ISmart.Attributes">
             <summary>
-            Helper to calculate the disk performance with base timestamps
-            https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-perfrawdata
+            Gets all available smart attributes.
             </summary>
         </member>
-        <member name="P:LibreHardwareMonitor.Hardware.Storage.AtaStorage.Smart">
+        <member name="M:LibreHardwareMonitor.Hardware.Storage.SmartAttribute.#ctor(DiskInfoToolkit.SmartAttribute,System.Nullable{LibreHardwareMonitor.Hardware.SensorType},System.Int32,System.String,System.Boolean)">
             <summary>
-            Gets the SMART data.
+            Initializes a new instance of the <see cref="T:LibreHardwareMonitor.Hardware.Storage.SmartAttribute"/> class.
             </summary>
-        </member>
-        <member name="P:LibreHardwareMonitor.Hardware.Storage.AtaStorage.SmartAttributes">
-            <summary>
-            Gets the SMART attributes.
-            </summary>
-        </member>
-        <member name="P:LibreHardwareMonitor.Hardware.Storage.NVMeGeneric.Smart">
-            <summary>
-            Gets the SMART data.
-            </summary>
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.SmartAttribute.#ctor(System.Byte,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LibreHardwareMonitor.Hardware.Storage.SmartAttribute" /> class.
-            </summary>
-            <param name="id">The SMART id of the attribute.</param>
-            <param name="name">The name of the attribute.</param>
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.SmartAttribute.#ctor(System.Byte,System.String,LibreHardwareMonitor.Hardware.Storage.SmartAttribute.RawValueConversion)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LibreHardwareMonitor.Hardware.Storage.SmartAttribute" /> class.
-            </summary>
-            <param name="id">The SMART id of the attribute.</param>
-            <param name="name">The name of the attribute.</param>
-            <param name="rawValueConversion">
-            A delegate for converting the raw byte
-            array into a value (or null to use the attribute value).
-            </param>
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.SmartAttribute.#ctor(System.Byte,System.String,LibreHardwareMonitor.Hardware.Storage.SmartAttribute.RawValueConversion,System.Nullable{LibreHardwareMonitor.Hardware.SensorType},System.Int32,System.String,System.Boolean,LibreHardwareMonitor.Hardware.ParameterDescription[])">
-            <summary>
-            Initializes a new instance of the <see cref="T:LibreHardwareMonitor.Hardware.Storage.SmartAttribute" /> class.
-            </summary>
-            <param name="id">The SMART id of the attribute.</param>
-            <param name="name">The name of the attribute.</param>
-            <param name="rawValueConversion">
-            A delegate for converting the raw byte
-            array into a value (or null to use the attribute value).
-            </param>
+            <param name="smartAttribute">The SMART attribute.</param>
             <param name="sensorType">
             Type of the sensor or null if no sensor is to
             be created.
@@ -1630,42 +1584,12 @@
             no sensor is created.
             </param>
             <param name="defaultHiddenSensor">True to hide the sensor initially.</param>
-            <param name="parameterDescriptions">
-            Description for the parameters of the sensor
-            (or null).
-            </param>
         </member>
-        <member name="P:LibreHardwareMonitor.Hardware.Storage.SmartAttribute.Id">
+        <member name="T:LibreHardwareMonitor.Hardware.Storage.StorageDevice.PerformanceValue">
             <summary>
-            Gets the SMART identifier.
+            Helper to calculate the disk performance with base timestamps
+            https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-perfrawdata
             </summary>
-        </member>
-        <member name="T:LibreHardwareMonitor.Hardware.Storage.SmartNames">
-            <summary>
-            Localization class for SMART attribute names.
-            </summary>
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.SsdMicron.UpdateAdditionalSensors(LibreHardwareMonitor.Interop.AtaSmart.SMART_ATTRIBUTE[])">
-            <inheritdoc />
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.StorageGroup.AddHardware(LibreHardwareMonitor.Hardware.ISettings,System.Collections.Generic.Dictionary{System.UInt32,System.Collections.Generic.List{System.ValueTuple{System.UInt32,System.UInt64}}})">
-            <summary>
-            Adds the hardware.
-            </summary>
-            <param name="settings">The settings.</param>
-            <param name="storageSpaceDiskToPhysicalDiskMap">The storage space disk to physical disk map.</param>
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.StorageGroup.GetStorageSpaceDiskToPhysicalDiskMap">
-            <summary>
-            Maps each StorageSpace to the PhysicalDisks it is composed of.
-            </summary>
-        </member>
-        <member name="M:LibreHardwareMonitor.Hardware.Storage.StorageGroup.MapDiskToPhysicalDisk(System.Management.ManagementBaseObject,System.Management.ManagementScope)">
-            <summary>
-            Maps a disk to a physical disk.
-            </summary>
-            <param name="disk">The disk.</param>
-            <param name="scope">The scope.</param>
         </member>
         <member name="M:LibreHardwareMonitor.Hardware.ThreadAffinity.#cctor">
             <summary>
@@ -1987,22 +1911,6 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Wdk.__char_32.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__char_32.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="M:Windows.Wdk.__char_32.ToString(System.Int32)">
             <summary>
             Copies the fixed array to a new string up to the specified length regardless of whether there are null terminating characters.
@@ -2073,59 +1981,11 @@
         <member name="P:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_COUNTER_5.Length">
             <summary>The length of the inline array.</summary>
         </member>
-        <member name="M:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_COUNTER_5.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_COUNTER_5.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_DMA_PACKET_TYPE_INFORMATION_4.Length">
             <summary>The length of the inline array.</summary>
         </member>
-        <member name="M:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_DMA_PACKET_TYPE_INFORMATION_4.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_DMA_PACKET_TYPE_INFORMATION_4.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_QUEUE_PACKET_TYPE_INFORMATION_8.Length">
             <summary>The length of the inline array.</summary>
-        </member>
-        <member name="M:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_QUEUE_PACKET_TYPE_INFORMATION_8.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.Graphics.Direct3D.__D3DKMT_QUERYSTATISTICS_QUEUE_PACKET_TYPE_INFORMATION_8.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="P:Windows.Wdk.Graphics.Direct3D.D3DKMT_QUERYSTATISTICS_SEGMENT_INFORMATION._PowerFlags_e__Struct.PreservedDuringStandby">
             <summary>Gets or sets bit 0 in the <see cref="F:Windows.Wdk.Graphics.Direct3D.D3DKMT_QUERYSTATISTICS_SEGMENT_INFORMATION._PowerFlags_e__Struct._bitfield" /> field.</summary>
@@ -2224,22 +2084,6 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Wdk.__uint_16.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__uint_16.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Wdk.__uint_3.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -2248,22 +2092,6 @@
             Gets a ref to an individual element of the inline array.
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
-        </member>
-        <member name="M:Windows.Wdk.__uint_3.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__uint_3.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="P:Windows.Wdk.__ulong_7.Length">
             <summary>The length of the inline array.</summary>
@@ -2274,22 +2102,6 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Wdk.__ulong_7.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_7.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Wdk.__ulong_5.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -2298,22 +2110,6 @@
             Gets a ref to an individual element of the inline array.
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_5.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_5.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="P:Windows.Wdk.__ulong_8.Length">
             <summary>The length of the inline array.</summary>
@@ -2324,22 +2120,6 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Wdk.__ulong_8.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_8.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Wdk.__ulong_4.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -2349,22 +2129,6 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Wdk.__ulong_4.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_4.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Wdk.__ulong_9.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -2373,22 +2137,6 @@
             Gets a ref to an individual element of the inline array.
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_9.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Wdk.__ulong_9.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="T:Windows.Win32.System.Power.BATTERY_INFORMATION">
             <summary>Contains battery information.</summary>
@@ -2559,394 +2307,6 @@
             <para>The name of the storage manager that controls this device. Examples of storage managers are "PhysDisk," "FTDISK," and "DMIO".</para>
             <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-disk_performance#members">Read more on learn.microsoft.com</see>.</para>
             </summary>
-        </member>
-        <member name="M:Windows.Win32.System.Ioctl.SENDCMDINPARAMS.SizeOf(System.Int32)">
-            <summary>Computes the amount of memory that must be allocated to store this struct, including the specified number of elements in the variable length inline array at the end.</summary>
-        </member>
-        <member name="M:Windows.Win32.System.Ioctl.SENDCMDOUTPARAMS.SizeOf(System.Int32)">
-            <summary>Computes the amount of memory that must be allocated to store this struct, including the specified number of elements in the variable length inline array at the end.</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_DESCRIPTOR_HEADER">
-            <summary>Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve the properties of a storage device or adapter.</summary>
-            <remarks>
-            <para>The data retrieved by <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ni-winioctl-ioctl_storage_query_property">IOCTL_STORAGE_QUERY_PROPERTY</a> is reported in the buffer immediately following this structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_descriptor_header#">Read more on learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DESCRIPTOR_HEADER.Version">
-            <summary>
-            <para>Contains the size of this structure, in bytes. The value of this member will change as members are added to the structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_descriptor_header#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DESCRIPTOR_HEADER.Size">
-            <summary>
-            <para>Specifies the total size of the data returned, in bytes. This may include data that follows this structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_descriptor_header#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR">
-            <summary>Used in conjunction with the IOCTL_STORAGE_QUERY_PROPERTY control code to retrieve the storage device descriptor data for a device.</summary>
-            <remarks>
-            <para>An application can determine the required buffer size by issuing a <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ni-winioctl-ioctl_storage_query_property">IOCTL_STORAGE_QUERY_PROPERTY</a> control code passing a <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ns-winioctl-storage_descriptor_header">STORAGE_DESCRIPTOR_HEADER</a> structure for the output buffer, and then using the returned <b>Size</b> member of the <b>STORAGE_DESCRIPTOR_HEADER</b> structure to allocate a buffer of the proper size.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#">Read more on learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.Version">
-            <summary>
-            <para>Contains the size of this structure, in bytes. The value of this member will change as members are added to the structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.Size">
-            <summary>
-            <para>Specifies the total size of the descriptor, in bytes, which may include vendor ID, product ID, product revision, device serial number strings and bus-specific data which are appended to the structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.DeviceType">
-            <summary>Specifies the device type as defined by the Small Computer Systems Interface (SCSI) specification.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.DeviceTypeModifier">
-            <summary>
-            <para>Specifies the device type modifier, if any, as defined by the SCSI specification. If no device type modifier exists, this member is zero.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.RemovableMedia">
-            <summary>
-            <para>Indicates when <b>TRUE</b> that the device's media (if any) is removable. If the device has no media, this member should be ignored. When <b>FALSE</b> the device's media is not removable.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.CommandQueueing">
-            <summary>
-            <para>Indicates when <b>TRUE</b> that the device supports multiple outstanding commands (SCSI tagged queuing or equivalent). When <b>FALSE</b>, the device does not support SCSI-tagged queuing or the equivalent.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.VendorIdOffset">
-            <summary>
-            <para>Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's vendor ID. If the device has no vendor ID, this member is zero.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.ProductIdOffset">
-            <summary>
-            <para>Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's product ID. If the device has no product ID, this member is zero.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.ProductRevisionOffset">
-            <summary>
-            <para>Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's product revision string. If the device has no product revision string, this member is zero.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.SerialNumberOffset">
-            <summary>
-            <para>Specifies the byte offset from the beginning of the structure to a null-terminated ASCII string that contains the device's serial number. If the device has no serial number, this member is zero.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.BusType">
-            <summary>
-            <para>Specifies an enumerator value of type <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ne-winioctl-storage_bus_type">STORAGE_BUS_TYPE</a> that indicates the type of bus to which the device is connected. This should be used to interpret the raw device properties at the end of this structure (if any).</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.RawPropertiesLength">
-            <summary>Indicates the number of bytes of bus-specific data that have been appended to this descriptor.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.RawDeviceProperties">
-            <summary>
-            <para>Contains an array of length one that serves as a place holder for the first byte of the bus specific property data.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_device_descriptor#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.System.Ioctl.STORAGE_DEVICE_DESCRIPTOR.SizeOf(System.Int32)">
-            <summary>Computes the amount of memory that must be allocated to store this struct, including the specified number of elements in the variable length inline array at the end.</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID">
-            <summary>Enumerates the possible values of the PropertyId member of the STORAGE_PROPERTY_QUERY structure passed as input to the IOCTL_STORAGE_QUERY_PROPERTY request to retrieve the properties of a storage device or adapter.</summary>
-            <remarks>The optional output buffer returned through the *lpOutBuffer* parameter of the [IOCTL_STORAGE_QUERY_PROPERTY](ni-winioctl-ioctl_storage_query_property.md) control code request can be one of several structures depending on the value of the **PropertyId** member of the [STORAGE_PROPERTY_QUERY](ns-winioctl-storage_property_query.md) structure pointed to by the *lpInBuffer* parameter. If the **QueryType** member of the **STORAGE_PROPERTY_QUERY** is set to **PropertyExistsQuery**, then no structure is returned.</remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceProperty">
-            <summary>Indicates that the caller is querying for the device descriptor, [STORAGE_DEVICE_DESCRIPTOR](ns-winioctl-storage_device_descriptor.md).</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterProperty">
-            <summary>Indicates that the caller is querying for the adapter descriptor, [STORAGE_ADAPTER_DESCRIPTOR](ns-winioctl-storage_adapter_descriptor.md).</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceIdProperty">
-            <summary>Indicates that the caller is querying for the device identifiers provided with the SCSI vital product data pages. Data is returned using the  [STORAGE_DEVICE_ID_DESCRIPTOR](ns-winioctl-storage_device_id_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceUniqueIdProperty">
-            <summary>
-            <para>**Intended for driver usage.** Indicates that the caller is querying for the unique device identifiers. Data is returned using the **STORAGE_DEVICE_UNIQUE_IDENTIFIER** structure (see the storduid.h header in the DDK). **Windows Server 2003 and Windows XP:**  This value is not supported before Windows Vista and Windows Server 2008.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceWriteCacheProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the write cache property. Data is returned using the [STORAGE_WRITE_CACHE_PROPERTY](ns-winioctl-storage_write_cache_property.md) structure. **Windows Server 2003 and Windows XP:**  This value is not supported before Windows Vista and Windows Server 2008.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageMiniportProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAccessAlignmentProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the access alignment descriptor, [STORAGE_ACCESS_ALIGNMENT_DESCRIPTOR](ns-winioctl-storage_access_alignment_descriptor.md). **Windows Server 2003 and Windows XP:**  This value is not supported before Windows Vista and Windows Server 2008.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceSeekPenaltyProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the seek penalty descriptor, [DEVICE_SEEK_PENALTY_DESCRIPTOR](ns-winioctl-device_seek_penalty_descriptor.md). **Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:**  This value is not supported before Windows 7 and Windows Server 2008 R2.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceTrimProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the trim descriptor, [DEVICE_TRIM_DESCRIPTOR](ns-winioctl-device_trim_descriptor.md). **Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:**  This value is not supported before Windows 7 and Windows Server 2008 R2.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceWriteAggregationProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceDeviceTelemetryProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceLBProvisioningProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the logical block provisioning property. Data is returned using the [DEVICE_LB_PROVISIONING_DESCRIPTOR](ns-winioctl-device_lb_provisioning_descriptor.md) structure. **Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:**  This value is not supported before Windows 8 and Windows Server 2012.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDevicePowerProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the device power descriptor. Data is returned using the [DEVICE_POWER_DESCRIPTOR](ns-winioctl-device_power_descriptor.md) structure. **Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:**  This value is not supported before Windows 8 and Windows Server 2012.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceCopyOffloadProperty">
-            <summary>
-            <para>Indicates that the caller is querying for the copy offload  parameters property. Data is returned using the [DEVICE_COPY_OFFLOAD_DESCRIPTOR](ns-winioctl-device_copy_offload_descriptor.md) structure. **Windows 7, Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:**  This value is not supported before Windows 8 and Windows Server 2012.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_property_id#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceResiliencyProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceMediumProductType">
-            <summary>Indicates that the caller is querying for the medium product type. Data is returned using the [STORAGE_MEDIUM_PRODUCT_TYPE_DESCRIPTOR](./ns-winioctl-storage_medium_product_type_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterRpmbProperty">
-            <summary>Indicates that the caller is querying for RPMB support and properties. Data is returned using the [STORAGE_RPMB_DESCRIPTOR](ns-winioctl-storage_rpmb_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterCryptoProperty">
-            <summary>Provides info on the storage adapter encryption capabilities. This is currently supported on UFS (Universal Flash Storage) adapters.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceIoCapabilityProperty">
-            <summary>Indicates that the caller is querying for the device I/O capability property. Data is returned using the [DEVICE_IO_CAPABILITY_DESCRIPTOR](ns-winioctl-storage_device_io_capability_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterProtocolSpecificProperty">
-            <summary>Indicates that the caller is querying for protocol-specific data from the  adapter. Data is returned using the [STORAGE_PROTOCOL_DATA_DESCRIPTOR](ns-winioctl-storage_protocol_data_descriptor.md) structure. See the remarks for more info.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceProtocolSpecificProperty">
-            <summary>Indicates that the caller is querying for protocol-specific data from the device. Data is returned using the [STORAGE_PROTOCOL_DATA_DESCRIPTOR](ns-winioctl-storage_protocol_data_descriptor.md) structure. See the remarks for more info.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterTemperatureProperty">
-            <summary>Indicates that the caller is querying temperature data from the adapter. Data is returned using the [STORAGE_TEMPERATURE_DATA_DESCRIPTOR](ns-winioctl-storage_temperature_data_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceTemperatureProperty">
-            <summary>Indicates that the caller is querying for temperature data from the device.  Data is returned using the [STORAGE_TEMPERATURE_DATA_DESCRIPTOR](ns-winioctl-storage_temperature_data_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterPhysicalTopologyProperty">
-            <summary>Indicates that the caller is querying for topology information from the adapter. Data is returned using the [STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR](ns-winioctl-storage_physical_topology_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDevicePhysicalTopologyProperty">
-            <summary>Indicates that the caller is querying for topology information from the device. Data is returned using the [STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR](ns-winioctl-storage_physical_topology_descriptor.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceAttributesProperty">
-            <summary>Reserved for future use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceManagementStatus">
-            <summary>Provides health information about the storage device (specifically for the persistent memory stack).</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageAdapterSerialNumberProperty">
-            <summary>Indicates that the caller is querying for the adapter serial number. Data is returned using the [STORAGE_ADAPTER_SERIAL_NUMBER](ns-winioctl-storage_adapter_serial_number.md) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceLocationProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceNumaProperty">
-            <summary>Provides the non-uniform memory access (NUMA) node of the storage device.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceZonedDeviceProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceUnsafeShutdownCount">
-            <summary>Provides the unsafe shutdown count value used to determine if the device data might have been lost during a power loss event (specifically for the persistent memory stack).</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceEnduranceProperty">
-            <summary>Provides info on how many bytes have been read/write from a solid-state drive (SSD). This property is supported only for Non-Volatile Memory Express (NVMe) devices that implement a certain NVMe feature.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceLedStateProperty">
-            <summary>Provides info on the state of the LED associated with a storage device. This is a server-oriented feature.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageDeviceSelfEncryptionProperty">
-            <summary>Reserved for system use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID.StorageFruIdProperty">
-            <summary>Provides identification info for a storage device that can be physically replaced with a Field Replacement Unit (FRU).</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_QUERY">
-            <summary>Indicates the properties of a storage device or adapter to retrieve as the input buffer passed to the IOCTL_STORAGE_QUERY_PROPERTY control code.</summary>
-            <remarks>
-            <para>The optional output buffer returned through the <i>lpOutBuffer</i> parameter of the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ni-winioctl-ioctl_storage_query_property">IOCTL_STORAGE_QUERY_PROPERTY</a> control code can be one of several structures depending on the value of the <b>PropertyId</b> member.  If the <b>QueryType</b> member is set to <b>PropertyExistsQuery</b>, then no structure is returned.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_property_query#">Read more on learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_QUERY.PropertyId">
-            <summary>
-            <para>Indicates whether the caller is requesting a device descriptor, an adapter descriptor, a write cache property, a device unique ID (DUID), or the device identifiers provided in the device's SCSI vital product data (VPD) page. For a list of the property IDs that can be assigned to this member, see <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ne-winioctl-storage_property_id">STORAGE_PROPERTY_ID</a>.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_property_query#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_QUERY.QueryType">
-            <summary>
-            <para>Contains flags indicating the type of query to be performed as enumerated by the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ne-winioctl-storage_query_type">STORAGE_QUERY_TYPE</a> enumeration. </para>
-            <para>This doc was truncated.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_property_query#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_QUERY.AdditionalParameters">
-            <summary>Contains an array of bytes that can be used to retrieve additional parameters for specific queries.</summary>
-        </member>
-        <member name="M:Windows.Win32.System.Ioctl.STORAGE_PROPERTY_QUERY.SizeOf(System.Int32)">
-            <summary>Computes the amount of memory that must be allocated to store this struct, including the specified number of elements in the variable length inline array at the end.</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_DATA_DESCRIPTOR">
-            <summary>This structure is used in conjunction with IOCTL_STORAGE_QUERY_PROPERTY to return protocol-specific data from a storage device or adapter.</summary>
-            <remarks>
-            <para>When using <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ni-winioctl-ioctl_storage_query_property">IOCTL_STORAGE_QUERY_PROPERTY</a> to retrieve protocol-specific information in the <b>STORAGE_PROTOCOL_DATA_DESCRIPTOR</b>, configure the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ns-winioctl-storage_property_query">STORAGE_PROPERTY_QUERY</a> structure as follows: </para>
-            <para>This doc was truncated.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_protocol_data_descriptor#">Read more on learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_DATA_DESCRIPTOR.Version">
-            <summary>The version of this structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_DATA_DESCRIPTOR.Size">
-            <summary>The total size of the descriptor, including the space for all protocol data.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_DATA_DESCRIPTOR.ProtocolSpecificData">
-            <summary>The protocol-specific data, of type <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ns-winioctl-storage_protocol_specific_data">STORAGE_PROTOCOL_SPECIFIC_DATA</a>.</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE">
-            <summary>Describes the type of NVMe protocol-specific data that's to be queried during an IOCTL_STORAGE_QUERY_PROPERTY request.</summary>
-            <remarks>
-            <para>When using [IOCTL_STORAGE_QUERY_PROPERTY](ni-winioctl-ioctl_storage_query_property.md) to retrieve protocol-specific information in the [STORAGE_PROTOCOL_DATA_DESCRIPTOR](ns-winioctl-storage_protocol_data_descriptor.md), configure the [STORAGE_PROPERTY_QUERY](ns-winioctl-storage_property_query.md) structure as follows: * Allocate a buffer that can contains both a [STORAGE_PROPERTY_QUERY](ns-winioctl-storage_property_query.md) and a [STORAGE_PROTOCOL_SPECIFIC_DATA](ns-winioctl-storage_protocol_specific_data.md) structure. * Set the **PropertyID** field to **StorageAdapterProtocolSpecificProperty** or **StorageDeviceProtocolSpecificProperty** for a controller or device/namespace request, respectively. * Set the **QueryType** field to **PropertyStandardQuery**. * Fill the [STORAGE_PROTOCOL_SPECIFIC_DATA](ns-winioctl-storage_protocol_specific_data.md) structure with the desired values. The start of the **STORAGE_PROTOCOL_SPECIFIC_DATA** is the **AdditionalParameters** field of [STORAGE_PROPERTY_QUERY](ns-winioctl-storage_property_query.md). To specify a type of NVMe protocol-specific information,  configure the [STORAGE_PROTOCOL_SPECIFIC_DATA](ns-winioctl-storage_protocol_specific_data.md) structure as follows: * Set the **ProtocolType** field to **ProtocolTypeNVMe**. * Set the **DataType** field to an enumeration value defined by **STORAGE_PROTOCOL_NVME_DATA_TYPE**: * Use **NVMeDataTypeIdentify** to get Identify Controller data or Identify Namespace data. * Use **NVMeDataTypeLogPage** to get log pages (including SMART/health data). * Use **NVMeDataTypeFeature** to get features of the NVMe drive.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_protocol_nvme_data_type#">Read more on learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE.NVMeDataTypeUnknown">
-            <summary>Unknown data type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE.NVMeDataTypeIdentify">
-            <summary>Identify data type. This can be either Identify Controller data or Identify Namespace data. When this type of data is being queried, the ProtocolDataRequestValue field of [STORAGE_PROTOCOL_SPECIFIC_DATA](ns-winioctl-storage_protocol_specific_data.md) will have a value of **NVME_IDENTIFY_CNS_CONTROLLER** for adapter or **NVME_IDENTIFY_CNS_SPECIFIC_NAMESPACE** for namespace. If the ProtocolDataRequestValue is **NVME_IDENTIFY_CNS_SPECIFIC_NAMESPACE**, the ProtocolDataRequestSubValue field from the **STORAGE_PROTOCOL_SPECIFIC_DATA** structure will have a value of the namespace ID.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE.NVMeDataTypeLogPage">
-            <summary>Log page data type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE.NVMeDataTypeFeature">
-            <summary>Feature data type.</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA">
-            <summary>Describes protocol-specific device data, provided in the input and output buffer of an IOCTL_STORAGE_QUERY_PROPERTY request.</summary>
-            <remarks>
-            <para>When using <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ni-winioctl-ioctl_storage_query_property">IOCTL_STORAGE_QUERY_PROPERTY</a> to retrieve protocol-specific information in the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ns-winioctl-storage_protocol_data_descriptor">STORAGE_PROTOCOL_DATA_DESCRIPTOR</a>, configure the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ns-winioctl-storage_property_query">STORAGE_PROPERTY_QUERY</a> structure as follows: </para>
-            <para>This doc was truncated.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ns-winioctl-storage_protocol_specific_data#">Read more on learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolType">
-            <summary>The protocol type. Values for this member are defined in the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ne-winioctl-storage_protocol_type">STORAGE_PROTOCOL_TYPE</a> enumeration.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.DataType">
-            <summary>The protocol data type. Data types are defined in the <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ne-winioctl-storage_protocol_nvme_data_type">STORAGE_PROTOCOL_NVME_DATA_TYPE</a> and <a href="https://docs.microsoft.com/windows/desktop/api/winioctl/ne-winioctl-storage_protocol_ata_data_type">STORAGE_PROTOCOL_ATA_DATA_TYPE</a> enumerations.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolDataRequestValue">
-            <summary>The protocol data request value.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolDataRequestSubValue">
-            <summary>The sub value of the protocol data request.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolDataOffset">
-            <summary>The offset of the data buffer that is from the beginning of this structure. The typical value can be sizeof(<b>STORAGE_PROTOCOL_SPECIFIC_DATA</b>).</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolDataLength">
-            <summary>The length of the protocol data.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.FixedProtocolReturnData">
-            <summary>The returned data.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolDataRequestSubValue2">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_SPECIFIC_DATA.ProtocolDataRequestSubValue3">
-            <summary></summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE">
-            <summary>Specifies the protocol of a storage device.</summary>
-            <remarks>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_protocol_type">Learn more about this API from learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeUnknown">
-            <summary>Unknown protocol type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeScsi">
-            <summary>SCSI protocol type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeAta">
-            <summary>ATA protocol type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeNvme">
-            <summary>NVMe protocol type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeSd">
-            <summary>SD protocol type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeUfs">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeProprietary">
-            <summary>Vendor-specific protocol type.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE.ProtocolTypeMaxReserved">
-            <summary>Reserved.</summary>
-        </member>
-        <member name="T:Windows.Win32.System.Ioctl.STORAGE_QUERY_TYPE">
-            <summary>Used by the STORAGE_PROPERTY_QUERY structure passed to the IOCTL_STORAGE_QUERY_PROPERTY control code to indicate what information is returned about a property of a storage device or adapter.</summary>
-            <remarks>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_query_type">Learn more about this API from learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_QUERY_TYPE.PropertyStandardQuery">
-            <summary>Instructs the driver to return an appropriate descriptor.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_QUERY_TYPE.PropertyExistsQuery">
-            <summary>Instructs the driver to report whether the descriptor is supported.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_QUERY_TYPE.PropertyMaskQuery">
-            <summary>Not currently supported. Do not use.</summary>
-        </member>
-        <member name="F:Windows.Win32.System.Ioctl.STORAGE_QUERY_TYPE.PropertyQueryMaxDefined">
-            <summary>Specifies the upper limit of the list of query types. This is used to validate the query type.</summary>
         </member>
         <member name="T:Windows.Win32.System.SystemInformation.GROUP_AFFINITY">
             <summary>Represents a processor group-specific affinity, such as the affinity of a thread.</summary>
@@ -3133,206 +2493,6 @@
             Returns a span of the characters in this string.
             </summary>
         </member>
-        <member name="P:Windows.Win32.__byte_8.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_8.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_8.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_8.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_16.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_16.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_16.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_16.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_9.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_9.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_9.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_9.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_2.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_2.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_2.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_2.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_26.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_26.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_26.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_26.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_296.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_296.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_296.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_296.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_20.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_20.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_20.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_20.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_40.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_40.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_40.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_40.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Win32.__byte_3.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -3341,172 +2501,6 @@
             Gets a ref to an individual element of the inline array.
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_3.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_3.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_106.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_106.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_106.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_106.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_156.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_156.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_156.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_156.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_224.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_224.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_224.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_224.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_256.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_256.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_256.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_256.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_768.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_768.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_768.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_768.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__byte_1024.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__byte_1024.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__byte_1024.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_1024.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="P:Windows.Win32.__byte_4.Length">
             <summary>The length of the inline array.</summary>
@@ -3517,22 +2511,6 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Win32.__byte_4.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__byte_4.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Win32.__char_8.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -3541,22 +2519,6 @@
             Gets a ref to an individual element of the inline array.
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
-        </member>
-        <member name="M:Windows.Win32.__char_8.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__char_8.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="M:Windows.Win32.__char_8.ToString(System.Int32)">
             <summary>
@@ -3626,1028 +2588,6 @@
         <member name="F:Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVINFO_DATA.Reserved">
             <summary>Reserved. For internal use only.</summary>
         </member>
-        <member name="T:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE">
-            <summary>Specifies the various types of storage buses.</summary>
-            <remarks>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_bus_type">Learn more about this API from learn.microsoft.com</see>.</para>
-            </remarks>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeUnknown">
-            <summary>Unknown bus type.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeScsi">
-            <summary>SCSI bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeAtapi">
-            <summary>ATAPI bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeAta">
-            <summary>ATA bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusType1394">
-            <summary>IEEE-1394 bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeSsa">
-            <summary>SSA bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeFibre">
-            <summary>Fibre Channel bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeUsb">
-            <summary>USB bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeRAID">
-            <summary>RAID bus.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeiScsi">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeSas">
-            <summary>
-            <para>Serial Attached SCSI (SAS) bus. **Windows Server 2003:**  This is not supported before Windows Server 2003 with SP1.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_bus_type#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeSata">
-            <summary>
-            <para>SATA bus. **Windows Server 2003:**  This is not supported before Windows Server 2003 with SP1.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/winioctl/ne-winioctl-storage_bus_type#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeSd">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeMmc">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeVirtual">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeFileBackedVirtual">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeSpaces">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeNvme">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeSCM">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeUfs">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeMax">
-            <summary></summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE.BusTypeMaxReserved">
-            <summary></summary>
-        </member>
-        <member name="T:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG">
-            <summary>Contains fields that specify the information contained in the SMART / Health Information Log page.</summary>
-            <remarks>The temperature reported by a temperature sensor may be used to trigger an asynchronous event. For more information, see [NVME_CDW11_FEATURE_TEMPERATURE_THRESHOLD](ns-nvme-nvme_cdw11_feature_temperature_threshold.md).</remarks>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.CriticalWarning">
-            <summary>
-            <para>A Critical Warning (**CriticalWarning**) structure containing fields that indicate critical warnings for the state of the controller. Each field of the **CriticalWarning** structure is a bit that corresponds to a critical warning type; multiple bits may be set. If a bit is cleared to `0`, then that critical warning does not apply. Bits in this field represent the current associated state and are not persistent. Critical warnings may result in an asynchronous event notification to the host.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.Temperature">
-            <summary>
-            <para>Indicates the composite temperature, in degrees Kelvin, of the overall device, including the controller and the NVM subsystem. If the temperature in this field exceeds the temperature threshold, an asynchronous event completion may occur. For more information, see [NVME_CDW11_FEATURE_TEMPERATURE_THRESHOLD](ns-nvme-nvme_cdw11_feature_temperature_threshold.md). Warning and critical overheating composite temperature threshold values are reported by the **WCTEMP** and **CCTEMP** fields in the [Identify Controller](ns-nvme-nvme_identify_controller_data.md) data structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.AvailableSpare">
-            <summary>Indicates a normalized percentage (0 to 100) of the remaining spare capacity available.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.AvailableSpareThreshold">
-            <summary>
-            <para>Indicates the threshold of available spare capacity. When the value of **AvailableSpare** falls below the threshold indicated in this field, an asynchronous event completion may occur. The value is indicated as a normalized percentage (0 to 100).</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.PercentageUsed">
-            <summary>
-            <para>Indicates a vendor specific estimate of the percentage of NVM subsystem life used, based on the actual usage and the manufacturer’s prediction of NVM life. A value of 100 indicates that the estimated endurance of the NVM in the NVM subsystem has been consumed, but may not indicate an NVM subsystem failure. The value is allowed to exceed 100. Percentages greater than 254 are represented as 255. This value is updated once per power-on hour (when the controller is not in a sleep state).</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.Reserved0">
-            <summary>A reserved field.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.DataUnitRead">
-            <summary>
-            <para>Indicates the number of 512 byte data units the host has read from the controller, not including metadata. The value of this field is reported in thousands and is rounded up. For example, a value of 1 corresponds to 1000 units of 512 bytes read. When the Logical Block Access (LBA) size is a value other than 512 bytes, the controller converts the amount of data read to 512 byte units. For the NVM command set, logical blocks read as part of Compare and Read operations are included in this value.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.DataUnitWritten">
-            <summary>
-            <para>Indicates the number of 512 byte data units the host has written to the controller, not including metadata. The value of this field is reported in thousands and is rounded up. For example, a value of 1 corresponds to 1000 units of 512 bytes read. When the Logical Block Access (LBA) size is a value other than 512 bytes, the controller converts the amount of data written to 512 byte units. For the NVM command set, logical blocks written as part of Write operations are included in this value. Write Uncorrectable commands do not impact this value.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.HostReadCommands">
-            <summary>
-            <para>Indicates the number of Read commands completed by the controller. For the NVM command set, this is the number of Compare and Read commands.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.HostWrittenCommands">
-            <summary>
-            <para>Indicates the number of Write commands completed by the controller. For the NVM command set, this is the number of Write commands.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.ControllerBusyTime">
-            <summary>
-            <para>Indicates the amount of time, in minutes, that the controller is busy with I/O commands. The controller is busy when there is a command outstanding to an I/O Queue. Specifically, when a command was issued via an I/O [Submission Queue Tail doorbell](ns-nvme-nvme_submission_queue_tail_doorbell.md) write and the corresponding completion queue entry has not been posted yet to the associated I/O Completion Queue.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.PowerCycle">
-            <summary>Indicates the number of power cycles.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.PowerOnHours">
-            <summary>Indicates the number of power-on hours. This does not include time that the controller was powered and in a low power state condition.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.UnsafeShutdowns">
-            <summary>Indicates the number of unsafe shutdowns. This count is incremented when a shutdown notification, indicated in the **SHN** filed of [Controller Configuration](ns-nvme-nvme_controller_configuration.md), is not received prior to loss of power.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.MediaErrors">
-            <summary>
-            <para>Indicates the number of occurrences where the controller detected an unrecovered data integrity error. [Media Errors](ne-nvme-nvme_status_media_error_codes.md) such as uncorrectable ECC, CRC checksum failure, or LBA tag mismatch are included in this field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.ErrorInfoLogEntryCount">
-            <summary>Indicates the number of [Error Information](ns-nvme-nvme_error_info_log.md) log entries over the life of the controller.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.WarningCompositeTemperatureTime">
-            <summary>
-            <para>Indicates the amount of time, in minutes, that the controller is operational and the [Composite Temperature (**Temperature**)](#-field-temperature) is greater than or equal to the Warning Composite Temperature Threshold (**WCTEMP**) field and less than the Critical Composite Temperature Threshold (**CCTEMP**) field in the [Identify Controller](ns-nvme-nvme_identify_controller_data.md) data structure. If the value of the **WCTEMP** or **CCTEMP** field is `0h`, then this field is always cleared to `0h` regardless of the **Temperature** value.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.CriticalCompositeTemperatureTime">
-            <summary>
-            <para>Indicates the amount of time in minutes that the controller is operational and the [Composite Temperature (**Temperature**)](#-field-temperature) is greater the Critical Composite Temperature Threshold (**CCTEMP**) field in the [Identify Controller](ns-nvme-nvme_identify_controller_data.md) data structure. If the value of the **CCTEMP** field is `0h`, then this field is always cleared to `0h` regardless of the **Temperature** value.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_health_info_log#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor1">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 1.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor2">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 2.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor3">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 3.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor4">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 4.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor5">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 5.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor6">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 6.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor7">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 7.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.TemperatureSensor8">
-            <summary>Indicates the current temperature in degrees Kelvin reported by temperature sensor 8.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG.Reserved1">
-            <summary>A reserved field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct.AvailableSpaceLow">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct.TemperatureThreshold">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct.ReliabilityDegraded">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct.ReadOnly">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct.VolatileMemoryBackupDeviceFailed">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct.Reserved">
-            <summary>Gets or sets bits 5-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_HEALTH_INFO_LOG._CriticalWarning_e__Union._Anonymous_e__Struct._bitfield" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="T:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA">
-            <summary>Contains values that indicate controller capabilities, features, command set attributes, and power state descriptors.</summary>
-            <remarks>The values of the **VID**, **SN**, and **MN** fields may be combined to form a globally unique value that identifies the NVM subsystem.</remarks>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.VID">
-            <summary>Contains the company vendor identifier that is assigned by the [Peripheral Component Interconnect - Special Interest Group (PCI-SIG)](https://pcisig.com/).</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.SSVID">
-            <summary>Contains the company vendor identifier that is assigned by the PCI-SIG for the subsystem.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.SN">
-            <summary>Contains the serial number for the NVM subsystem that is assigned by the vendor as an ASCII string.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.MN">
-            <summary>Contains the model number for the NVM subsystem that is assigned by the vendor as an ASCII string.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.FR">
-            <summary>
-            <para>Contains the currently active firmware revision for the NVM subsystem. This is the same firmware revision information in the [NVME_FIRMWARE_SLOT_INFO_LOG](ns-nvme-nvme_firmware_slot_info_log.md) that can be retrieved with the Get Log Page command.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.RAB">
-            <summary>Contains the recommended Arbitration Burst size.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.IEEE">
-            <summary>
-            <para>Contains the Organization Unique Identifier (OUI) for the controller vendor. The OUI is a valid IEEE/RAC assigned identifier that can be registered at http://standards.ieee.org/develop/regauth/oui/public.html.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.CMIC">
-            <summary>A Controller Multi-Path I/O and Namespace Sharing Capabilities (CMIC) structure that specifies the multi-path I/O and namespace sharing capabilities of the controller and NVM subsystem.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.MDTS">
-            <summary>
-            <para>Indicates the maximum data transfer size between the host and the controller. The host should not submit a command that exceeds this transfer size. If a command is submitted that exceeds the transfer size, the command is aborted with a status of [NVME_STATUS_INVALID_FIELD_IN_COMMAND](ne-nvme-nvme_status_generic_command_codes.md#field-nvme-status-invalid-field-in-command). The value of this field is in units of the minimum memory page size specified in the **MPSMIN** field of the [Controller Capabilities](ns-nvme-nvme_controller_capabilities.md) structure, and is reported as a power of two (2^n). A value of `0h` indicates no restrictions on transfer size. The restriction includes metadata if it is interleaved with the logical block data. If SGL Bit Bucket descriptors are supported, their lengths are included in determining if a command exceeds the Maximum Data Transfer Size for destination data buffers. Their length in a source data buffer is not included for a Maximum Data Transfer Size calculation.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.CNTLID">
-            <summary>Contains the NVM subsystem unique controller identifier associated with the controller.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.VER">
-            <summary>
-            <para>Contains the value reported in the Version register, defined in the **VS** field of the [NVME_CONTROLLER_REGISTERS](../nvme/ns-nvme-nvme_controller_registers.md) structure. Implementations that are compliant with NVMe specification version 1.2 or later, will report a non-zero value in this field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.RTD3R">
-            <summary>
-            <para>Indicates the typical latency in microseconds when resuming from Runtime D3 (RTD3). Implementations that are compliant with NVMe specification version 1.2 or later, will report a non-zero value in this field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.RTD3E">
-            <summary>
-            <para>Indicates the typical latency in microseconds to enter Runtime D3 (RTD3). Implementations that are compliant with NVMe specification version 1.2 or later, will report a non-zero value in this field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.OAES">
-            <summary>
-            <para>An Optional Asynchronous Events Supported (OAES) structure containing fields that indicate whether optional asynchronous events are supported by the controller. A controller should not send optional asynchronous events before they are enabled by host software.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.CTRATT">
-            <summary>A Controller Attributes (CTRATT) structure containing controller attribute information.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.Reserved0">
-            <summary>Bits 10:31 of the **OAES** structure are reserved.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.ReservedForManagement">
-            <summary>Reserved for NVMe Management.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.OACS">
-            <summary>An Optional Admin Command Support (OACS) structure containing fields that indicate the optional [Admin Commands](ne-nvme-nvme_admin_commands.md) supported by the controller.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.ACL">
-            <summary>
-            <para>Indicates the maximum number of concurrently outstanding [Abort](ns-nvme-nvme_cdw10_abort.md) commands supported by the controller. This is a 0’s based value. Implementations should support a minimum of four outstanding Abort commands simultaneously.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.AERL">
-            <summary>
-            <para>Indicates the maximum number of concurrently outstanding [Asynchronous Event Request](ne-nvme-nvme_async_event_types.md) commands supported by the controller. This is a 0’s based value. Implementations should support a minimum of four outstanding Asynchronous Event Request commands simultaneously.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.FRMW">
-            <summary>A Firmware Updates (FRMW) structure containing fields that indicate capabilities regarding firmware updates.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.LPA">
-            <summary>A Log Page Attributes (LPA) structure containing fields that indicate optional attributes for log pages that are accessed by using the [Get Log Page](ns-nvme-nvme_cdw10_get_log_page.md) command.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.ELPE">
-            <summary>Indicates the number of Error Information log entries that are stored by the controller. This field is a 0’s based value.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.NPSS">
-            <summary>
-            <para>Indicates the number of NVM Express power states supported by the controller. This is a 0’s based value. Power states are numbered sequentially starting at power state 0. A controller must support at least one power state (for example, power state 0), and may support up to 31 additional power states, for a total of 32.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.AVSCC">
-            <summary>An Admin Vendor Specific Command Configuration (AVSCC) structure containing fields that indicate the configuration settings for Admin Vendor Specific command handling.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.APSTA">
-            <summary>An Autonomous Power State Transition Attributes (APSTA) structure containing fields that indicate the attributes of the [autonomous power state transition feature](ns-nvme-nvme_cdw11_feature_auto_power_state_transition.md).</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.WCTEMP">
-            <summary>
-            <para>Indicates the minimum Composite Temperature field value (reported in the [SMART / Health Information](ns-nvme-nvme_health_info_log.md) log that indicates an overheating condition during which controller operation continues. Immediate remediation is recommended (for example, additional cooling or workload reduction). The platform should strive to maintain a composite temperature below this value. A value of `0h` in this field indicates that no warning temperature threshold value is reported by the controller. Implementations compliant to NVMe Spec version 1.2 or later should report a non-zero value in this field. It is recommended that implementations report a value of `0157h` in this field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.CCTEMP">
-            <summary>
-            <para>Indicates the minimum Composite Temperature field value (reported in the [SMART / Health Information](ns-nvme-nvme_health_info_log.md log) that indicates a critical overheating condition. For example, a condition that may prevent continued normal operation, possibility of data loss, automatic device shutdown, extreme performance throttling, or permanent damage. A value of `0h` in this field indicates that no critical temperature threshold value is reported by the controller. Implementations compliant to NVMe Spec version 1.2 or later should report a non-zero value in this field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.MTFA">
-            <summary>
-            <para>Indicates the maximum time the controller temporarily stops processing commands to activate the firmware image. This field is valid if the controller supports firmware activation without a reset. The **MFTA** value is specified in 100 millisecond units. A value of `0h` indicates that the maximum time is undefined.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.HMPRE">
-            <summary>
-            <para>Indicates the preferred size that the host should allocate for the [Host Memory Buffer](ns-nvme-nvme_cdw11_feature_host_memory_buffer.md) feature in 4KB units. This value must be larger than or equal to the Host Memory Buffer Minimum Size (**HMMIN**). If this field is non-zero, then the Host Memory Buffer feature is supported. When this value is cleared to `0h`, the Host Memory Buffer feature is not supported.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.HMMIN">
-            <summary>
-            <para>Indicates the minimum size that the host should allocate for the Host Memory Buffer feature in 4KB units. When this value is cleared to `0`, the host is requested to allocate any amount of host memory possible up to the **HMPRE** value.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.TNVMCAP">
-            <summary>
-            <para>Indicates the total NVM capacity, in bytes, of the NVM subsystem. This field is supported if the Namespace Management and Namespace Attachment commands are supported.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.UNVMCAP">
-            <summary>
-            <para>Indicates the unallocated NVM capacity, in bytes, of the NVM subsystem. This field is supported if the Namespace Management and Namespace Attachment commands are supported.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.RPMBS">
-            <summary>A Replay Protected Memory Block Support (RPMBS) structure containing fields that indicate whether the controller supports one or more Replay Protected Memory Blocks (RPMBs) and the associated capabilities.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.EDSTT">
-            <summary>Indicates the Extended Device Self-test Time (EDSTT).</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.DSTO">
-            <summary>Indicates the Device Self-test Options (DSTO).</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.FWUG">
-            <summary>Indicates the Firmware Update Granularity (FWUG).</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.KAS">
-            <summary>Indicates the Keep Alive Support (KAS).</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.HCTMA">
-            <summary>A Host Controlled Thermal Management Attributes (HCTMA) structure.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.MNTMT">
-            <summary>Minimum Thermal Management Temperature (MNTMT)</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.MXTMT">
-            <summary>Maximum Thermal Management Temperature (MXTMT)</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.SANICAP">
-            <summary>Sanitize Capabilities (SANICAP)</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.NSETIDMAX">
-            <summary>NVM Set Identifier Maximum</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.Reserved1">
-            <summary>Bits 0:7 of the **OAES** structure are reserved.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.SQES">
-            <summary>A Submission Queue Entry Size (SQES) structure containing fields that indicate the required and maximum Submission Queue entry size when using the NVM Command Set.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.CQES">
-            <summary>A Completion Queue Entry Size (CQES) structure containing fields that indicate the required and maximum Completion Queue entry size when using the NVM Command Set.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.NN">
-            <summary>Indicates the number of valid namespaces present for the controller.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.ONCS">
-            <summary>An Optional NVM Command Support (ONCS) structure containing fields that indicate the optional [NVM commands](ne-nvme-nvme_nvm_commands.md) and features supported by the controller.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.FUSES">
-            <summary>A Fused Operation Support (FUSES) structure containing fields that indicate the fused operations that the controller supports.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.FNA">
-            <summary>A Format NVM Attributes (FNA) structure containing fields that indicate attributes for the [Format NVM](ns-nvme-nvme_cdw10_format_nvm.md) command.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.VWC">
-            <summary>A Volatile Write Cache (VWC) structure containing fields that indicate attributes related to the presence of a volatile write cache in the implementation.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.AWUN">
-            <summary>
-            <para>Indicates the size of the write operation guaranteed to be written atomically to the NVM across all namespaces with any supported namespace format during normal operation.  This field is specified in logical blocks and is a 0’s based value. If a specific namespace guarantees a larger size than is reported in this field, then this namespace specific size is reported in the **NAWUN** field of the [Identify Namespace](../nvme/ns-nvme-nvme_identify_namespace_data.md) data structure. If a write command is submitted with size less than or equal to the **AWUN** value, the host is guaranteed that the write command is atomic to the NVM with respect to other read or write commands. If a write command is submitted with size greater than the **AWUN** value, then there is no guarantee of command atomicity. The **AWUN** value does not have any applicability to write errors caused by power failure. For more information, see the Atomic Write Unit Power Fail (**AWUPF**) field. A value of `FFFFh` indicates all commands are atomic as this is the largest command size. Implementations should support a minimum of 128KB, appropriately scaled based on the Logical Block Access (LBA) size.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.AWUPF">
-            <summary>
-            <para>Indicates the size of the write operation guaranteed to be written atomically to the NVM across all namespaces with any supported namespace format during a power fail or error condition. This field is specified in logical blocks and is a 0’s based value. If a specific namespace guarantees a larger size than is reported in this field, then this namespace specific size is reported in the **NAWUPF** field in the [Identify Namespace](../nvme/ns-nvme-nvme_identify_namespace_data.md) data structure. The **AWUPF** value must be less than or equal to the **AWUN** value. If a write command is submitted with size less than or equal to the **AWUPF** value, the host is guaranteed that the write is atomic to the NVM with respect to other read or write commands. If a write command is submitted that is greater than this size, there is no guarantee of command atomicity. If the write size is less than or equal to the **AWUPF** value and the write command fails, then subsequent read commands for the associated logical blocks will return data from the previous successful write command. If a write command is submitted with size greater than the **AWUPF** value, then there is no guarantee of data returned on subsequent reads of the associated logical blocks.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.NVSCC">
-            <summary>A NVM Vendor Specific Command Configuration (NVSCC) structure containing fields that indicate the configuration settings for NVM Vendor Specific command handling.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.ACWU">
-            <summary>
-            <para>Indicates the size of the write operation guaranteed to be written atomically to the NVM across all namespaces with any supported namespace format for a Compare and Write fused operation. If a specific namespace guarantees a larger size than is reported in this field, then this namespace specific size is reported in the **NACWU** field in the [Identify Namespace](../nvme/ns-nvme-nvme_identify_namespace_data.md) data structure. This field will be supported if the Compare and Write fused command is supported. This field is specified in logical blocks and is a 0’s based value. If a Compare and Write is submitted that requests a transfer size larger than this value, the controller may fail the command with a status of [NVME_STATUS_INVALID_FIELD_IN_COMMAND](ne-nvme-nvme_status_generic_command_codes.md). If Compare and Write is not a supported fused command, the value of this field will be `0h`.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.Reserved4">
-            <summary>A reserved field.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.SGLS">
-            <summary>A SGL Support (SGLS) structure containing fields that specify whether Scatter Gather Lists (SGL) are supported for the NVM Command Set and the supported SGL types.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.Reserved6">
-            <summary>Bytes 704:2047 are reserved for I/O Command Set Attributes.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.PDS">
-            <summary>
-            <para>Contains an array of 32 Power State Descriptors. Each member of the array is a 32 bit field that indicates the characteristics of a Power State Descriptor. The format of this field is defined in the [NVME_POWER_STATE_DESC](ns-nvme-nvme_power_state_desc.md) structure. The zero-based position of a structure in the array corresponds to the name of the Power State Descriptor, such that Power State 0 Descriptor (PSD0) is in position 0, Power State 1 Descriptor (PSD1) is in position 1, and so on, up to Power State 31 Descriptor (PSD31) in position 31.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_identify_controller_data#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA.VS">
-            <summary>Bytes 3072:4095 are allocated for vendor specific usage.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct.MultiPCIePorts">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct.MultiControllers">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct.SRIOV">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct.ANAR">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct.Reserved">
-            <summary>Gets or sets bits 4-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CMIC_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.Reserved0">
-            <summary>Gets or sets bits 0-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field. Allowed values are [0..255].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.NamespaceAttributeChanged">
-            <summary>Gets or sets bit 8 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.FirmwareActivation">
-            <summary>Gets or sets bit 9 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.Reserved1">
-            <summary>Gets or sets bit 10 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.AsymmetricAccessChanged">
-            <summary>Gets or sets bit 11 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.PredictableLatencyAggregateLogChanged">
-            <summary>Gets or sets bit 12 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.LbaStatusChanged">
-            <summary>Gets or sets bit 13 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.EnduranceGroupAggregateLogChanged">
-            <summary>Gets or sets bit 14 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.Reserved2">
-            <summary>Gets or sets bits 15-26 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field. Allowed values are [0..4095].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.ZoneInformation">
-            <summary>Gets or sets bit 27 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct.Reserved3">
-            <summary>Gets or sets bits 28-31 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OAES_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.HostIdentifier128Bit">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.NOPSPMode">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.NVMSets">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.ReadRecoveryLevels">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.EnduranceGroups">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.PredictableLatencyMode">
-            <summary>Gets or sets bit 5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.TBKAS">
-            <summary>Gets or sets bit 6 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.NamespaceGranularity">
-            <summary>Gets or sets bit 7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.SQAssociations">
-            <summary>Gets or sets bit 8 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.UUIDList">
-            <summary>Gets or sets bit 9 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct.Reserved0">
-            <summary>Gets or sets bits 10-31 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CTRATT_e__Struct._bitfield" /> field. Allowed values are [0..4194303].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel0">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel1">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel2">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel3">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel4">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel5">
-            <summary>Gets or sets bit 5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel6">
-            <summary>Gets or sets bit 6 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel7">
-            <summary>Gets or sets bit 7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel8">
-            <summary>Gets or sets bit 8 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel9">
-            <summary>Gets or sets bit 9 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel10">
-            <summary>Gets or sets bit 10 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel11">
-            <summary>Gets or sets bit 11 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel12">
-            <summary>Gets or sets bit 12 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel13">
-            <summary>Gets or sets bit 13 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel14">
-            <summary>Gets or sets bit 14 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct.ReadRecoveryLevel15">
-            <summary>Gets or sets bit 15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RRLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.SecurityCommands">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.FormatNVM">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.FirmwareCommands">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.NamespaceCommands">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.DeviceSelfTest">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.Directives">
-            <summary>Gets or sets bit 5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.NVMeMICommands">
-            <summary>Gets or sets bit 6 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.VirtualizationMgmt">
-            <summary>Gets or sets bit 7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.DoorBellBufferConfig">
-            <summary>Gets or sets bit 8 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.GetLBAStatus">
-            <summary>Gets or sets bit 9 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct.Reserved">
-            <summary>Gets or sets bits 10-15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._OACS_e__Struct._bitfield" /> field. Allowed values are [0..63].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct.Slot1ReadOnly">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct.SlotCount">
-            <summary>Gets or sets bits 1-3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct._bitfield" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct.ActivationWithoutReset">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct.Reserved">
-            <summary>Gets or sets bits 5-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FRMW_e__Struct._bitfield" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.SmartPagePerNamespace">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.CommandEffectsLog">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.LogPageExtendedData">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.TelemetrySupport">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.PersistentEventLog">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.Reserved0">
-            <summary>Gets or sets bit 5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.TelemetryDataArea4">
-            <summary>Gets or sets bit 6 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct.Reserved1">
-            <summary>Gets or sets bit 7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._LPA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._AVSCC_e__Struct.CommandFormatInSpec">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._AVSCC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._AVSCC_e__Struct.Reserved">
-            <summary>Gets or sets bits 1-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._AVSCC_e__Struct._bitfield" /> field. Allowed values are [0..127].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._APSTA_e__Struct.Supported">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._APSTA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._APSTA_e__Struct.Reserved">
-            <summary>Gets or sets bits 1-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._APSTA_e__Struct._bitfield" /> field. Allowed values are [0..127].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct.RPMBUnitCount">
-            <summary>Gets or sets bits 0-2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct._bitfield" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct.AuthenticationMethod">
-            <summary>Gets or sets bits 3-5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct._bitfield" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct.Reserved0">
-            <summary>Gets or sets bits 6-15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct._bitfield" /> field. Allowed values are [0..1023].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct.TotalSize">
-            <summary>Gets or sets bits 16-23 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct._bitfield" /> field. Allowed values are [0..255].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct.AccessSize">
-            <summary>Gets or sets bits 24-31 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._RPMBS_e__Struct._bitfield" /> field. Allowed values are [0..255].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._HCTMA_e__Struct.Supported">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._HCTMA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._HCTMA_e__Struct.Reserved">
-            <summary>Gets or sets bits 1-15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._HCTMA_e__Struct._bitfield" /> field. Allowed values are [0..32767].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct.CryptoErase">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct.BlockErase">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct.Overwrite">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct.Reserved">
-            <summary>Gets or sets bits 3-28 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct._bitfield" /> field. Allowed values are [0..67108863].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct.NDI">
-            <summary>Gets or sets bit 29 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct.NODMMAS">
-            <summary>Gets or sets bits 30-31 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SANICAP_e__Struct._bitfield" /> field. Allowed values are [0..3].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.OptimizedState">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.NonOptimizedState">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.InaccessibleState">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.PersistentLossState">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.ChangeState">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.Reserved">
-            <summary>Gets or sets bit 5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.StaticANAGRPID">
-            <summary>Gets or sets bit 6 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct.SupportNonZeroANAGRPID">
-            <summary>Gets or sets bit 7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ANACAP_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SQES_e__Struct.RequiredEntrySize">
-            <summary>Gets or sets bits 0-3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SQES_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SQES_e__Struct.MaxEntrySize">
-            <summary>Gets or sets bits 4-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SQES_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CQES_e__Struct.RequiredEntrySize">
-            <summary>Gets or sets bits 0-3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CQES_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CQES_e__Struct.MaxEntrySize">
-            <summary>Gets or sets bits 4-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._CQES_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.Compare">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.WriteUncorrectable">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.DatasetManagement">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.WriteZeroes">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.FeatureField">
-            <summary>Gets or sets bit 4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.Reservations">
-            <summary>Gets or sets bit 5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.Timestamp">
-            <summary>Gets or sets bit 6 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.Verify">
-            <summary>Gets or sets bit 7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct.Reserved">
-            <summary>Gets or sets bits 8-15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._ONCS_e__Struct._bitfield" /> field. Allowed values are [0..255].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FUSES_e__Struct.CompareAndWrite">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FUSES_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FUSES_e__Struct.Reserved">
-            <summary>Gets or sets bits 1-15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FUSES_e__Struct._bitfield" /> field. Allowed values are [0..32767].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct.FormatApplyToAll">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct.SecureEraseApplyToAll">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct.CryptographicEraseSupported">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct.FormatSupportNSIDAllF">
-            <summary>Gets or sets bit 3 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct.Reserved">
-            <summary>Gets or sets bits 4-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._FNA_e__Struct._bitfield" /> field. Allowed values are [0..15].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._VWC_e__Struct.Present">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._VWC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._VWC_e__Struct.FlushBehavior">
-            <summary>Gets or sets bits 1-2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._VWC_e__Struct._bitfield" /> field. Allowed values are [0..3].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._VWC_e__Struct.Reserved">
-            <summary>Gets or sets bits 3-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._VWC_e__Struct._bitfield" /> field. Allowed values are [0..31].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NVSCC_e__Struct.CommandFormatInSpec">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NVSCC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NVSCC_e__Struct.Reserved">
-            <summary>Gets or sets bits 1-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NVSCC_e__Struct._bitfield" /> field. Allowed values are [0..127].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct.WriteProtect">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct.UntilPowerCycle">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct.Permanent">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct.Reserved">
-            <summary>Gets or sets bits 3-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._NWPC_e__Struct._bitfield" /> field. Allowed values are [0..31].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.SGLSupported">
-            <summary>Gets or sets bits 0-1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field. Allowed values are [0..3].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.KeyedSGLData">
-            <summary>Gets or sets bit 2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.Reserved0">
-            <summary>Gets or sets bits 3-15 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field. Allowed values are [0..8191].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.BitBucketDescrSupported">
-            <summary>Gets or sets bit 16 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.ByteAlignedContiguousPhysicalBuffer">
-            <summary>Gets or sets bit 17 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.SGLLengthLargerThanDataLength">
-            <summary>Gets or sets bit 18 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.MPTRSGLDescriptor">
-            <summary>Gets or sets bit 19 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.AddressFieldSGLDataBlock">
-            <summary>Gets or sets bit 20 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.TransportSGLData">
-            <summary>Gets or sets bit 21 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct.Reserved1">
-            <summary>Gets or sets bits 22-31 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_IDENTIFY_CONTROLLER_DATA._SGLS_e__Struct._bitfield" /> field. Allowed values are [0..1023].</summary>
-        </member>
-        <member name="T:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES">
-            <summary>Contains values that indicate the log pages that can be retrieved by the Get Log Page **NVME_ADMIN_COMMAND_GET_LOG_PAGE** Admin Command.</summary>
-            <remarks></remarks>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_ERROR_INFO">
-            <summary>
-            <para>The Error Information log page that contains extended error information for a command that completed with an error or reported an error that is not specific to a particular command. The information contained in the Error Information log page is defined in the [NVME_ERROR_INFO_LOG](ns-nvme-nvme_error_info_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_HEALTH_INFO">
-            <summary>
-            <para>The SMART / Health Information log page that contains SMART and general health information. The information contained in the SMART/Health Information log page is defined in the [NVME_HEALTH_INFO_LOG](ns-nvme-nvme_health_info_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_FIRMWARE_SLOT_INFO">
-            <summary>
-            <para>The Firmware Slot Information log page that describes the firmware revision stored in each supported firmware slot. The information contained in the Firmware Slot Information log page is defined in the [FIRMWARE_SLOT_INFO_LOG](ns-nvme-nvme_firmware_slot_info_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_CHANGED_NAMESPACE_LIST">
-            <summary>
-            <para>The Changed Namespace List log page that describes namespaces in the controller that have changed [Identify Namespace](../nvme/ns-nvme-nvme_identify_namespace_data.md) information since the last time the log page was read. The information contained in the Changed Namespace List log page is defined in the [CHANGED_NAMESPACE_LIST_LOG](ns-nvme-nvme_changed_namespace_list_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_COMMAND_EFFECTS">
-            <summary>
-            <para>The Commands Supported and Effects log page that describes the commands that the controller supports and the effects of those commands on the state of the NVM subsystem. The information contained in the Commands Supported and Effects log page is defined in the [NVME_COMMAND_EFFECTS_LOG](ns-nvme-nvme_command_effects_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_DEVICE_SELF_TEST">
-            <summary>
-            <para>The Device Self-Test log page that describes the status, completion percentage, and results of a device self-test. The information contained in the Device Self Test log page is defined in the [NVME_DEVICE_SELF_TEST_LOG](ns-nvme-nvme_device_self_test_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_TELEMETRY_HOST_INITIATED">
-            <summary>
-            <para>The Telemetry Host-Initiated log page that describes telemetry data from the host. The information contained in the Telemetry Host-Initiated log page is defined in the [NVME_TELEMETRY_HOST_INITIATED_LOG](ns-nvme-nvme_device_self_test_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_TELEMETRY_CTLR_INITIATED">
-            <summary>The Telemetry Controller-Initiated log page that describes telemetry data from the controller.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_ENDURANCE_GROUP_INFORMATION">
-            <summary>
-            <para>The Endurance Group Information log page that contains information about the amount of data being read from and written to an Endurance Group. The information contained in the Endurance Group Information log page is defined in the [NVME_ENDURANCE_GROUP_LOG](ns-nvme-nvme_endurance_group_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_RESERVATION_NOTIFICATION">
-            <summary>
-            <para>The Reservation Notification log page that is created whenever an unmasked reservation notification occurs on any namespace that may be accessed by the controller. The information contained in the Reservation Notification log page is defined in the [NVME_RESERVATION_NOTIFICATION_LOG](ns-nvme-nvme_reservation_notification_log.md) structure.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ne-nvme-nvme_log_pages#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_LOG_PAGES.NVME_LOG_PAGE_SANITIZE_STATUS">
-            <summary>The Sanitize Status log page that is created whenever an unmasked reservation notification occurs on any namespace that may be accessed by the controller.</summary>
-        </member>
-        <member name="T:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC">
-            <summary>Contains fields that describe the attributes of each power state.</summary>
-            <remarks></remarks>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.MP">
-            <summary>
-            <para>Indicates the maximum power consumed by the NVM subsystem in this power state. The power in Watts is equal to the value in this field multiplied by the scale specified in the Max Power Scale (**MPS**) field.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_power_state_desc#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved0">
-            <summary>Bits 16:23 are reserved.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.MPS">
-            <summary>Gets or sets bit 0 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield1" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.NOPS">
-            <summary>Gets or sets bit 1 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield1" /> field.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved1">
-            <summary>Gets or sets bits 2-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield1" /> field. Allowed values are [0..63].</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.ENLAT">
-            <summary>Indicates the maximum entry latency in microseconds associated with entering this power state.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.EXLAT">
-            <summary>Indicates the maximum exit latency in microseconds associated with exiting this power state.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.RRT">
-            <summary>Gets or sets bits 0-4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield2" /> field. Allowed values are [0..31].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved2">
-            <summary>Gets or sets bits 5-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield2" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.RRL">
-            <summary>Gets or sets bits 0-4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield3" /> field. Allowed values are [0..31].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved3">
-            <summary>Gets or sets bits 5-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield3" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.RWT">
-            <summary>Gets or sets bits 0-4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield4" /> field. Allowed values are [0..31].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved4">
-            <summary>Gets or sets bits 5-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield4" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.RWL">
-            <summary>Gets or sets bits 0-4 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield5" /> field. Allowed values are [0..31].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved5">
-            <summary>Gets or sets bits 5-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield5" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.IDLP">
-            <summary>
-            <para>Indicates the typical power consumed by the NVM subsystem over 30 seconds in this power state when idle (for instance, there are no pending commands, register accesses, or background processes). The measurement starts after the NVM subsystem has been idle for 10 seconds. The power in Watts is equal to the value in this field multiplied by the scale indicated in the Idle Power Scale (**IPS**) field. A value of `0000h` indicates Idle Power is not reported.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_power_state_desc#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved6">
-            <summary>Gets or sets bits 0-5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield6" /> field. Allowed values are [0..63].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.IPS">
-            <summary>Gets or sets bits 6-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield6" /> field. Allowed values are [0..3].</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved7">
-            <summary>Bits 152:159 are reserved.</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.ACTP">
-            <summary>
-            <para>Indicates the largest average power consumed by the NVM subsystem over a 10 second period in this power state with the workload indicated in the Active Power Workload (**APW**) field. The power in Watts is equal to the value in this field multiplied by the scale indicated in the Active Power Scale (**APS**) field. A value of `0000h` indicates Active Power is not reported.</para>
-            <para><see href="https://learn.microsoft.com/windows/win32/api/nvme/ns-nvme-nvme_power_state_desc#members">Read more on learn.microsoft.com</see>.</para>
-            </summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.APW">
-            <summary>Gets or sets bits 0-2 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield7" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved8">
-            <summary>Gets or sets bits 3-5 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield7" /> field. Allowed values are [0..7].</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.APS">
-            <summary>Gets or sets bits 6-7 in the <see cref="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC._bitfield7" /> field. Allowed values are [0..3].</summary>
-        </member>
-        <member name="F:Windows.Win32.Storage.Nvme.NVME_POWER_STATE_DESC.Reserved9">
-            <summary>Bits 184:255 are reserved.</summary>
-        </member>
-        <member name="P:Windows.Win32.Storage.Nvme.__NVME_POWER_STATE_DESC_32.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="M:Windows.Win32.Storage.Nvme.__NVME_POWER_STATE_DESC_32.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.Storage.Nvme.__NVME_POWER_STATE_DESC_32.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="T:Windows.Win32.FreeLibrarySafeHandle">
             <summary>
             Represents a Win32 handle that can be closed with <see cref="M:Windows.Win32.PInvoke.FreeLibrary(Windows.Win32.Foundation.HMODULE)"/>.
@@ -4661,22 +2601,6 @@
             Gets a ref to an individual element of the inline array.
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
-        </member>
-        <member name="M:Windows.Win32.__long_2.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__long_2.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
         <member name="T:Windows.Win32.PInvoke">
             <content>
@@ -4737,6 +2661,35 @@
             <para>This doc was truncated.</para>
             </returns>
             <remarks>Between calling <a href="https://docs.microsoft.com/windows/desktop/api/cfgmgr32/nf-cfgmgr32-cm_get_device_interface_list_sizea">CM_Get_Device_Interface_List_Size</a> to get the size of the list and calling <b>CM_Get_Device_Interface_List</b> to get the list, a new device interface can be added to the system causing the size returned to no longer be valid.  Callers should be robust to that condition and retry getting the size and the list if <b>CM_Get_Device_Interface_List</b> returns <b>CR_BUFFER_SMALL</b>.</remarks>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.CM_Locate_DevNode(System.UInt32@,Windows.Win32.Foundation.PWSTR,Windows.Win32.Devices.DeviceAndDriverInstallation.CM_LOCATE_DEVNODE_FLAGS)">
+            <inheritdoc cref="M:Windows.Win32.PInvoke.CM_Locate_DevNode(System.UInt32*,Windows.Win32.Foundation.PWSTR,Windows.Win32.Devices.DeviceAndDriverInstallation.CM_LOCATE_DEVNODE_FLAGS)"/>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.CM_Locate_DevNode(System.UInt32*,Windows.Win32.Foundation.PWSTR,Windows.Win32.Devices.DeviceAndDriverInstallation.CM_LOCATE_DEVNODE_FLAGS)">
+            <summary>The CM_Locate_DevNode function obtains a device instance handle to the device node that is associated with a specified device instance ID on the local machine. (Unicode)</summary>
+            <param name="pdnDevInst">A pointer to a device instance handle that <b>CM_Locate_DevNode</b> retrieves. The retrieved handle is bound to the local machine.</param>
+            <param name="pDeviceID">A pointer to a NULL-terminated string representing a <a href="https://docs.microsoft.com/windows-hardware/drivers/install/device-instance-ids">device instance ID</a>. If this value is <b>NULL</b>, or if it points to a zero-length string, the function retrieves a device instance handle to the device at the root of the <a href="https://docs.microsoft.com/windows-hardware/drivers/kernel/device-tree">device tree</a>.</param>
+            <param name="ulFlags">A variable of ULONG type that supplies one of the following flag values that apply if the caller supplies a device instance identifier:</param>
+            <returns>If the operation succeeds, <b>CM_Locate_DevNode</b> returns CR_SUCCESS. Otherwise, the function returns one of the CR_<i>Xxx</i> error codes that are defined in <i>Cfgmgr32.h</i>.</returns>
+            <remarks>
+            <para>For information about using device instance handles that are bound to the local machine, see <a href="https://docs.microsoft.com/windows/desktop/api/cfgmgr32/nf-cfgmgr32-cm_get_child">CM_Get_Child</a>.</para>
+            <para>> [!NOTE] > The cfgmgr32.h header defines CM_Locate_DevNode as an alias which automatically selects the ANSI or Unicode version of this function based on the definition of the UNICODE preprocessor constant. Mixing usage of the encoding-neutral alias with code that not encoding-neutral can lead to mismatches that result in compilation or runtime errors. For more information, see [Conventions for Function Prototypes](/windows/win32/intl/conventions-for-function-prototypes).</para>
+            <para><see href="https://learn.microsoft.com/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_locate_devnodew#">Read more on learn.microsoft.com</see>.</para>
+            </remarks>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.CM_Get_DevNode_Property(System.UInt32,Windows.Win32.Foundation.DEVPROPKEY@,Windows.Win32.Devices.Properties.DEVPROPTYPE@,System.Span{System.Byte},System.UInt32@,System.UInt32)">
+            <inheritdoc cref="M:Windows.Win32.PInvoke.CM_Get_DevNode_Property(System.UInt32,Windows.Win32.Foundation.DEVPROPKEY*,Windows.Win32.Devices.Properties.DEVPROPTYPE*,System.Byte*,System.UInt32*,System.UInt32)"/>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.CM_Get_DevNode_Property(System.UInt32,Windows.Win32.Foundation.DEVPROPKEY*,Windows.Win32.Devices.Properties.DEVPROPTYPE*,System.Byte*,System.UInt32*,System.UInt32)">
+            <summary>The CM_Get_DevNode_Property function retrieves a device instance property.</summary>
+            <param name="dnDevInst">Device instance handle that is bound to the local machine.</param>
+            <param name="PropertyKey">Pointer to a <a href="https://docs.microsoft.com/windows-hardware/drivers/install/devpropkey">DEVPROPKEY</a> structure that represents the device property key of the requested device instance property.</param>
+            <param name="PropertyType">Pointer to a <a href="https://docs.microsoft.com/windows-hardware/drivers/install/property-data-type-identifiers">DEVPROPTYPE</a>-typed variable that receives the property-data-type identifier of the requested device instance property, where the property-data-type identifier is the bitwise OR between a base-data-type identifier and, if the base-data type is modified, a property-data-type modifier.</param>
+            <param name="PropertyBuffer">Pointer to a buffer that receives the requested device instance property. <b>CM_Get_DevNode_Property</b> retrieves the requested property only if the buffer is large enough to hold all the property value data. The pointer can be NULL.</param>
+            <param name="PropertyBufferSize">The size, in bytes, of the <i>PropertyBuffer</i> buffer. If <i>PropertyBuffer</i> is set to NULL, <i>*PropertyBufferSize</i> must be set to zero. As output, if the buffer is not large enough to hold all the property value data, <b>CM_Get_DevNode_Property</b> returns the size of the data, in bytes, in <i>*PropertyBufferSize</i>.</param>
+            <param name="ulFlags">Reserved. Must be set to zero.</param>
+            <returns>If the operation succeeds, the function returns CR_SUCCESS. Otherwise, it returns one of the CR_-prefixed error codes defined in <i>Cfgmgr32.h</i>.</returns>
+            <remarks><b>CM_Get_DevNode_Property</b> is part of the <a href="https://docs.microsoft.com/windows-hardware/drivers/install/unified-device-property-model--windows-vista-and-later-">Unified Device Property Model</a>.</remarks>
         </member>
         <member name="F:Windows.Win32.PInvoke.IOCTL_STORAGE_CHECK_VERIFY">
             <summary>Determines whether media are accessible for a device.</summary>
@@ -5573,7 +3526,10 @@
             </returns>
             <remarks>To compile an application that uses this function, set _WIN32_WINNT &gt;= 0x0601. For more information, see <a href="https://docs.microsoft.com/windows/desktop/WinProg/using-the-windows-headers">Using the Windows Headers</a>.</remarks>
         </member>
-        <member name="M:Windows.Win32.PInvoke.SetThreadGroupAffinity(System.Runtime.InteropServices.SafeHandle,Windows.Win32.System.SystemInformation.GROUP_AFFINITY@,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*)">
+        <member name="M:Windows.Win32.PInvoke.SetThreadGroupAffinity(System.Runtime.InteropServices.SafeHandle,Windows.Win32.System.SystemInformation.GROUP_AFFINITY@,Windows.Win32.System.SystemInformation.GROUP_AFFINITY@)">
+            <inheritdoc cref="M:Windows.Win32.PInvoke.SetThreadGroupAffinity(Windows.Win32.Foundation.HANDLE,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*)"/>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.SetThreadGroupAffinity(System.Runtime.InteropServices.SafeHandle,Windows.Win32.System.SystemInformation.GROUP_AFFINITY@)">
             <inheritdoc cref="M:Windows.Win32.PInvoke.SetThreadGroupAffinity(Windows.Win32.Foundation.HANDLE,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*)"/>
         </member>
         <member name="M:Windows.Win32.PInvoke.SetThreadGroupAffinity(Windows.Win32.Foundation.HANDLE,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*,Windows.Win32.System.SystemInformation.GROUP_AFFINITY*)">
@@ -5715,7 +3671,10 @@
             <para><see href="https://learn.microsoft.com/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc#">Read more on learn.microsoft.com</see>.</para>
             </remarks>
         </member>
-        <member name="M:Windows.Win32.PInvoke.DeviceIoControl(System.Runtime.InteropServices.SafeHandle,System.UInt32,System.Void*,System.UInt32,System.Void*,System.UInt32,System.UInt32*,System.Threading.NativeOverlapped*)">
+        <member name="M:Windows.Win32.PInvoke.DeviceIoControl(System.Runtime.InteropServices.SafeHandle,System.UInt32,System.ReadOnlySpan{System.Byte},System.Span{System.Byte},System.UInt32@,System.Threading.NativeOverlapped*)">
+            <inheritdoc cref="M:Windows.Win32.PInvoke.DeviceIoControl(Windows.Win32.Foundation.HANDLE,System.UInt32,System.Void*,System.UInt32,System.Void*,System.UInt32,System.UInt32*,System.Threading.NativeOverlapped*)"/>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.DeviceIoControl(System.Runtime.InteropServices.SafeHandle,System.UInt32,System.ReadOnlySpan{System.Byte},System.Span{System.Byte},System.Threading.NativeOverlapped*)">
             <inheritdoc cref="M:Windows.Win32.PInvoke.DeviceIoControl(Windows.Win32.Foundation.HANDLE,System.UInt32,System.Void*,System.UInt32,System.Void*,System.UInt32,System.UInt32*,System.Threading.NativeOverlapped*)"/>
         </member>
         <member name="M:Windows.Win32.PInvoke.DeviceIoControl(Windows.Win32.Foundation.HANDLE,System.UInt32,System.Void*,System.UInt32,System.Void*,System.UInt32,System.UInt32*,System.Threading.NativeOverlapped*)">
@@ -5824,7 +3783,10 @@
             <para><see href="https://learn.microsoft.com/windows/win32/api/setupapi/nf-setupapi-setupdidestroydeviceinfolist">Learn more about this API from learn.microsoft.com</see>.</para>
             </remarks>
         </member>
-        <member name="M:Windows.Win32.PInvoke.SetupDiGetDeviceInterfaceDetail(System.Runtime.InteropServices.SafeHandle,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DATA@,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DETAIL_DATA_W*,System.UInt32,System.UInt32*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVINFO_DATA*)">
+        <member name="M:Windows.Win32.PInvoke.SetupDiGetDeviceInterfaceDetail(System.Runtime.InteropServices.SafeHandle,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DATA@,System.Span{System.Byte},System.UInt32@,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVINFO_DATA@)">
+            <inheritdoc cref="M:Windows.Win32.PInvoke.SetupDiGetDeviceInterfaceDetail(Windows.Win32.Devices.DeviceAndDriverInstallation.HDEVINFO,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DATA*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DETAIL_DATA_W*,System.UInt32,System.UInt32*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVINFO_DATA*)"/>
+        </member>
+        <member name="M:Windows.Win32.PInvoke.SetupDiGetDeviceInterfaceDetail(System.Runtime.InteropServices.SafeHandle,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DATA@,System.Span{System.Byte})">
             <inheritdoc cref="M:Windows.Win32.PInvoke.SetupDiGetDeviceInterfaceDetail(Windows.Win32.Devices.DeviceAndDriverInstallation.HDEVINFO,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DATA*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DETAIL_DATA_W*,System.UInt32,System.UInt32*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVINFO_DATA*)"/>
         </member>
         <member name="M:Windows.Win32.PInvoke.SetupDiGetDeviceInterfaceDetail(Windows.Win32.Devices.DeviceAndDriverInstallation.HDEVINFO,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DATA*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVICE_INTERFACE_DETAIL_DATA_W*,System.UInt32,System.UInt32*,Windows.Win32.Devices.DeviceAndDriverInstallation.SP_DEVINFO_DATA*)">
@@ -5905,56 +3867,6 @@
             Represents a Win32 handle that can be closed with <see cref="M:Windows.Win32.PInvoke.SetupDiDestroyDeviceInfoList(Windows.Win32.Devices.DeviceAndDriverInstallation.HDEVINFO)"/>.
             </summary>
         </member>
-        <member name="P:Windows.Win32.__uint_2.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__uint_2.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__uint_2.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__uint_2.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="P:Windows.Win32.__uint_4.Length">
-            <summary>The length of the inline array.</summary>
-        </member>
-        <member name="P:Windows.Win32.__uint_4.Item(System.Int32)">
-            <summary>
-            Gets a ref to an individual element of the inline array.
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
-            </summary>
-        </member>
-        <member name="M:Windows.Win32.__uint_4.AsSpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
-        <member name="M:Windows.Win32.__uint_4.AsReadOnlySpan">
-            <summary>
-            Gets this inline array as a span.
-            </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
-        </member>
         <member name="P:Windows.Win32.__ushort_3.Length">
             <summary>The length of the inline array.</summary>
         </member>
@@ -5964,21 +3876,22 @@
             ⚠ Important ⚠: When this struct is on the stack, do not let the returned reference outlive the stack frame that defines it.
             </summary>
         </member>
-        <member name="M:Windows.Win32.__ushort_3.AsSpan">
+        <member name="T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute">
             <summary>
-            Gets this inline array as a span.
+            Specifies the priority of a member in overload resolution.
+            When unspecified, the default priority is 0.
             </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
         </member>
-        <member name="M:Windows.Win32.__ushort_3.AsReadOnlySpan">
+        <member name="M:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute.#ctor(System.Int32)">
             <summary>
-            Gets this inline array as a span.
+            Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute"/> class.
             </summary>
-            <remarks>
-            ⚠ Important ⚠: When this struct is on the stack, do not let the returned span outlive the stack frame that defines it.
-            </remarks>
+            <param name="priority">The priority of the attributed member. Higher numbers are prioritized, lower numbers are deprioritized. 0 is the default if no attribute is present.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute.Priority">
+            <summary>
+            The priority of the member.
+            </summary>
         </member>
     </members>
 </doc>

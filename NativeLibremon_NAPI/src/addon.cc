@@ -95,21 +95,64 @@ Napi::Value Init(const Napi::CallbackInfo& info) {
   return deferred.Promise();
 }
 
-Napi::Value Poll(const Napi::CallbackInfo& info) {
-  Napi::Env env = info.Env();
-  try {
-    if (g_hardwareMonitor == nullptr) {
-      Napi::Error::New(env, "Hardware monitor not initialized. Call init() first.").ThrowAsJavaScriptException();
-      return env.Undefined();
+class PollWorker : public Napi::AsyncWorker {
+public:
+    PollWorker(Napi::Env env, HardwareMonitor* monitor)
+        : Napi::AsyncWorker(env), monitor(monitor), deferred(Napi::Promise::Deferred::New(env)) {}
+
+    void Execute() override {
+        if (monitor == nullptr) {
+            SetError("Hardware monitor not initialized");
+            return;
+        }
+        try {
+            jsonData = monitor->Poll();
+        } catch (const std::exception& e) {
+            SetError(e.what());
+        }
     }
 
-    std::string jsonData = g_hardwareMonitor->Poll();
+    void OnOK() override {
+        Napi::Env env = Env();
+        Napi::HandleScope scope(env);
+        
+        try {
+            Napi::Value jsonStr = Napi::String::New(env, jsonData);
+            Napi::Object json = env.Global().Get("JSON").As<Napi::Object>();
+            Napi::Function parse = json.Get("parse").As<Napi::Function>();
+            Napi::Value result = parse.Call({jsonStr});
+            deferred.Resolve(result);
+        } catch (const std::exception& e) {
+            deferred.Reject(Napi::Error::New(env, e.what()).Value());
+        } catch (...) {
+            deferred.Reject(Napi::Error::New(env, "Unknown error parsing JSON").Value());
+        }
+    }
 
-    return env.Global().Get("JSON").As<Napi::Object>().Get("parse").As<Napi::Function>().Call({Napi::String::New(env, jsonData)});
-  } catch (const std::exception& e) {
-    Napi::Error::New(env, e.what()).ThrowAsJavaScriptException();
-    return env.Undefined();
+    void OnError(const Napi::Error& e) override {
+        deferred.Reject(e.Value());
+    }
+
+    Napi::Promise GetPromise() { return deferred.Promise(); }
+
+private:
+    HardwareMonitor* monitor;
+    std::string jsonData;
+    Napi::Promise::Deferred deferred;
+};
+
+Napi::Value Poll(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  
+  if (g_hardwareMonitor == nullptr) {
+    auto deferred = Napi::Promise::Deferred::New(env);
+    deferred.Reject(Napi::Error::New(env, "Hardware monitor not initialized. Call init() first.").Value());
+    return deferred.Promise();
   }
+
+  PollWorker* worker = new PollWorker(env, g_hardwareMonitor);
+  worker->Queue();
+  return worker->GetPromise();
 }
 
 Napi::Value Shutdown(const Napi::CallbackInfo& info) {

@@ -1,3 +1,3 @@
 [submodule "deps/LibreHardwareMonitor-src"]
 	path = deps/LibreHardwareMonitor-src
-	url = https://github.com/LibreHardwareMonitor/LibreHardwareMonitor.git
+	url = https://github.com/herrbasan/LibreHardwareMonitor-Fork.git

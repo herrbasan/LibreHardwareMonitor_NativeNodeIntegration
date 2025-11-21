@@ -57,11 +57,18 @@ monitor.shutdown();
 git clone --recurse-submodules https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration.git
 cd LibreHardwareMonitor_NativeNodeIntegration
 
-# Build everything
-.\scripts\build-napi.ps1
+# Complete build (LibreHardwareMonitor + Bridge + N-API addon)
+.\scripts\build-all.ps1
 
 # Output: dist/NativeLibremon_NAPI/ (ready to require)
 ```
+
+**Build steps:**
+1. Builds LibreHardwareMonitor from submodule source (net9.0-windows)
+2. Copies DLL to `deps/LibreHardwareMonitor/`
+3. Publishes .NET Bridge with self-contained runtime
+4. Compiles N-API addon with node-gyp
+5. Assembles everything in `dist/NativeLibremon_NAPI/`
 
 ## 🏗️ Architecture
 
@@ -208,24 +215,28 @@ Clean up resources and shutdown monitoring.
 
 ## 🔨 Build Scripts
 
-### `.\scripts\build-napi.ps1`
+### `.\scripts\build-all.ps1`
 
-Main build script that:
-1. Builds LibreHardwareMonitor from submodule
+Complete build script that builds everything from source:
+1. Builds LibreHardwareMonitor from git submodule
 2. Publishes .NET bridge with self-contained runtime
 3. Compiles N-API addon with node-gyp
 4. Copies all dependencies to `dist/NativeLibremon_NAPI/`
 
 **Options**:
 ```powershell
-# Full build
+# Full build from source
+.\scripts\build-all.ps1
+
+# Clean build (removes build artifacts first)
+.\scripts\build-all.ps1 -Clean
+```
+
+### `.\scripts\build-napi.ps1`
+
+Quick rebuild of just the N-API addon (assumes LibreHardwareMonitor and Bridge are already built):
+```powershell
 .\scripts\build-napi.ps1
-
-# Skip LibreHardwareMonitor build (if already built)
-.\scripts\build-napi.ps1 -SkipLHM
-
-# Clean build
-.\scripts\build-napi.ps1 -Clean
 ```
 
 ## 🐛 Troubleshooting
@@ -234,14 +245,21 @@ Main build script that:
 
 **Problem**: `nethost.h: No such file or directory`
 ```
-Solution: The build script automatically locates nethost.h from .NET SDK
-If issues persist, verify .NET SDK 9.0+ is installed: dotnet --version
+Solution: Install .NET SDK 9.0+
+Check: dotnet --version
 ```
 
-**Problem**: `DiskInfoToolkit.dll not found`
+**Problem**: `Could not locate the assembly 'LibreHardwareMonitorLib'`
 ```
-Solution: This is a dependency of the custom LHM fork
-Rebuild with: .\scripts\build-napi.ps1 -Clean
+Solution: LibreHardwareMonitor DLL not built yet
+Run: .\scripts\build-all.ps1
+This builds LibreHardwareMonitor from source and copies to deps/
+```
+
+**Problem**: Git submodule is empty
+```
+Solution: Initialize submodules
+Run: git submodule update --init --recursive
 ```
 
 ### Runtime Issues

@@ -61,13 +61,14 @@ namespace LibreHardwareMonitorNative
                 var instance = Instance;
                 _storageEnabled = storage;
                 
+                // Note: IsDimmDetectionEnabled property removed in LibreHardwareMonitor commit 5b2645bcbbe10373ec21afc3e95cda3a0a93c97e
+                // DIMM detection is now implicitly enabled when IsMemoryEnabled = true
                 instance._computer = new Computer
                 {
                     IsCpuEnabled = cpu,
                     IsGpuEnabled = gpu,
                     IsMotherboardEnabled = motherboard,
                     IsMemoryEnabled = memory,
-                    IsDimmDetectionEnabled = dimmDetection,
                     IsStorageEnabled = storage,
                     IsNetworkEnabled = network,
                     IsPsuEnabled = psu,

@@ -1,17 +1,10 @@
 {
-  "name": "libremon-cli",
+  "name": "native-libremon-napi-builder",
   "version": "0.1.0",
-  "description": "Standalone CLI for LibreHardwareMonitor - outputs hardware sensor data as JSON",
+  "description": "Build system for LibreHardwareMonitor N-API addon - produces self-contained Node.js module",
   "scripts": {
-  "build": "npm run build:lhm && npm run build:cli",
-  "build:lhm": "node scripts/build-lhm.js",
-  "build:cli": "dotnet publish NativeLibremon_CLI/LibreMonCLI.csproj -c Release -o dist",
-  "build:napi": "(cd NativeLibremon_NAPI && npm install && node-gyp rebuild)",
-  "clean": "rimraf deps/LibreHardwareMonitor && rimraf NativeLibremon_CLI/**/bin NativeLibremon_CLI/**/obj && rimraf dist",
-    "rebuild": "npm run clean && npm run build",
-    "test": "node test/compare-web-vs-native.js",
-    "dist:split": "node scripts/split-dist.js",
-    "dist:prune-napi": "node scripts/prune-dist-napi.js"
+    "build": "cd NativeLibremon_NAPI && npm install && npm run build",
+    "clean": "cd NativeLibremon_NAPI && npm run clean"
   },
   "keywords": [
     "hardware",
@@ -21,8 +14,9 @@
     "gpu",
     "temperature",
     "LibreHardwareMonitor",
-    "cli",
-    "command-line"
+    "napi",
+    "native-addon",
+    "electron"
   ],
   "author": "herrbasan",
   "license": "MIT",
@@ -35,8 +29,5 @@
   },
   "os": [
     "win32"
-  ],
-  "devDependencies": {
-    "rimraf": "^5.0.0"
-  }
+  ]
 }

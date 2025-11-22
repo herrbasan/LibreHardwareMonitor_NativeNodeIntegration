@@ -1,35 +1,63 @@
-# LibreHardwareMonitor Node.js Native Addon
+# LibreHardwareMonitor N-API Addon Builder
 
-Native Node.js addon (N-API) providing hardware monitoring for Electron and Node.js applications on Windows. Built on a custom LibreHardwareMonitor fork with Intel GPU VRAM sensor support.
+Build system for producing a self-contained, ready-to-use N-API addon for hardware monitoring in Electron and Node.js applications on Windows.
 
-> **🤖 AI-Generated Project**: This project was created by [Claude Sonnet 4.5](https://www.anthropic.com/claude).
+> **🤖 AI-Generated Project**: Created by [Claude Sonnet 4.5](https://www.anthropic.com/claude).
+
+## 🎯 What This Produces
+
+A **self-contained Node.js module** (`dist/native-libremon-napi/`) containing:
+- Native N-API addon (`.node` file)
+- Entire .NET 9.0 runtime (self-contained)
+- LibreHardwareMonitor library (custom fork with Intel GPU VRAM support)
+- JavaScript wrapper API
+- ~207 files, ~80MB total
+
+**Key Feature**: The dist folder is completely portable - copy it to any Windows machine and `require()` it. No build tools or .NET installation needed on the target machine.
 
 ## ✨ Features
 
-- **Native Performance**: Direct hardware access via N-API with async polling
+- **Native Performance**: Direct hardware access via N-API
 - **Intel GPU VRAM Support**: Custom LibreHardwareMonitor fork with Intel Arc GPU VRAM sensors
-- **Comprehensive Monitoring**: CPU, GPU, motherboard, memory, storage, network sensors
-- **Production Ready**: Self-contained build with all dependencies included
+- **Comprehensive Monitoring**: CPU, GPU, motherboard, memory, storage, network, PSU, battery, fan controllers
+- **Self-Contained**: Bundles entire .NET runtime, works on any Windows machine
 - **Simple Integration**: Single `require()` for Electron/Node.js apps
 
-## 📋 Requirements
+## 📋 Build Requirements
+
+**Only needed if building from source:**
 
 - **Windows 10/11 x64**
 - **Node.js 16.0+**
-- **Administrator privileges** (required for hardware access)
-
-### Build Requirements (source only)
-
-- **Visual Studio 2019+** with C++ build tools
+- **Visual Studio 2019+ Build Tools** with:
+  - MSVC v142 (Visual C++ 2019) toolset
+  - Windows 10/11 SDK
+  - C++ build tools
 - **.NET SDK 9.0+**
 - **Python 3.x** (for node-gyp)
 
-## 🚀 Quick Start
+> **Note**: ClangCL is **not required**. The build system automatically patches project files to use MSVC v142.
 
-### Using Pre-built Distribution
+## 🚀 Building
+
+```bash
+# From repository root
+npm run build
+
+# Output: dist/native-libremon-napi/
+```
+
+This runs the complete build process:
+1. Compiles C# managed bridge as self-contained .NET app
+2. Compiles C++ native addon with N-API
+3. Assembles everything into `dist/native-libremon-napi/`
+
+## 📦 Using the Built Module
+
+Copy `dist/native-libremon-napi/` to your project and require it:
 
 ```javascript
-const monitor = require('./dist/NativeLibremon_NAPI');
+const monitor = require('./native-libremon-napi');
 
 // Initialize hardware monitoring
 monitor.init({
@@ -38,37 +66,66 @@ monitor.init({
   motherboard: true,
   memory: true,
   storage: false,
-  network: false,
-  dimmDetection: false  // Optional: disable expensive per-DIMM sensors
+  network: false
 });
 
-// Poll sensors (async, non-blocking)
+// Poll sensors (non-blocking)
+
 const data = await monitor.poll();
-console.log('GPU Data:', data);
+console.log('Hardware Data:', data);
 
 // Cleanup
 monitor.shutdown();
 ```
 
-### Building from Source
+> **Runtime Requirement**: Administrator privileges required for hardware access.
 
-```powershell
-# Clone with submodules
-git clone --recurse-submodules https://github.com/herrbasan/LibreHardwareMonitor_NativeNodeIntegration.git
-cd LibreHardwareMonitor_NativeNodeIntegration
+## 📁 Project Structure
 
-# Complete build (LibreHardwareMonitor + Bridge + N-API addon)
-.\scripts\build-all.ps1
-
-# Output: dist/NativeLibremon_NAPI/ (ready to require)
+```
+LibreHardwareMonitor_NativeNodeIntegration/
+├── NativeLibremon_NAPI/          # N-API addon source
+│   ├── src/                      # C++ native code
+│   ├── lib/                      # JavaScript wrapper
+│   ├── scripts/                  # Build scripts
+│   │   ├── build-dist.js         # Assembles dist folder
+│   │   ├── fix-runtimeconfig.js  # Removes .NET framework dependency
+│   │   └── check-windows.js      # Platform validation
+│   └── package.json              # Build configuration
+├── managed/                      # C# bridge source
+│   └── LibreHardwareMonitorBridge/
+├── deps/                         # Dependencies
+│   └── LibreHardwareMonitor-src/ # LHM submodule (custom fork)
+├── dist/                         # Build output
+│   └── native-libremon-napi/     # ← Distributable module
+└── package.json                  # Root build script
 ```
 
-**Build steps:**
-1. Builds LibreHardwareMonitor from submodule source (net9.0-windows)
-2. Copies DLL to `deps/LibreHardwareMonitor/`
-3. Publishes .NET Bridge with self-contained runtime
-4. Compiles N-API addon with node-gyp
-5. Assembles everything in `dist/NativeLibremon_NAPI/`
+## 🔧 Build Process Details
+
+From repository root, `npm run build` executes:
+
+1. **Compile C# Bridge** (self-contained .NET 9.0 app)
+   ```bash
+   dotnet publish -c Release -r win-x64 --self-contained true
+   ```
+
+2. **Fix Runtime Config** (force bundled runtime usage)
+   ```bash
+   node scripts/fix-runtimeconfig.js
+   ```
+
+3. **Compile C++ Addon** (with automatic MSVC toolset patching)
+   ```bash
+   node-gyp configure && node patch-vcxproj.js && node-gyp build
+   ```
+
+4. **Assemble Distribution** (copy all artifacts to dist folder)
+   ```bash
+   node scripts/build-dist.js
+   ```
+
+> **Toolset Patching**: Node.js 24.9.0 requests ClangCL compiler, but build system automatically patches project files to use MSVC v142.
 
 ## 🏗️ Architecture
 
@@ -90,6 +147,33 @@ Hardware Drivers & WMI
 - **Bridge Layer** (`LibreHardwareMonitorBridge.dll`): .NET interop with LibreHardwareMonitor
 - **LHM Fork** (`LibreHardwareMonitorLib.dll`): Custom build with Intel GPU VRAM support
 - **Self-Contained Runtime**: All .NET dependencies bundled in `dist/`
+
+## 📝 Recent Changes
+
+### November 21, 2025 - LibreHardwareMonitor Update & API Compatibility Fixes
+
+**Updated LibreHardwareMonitor Submodule**
+- Updated `deps/LibreHardwareMonitor-src` to commit `5b2645bcbbe10373ec21afc3e95cda3a0a93c97e`
+- Brings in latest Intel GPU VRAM sensor improvements and bug fixes
+
+**Fixed Build System Issues**
+1. **Removed obsolete `IsDimmDetectionEnabled` property**
+   - Property was removed from LibreHardwareMonitor's `Computer` class in recent versions
+   - Updated `HardwareMonitorBridge.cs` to remove reference (line 70)
+   - DIMM detection is now always enabled when memory monitoring is enabled
+
+2. **Changed LibreHardwareMonitorLib reference from DLL to ProjectReference**
+   - **Previous**: Bridge referenced pre-built `deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll` (stale)
+   - **Current**: Bridge now references `deps/LibreHardwareMonitor-src/LibreHardwareMonitorLib/LibreHardwareMonitorLib.csproj`
+   - This ensures the bridge always uses the current source code from the submodule
+   - Fixes runtime errors where managed code called obsolete .NET APIs
+
+3. **Updated LibreHardwareMonitorBridge.csproj**
+   - Changed from: `<Reference Include="LibreHardwareMonitorLib"><HintPath>..\..\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath></Reference>`
+   - Changed to: `<ProjectReference Include="..\..\deps\LibreHardwareMonitor-src\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />`
+   - Ensures build system compiles LHM from source instead of using cached DLL
+
+**Impact**: The addon now works correctly with the updated LibreHardwareMonitor source, providing access to the latest sensor improvements while maintaining API compatibility.
 
 ## 📊 Hardware Support
 
@@ -203,6 +287,8 @@ Clean up resources and shutdown monitoring.
 │   │   ├── hardware_monitor.cc       # LHM wrapper
 │   │   └── json_builder.cc           # JSON marshaling
 │   ├── lib/index.js                  # JavaScript wrapper
+│   ├── patch-vcxproj.js              # Build toolset patcher (ClangCL → MSVC)
+│   ├── .npmrc                        # npm configuration (forces MSVC v142)
 │   └── binding.gyp                   # Build configuration
 ├── managed/
 │   └── LibreHardwareMonitorBridge/   # .NET bridge project
@@ -247,6 +333,17 @@ Quick rebuild of just the N-API addon (assumes LibreHardwareMonitor and Bridge a
 ```
 Solution: Install .NET SDK 9.0+
 Check: dotnet --version
+```
+
+**Problem**: `The build tools for ClangCL (Platform Toolset = 'ClangCL') cannot be found`
+```
+Solution: This is automatically handled by the build system
+The N-API package.json includes a patch-vcxproj.js script that converts
+ClangCL toolset references to MSVC v142 after node-gyp configure step.
+If you encounter this error, ensure:
+1. Visual Studio 2019 Build Tools installed with MSVC v142
+2. .npmrc exists in NativeLibremon_NAPI/ with msvs_version=2019
+3. patch-vcxproj.js exists in NativeLibremon_NAPI/
 ```
 
 **Problem**: `Could not locate the assembly 'LibreHardwareMonitorLib'`

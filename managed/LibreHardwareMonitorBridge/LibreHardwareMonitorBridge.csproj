@@ -20,10 +20,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Reference the LibreHardwareMonitor DLL we built -->
-    <Reference Include="LibreHardwareMonitorLib">
-      <HintPath>..\..\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath>
-    </Reference>
+    <!-- Reference the LibreHardwareMonitor project (not pre-built DLL) -->
+    <!-- Changed from DLL reference to ProjectReference on 2025-11-21 to ensure bridge always compiles against current LHM source -->
+    <!-- This prevents API mismatches when the LibreHardwareMonitor submodule is updated -->
+    <ProjectReference Include="..\..\deps\LibreHardwareMonitor-src\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
     
     <!-- Explicitly reference dependencies that LHM needs -->
     <PackageReference Include="System.Threading.AccessControl" Version="10.0.0" />

@@ -43,6 +43,7 @@
           ]
         }
       },
+      "msvs_toolset": "v142",
       "libraries": [
         "-lnethost"
       ],

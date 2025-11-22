@@ -15,7 +15,7 @@
           "System.IO.Ports": "10.0.0",
           "System.Management": "10.0.0",
           "System.Threading.AccessControl": "10.0.0",
-          "LibreHardwareMonitorLib": "0.9.4.0",
+          "LibreHardwareMonitorLib": "0.9.5.0",
           "runtimepack.Microsoft.NETCore.App.Runtime.win-x64": "9.0.11"
         },
         "runtime": {
@@ -823,11 +823,11 @@
           }
         }
       },
-      "LibreHardwareMonitorLib/0.9.4.0": {
+      "LibreHardwareMonitorLib/0.9.5.0": {
         "runtime": {
           "LibreHardwareMonitorLib.dll": {
-            "assemblyVersion": "0.9.4.0",
-            "fileVersion": "0.9.4.0"
+            "assemblyVersion": "0.9.5.0",
+            "fileVersion": "0.9.5.0"
           }
         }
       }
@@ -900,7 +900,7 @@
       "path": "system.threading.accesscontrol/10.0.0",
       "hashPath": "system.threading.accesscontrol.10.0.0.nupkg.sha512"
     },
-    "LibreHardwareMonitorLib/0.9.4.0": {
+    "LibreHardwareMonitorLib/0.9.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

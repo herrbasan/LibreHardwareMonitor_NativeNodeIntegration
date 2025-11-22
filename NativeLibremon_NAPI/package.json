@@ -1,18 +1,27 @@
 {
   "name": "native-libremon-napi",
-  "version": "0.0.0-migrated",
-  "description": "Migrated N-API variant of LibreMon",
-  "main": "lib/index.js",
+  "version": "0.1.0",
+  "description": "LibreHardwareMonitor N-API addon for Node.js and Electron - hardware monitoring with self-contained .NET runtime",
+  "main": "index.js",
   "scripts": {
-    "install": "node-gyp rebuild",
-    "publish-selfcontained": "dotnet publish ../managed/LibreHardwareMonitorBridge/LibreHardwareMonitorBridge.csproj -c Release -r win-x64 --self-contained true -o ../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish-selfcontained && node ./scripts/fix-runtimeconfig.js",
-  "copy-publish": "node ./scripts/copy-publish.js",
-  "rebuild": "npm run publish-selfcontained && node-gyp rebuild && npm run copy-publish",
+    "install": "echo Skipping automatic build - run 'npm run build' explicitly",
+    "build": "npm run build:managed && npm run build:native && npm run build:dist",
+    "build:managed": "dotnet publish ../managed/LibreHardwareMonitorBridge/LibreHardwareMonitorBridge.csproj -c Release -r win-x64 --self-contained true -o ../managed/LibreHardwareMonitorBridge/bin/Release/net9.0/win-x64/publish-selfcontained && node ./scripts/fix-runtimeconfig.js",
+    "build:native": "node-gyp configure && node patch-vcxproj.js && node-gyp build",
+    "build:dist": "node ./scripts/build-dist.js",
+    "rebuild": "npm run build",
     "test": "node test/test-native-init.js",
-    "test-all": "npm run rebuild && npm test",
     "clean": "node ./scripts/clean-build.js"
   },
   "dependencies": {
     "node-addon-api": "^6.0.0"
+  },
+  "devDependencies": {
+    "electron": "^37.7.1"
+  },
+  "os": ["win32"],
+  "cpu": ["x64"],
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

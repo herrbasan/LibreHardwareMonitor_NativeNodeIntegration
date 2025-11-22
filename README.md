@@ -1,65 +1,37 @@
-# LibreHardwareMonitor N-API Addon Builder
+# LibreHardwareMonitor N-API Addon
 
-Build system for producing a self-contained, ready-to-use N-API addon for hardware monitoring in Electron and Node.js applications on Windows.
+N-API addon providing hardware monitoring for Electron and Node.js on Windows. Bundles LibreHardwareMonitor with a self-contained .NET 9.0 runtime.
 
-> **🤖 AI-Generated Project**: Created by [Claude Sonnet 4.5](https://www.anthropic.com/claude).
+**Output**: `dist/native-libremon-napi/` (~207 files, ~80MB) - portable, requires no external dependencies.
 
-## 🎯 What This Produces
+**Features**: CPU, GPU (Intel VRAM support), motherboard, memory, storage, network sensors. Requires administrator privileges.
 
-A **self-contained Node.js module** (`dist/native-libremon-napi/`) containing:
-- Native N-API addon (`.node` file)
-- Entire .NET 9.0 runtime (self-contained)
-- LibreHardwareMonitor library (custom fork with Intel GPU VRAM support)
-- JavaScript wrapper API
-- ~207 files, ~80MB total
+## Build Requirements
 
-**Key Feature**: The dist folder is completely portable - copy it to any Windows machine and `require()` it. No build tools or .NET installation needed on the target machine.
+- Windows 10/11 x64
+- Node.js 16.0+
+- Visual Studio 2019+ Build Tools (MSVC v142, Windows SDK, C++ tools)
+- .NET SDK 9.0+
+- Python 3.x (for node-gyp)
 
-## ✨ Features
+ClangCL not required - build system patches to MSVC v142.
 
-- **Native Performance**: Direct hardware access via N-API
-- **Intel GPU VRAM Support**: Custom LibreHardwareMonitor fork with Intel Arc GPU VRAM sensors
-- **Comprehensive Monitoring**: CPU, GPU, motherboard, memory, storage, network, PSU, battery, fan controllers
-- **Self-Contained**: Bundles entire .NET runtime, works on any Windows machine
-- **Simple Integration**: Single `require()` for Electron/Node.js apps
-
-## 📋 Build Requirements
-
-**Only needed if building from source:**
-
-- **Windows 10/11 x64**
-- **Node.js 16.0+**
-- **Visual Studio 2019+ Build Tools** with:
-  - MSVC v142 (Visual C++ 2019) toolset
-  - Windows 10/11 SDK
-  - C++ build tools
-- **.NET SDK 9.0+**
-- **Python 3.x** (for node-gyp)
-
-> **Note**: ClangCL is **not required**. The build system automatically patches project files to use MSVC v142.
-
-## 🚀 Building
+## Building
 
 ```bash
-# From repository root
-npm run build
-
-# Output: dist/native-libremon-napi/
+npm run build  # Output: dist/native-libremon-napi/
 ```
 
-This runs the complete build process:
-1. Compiles C# managed bridge as self-contained .NET app
-2. Compiles C++ native addon with N-API
-3. Assembles everything into `dist/native-libremon-napi/`
+Build steps:
+1. Compiles C# bridge (self-contained .NET 9.0)
+2. Compiles C++ N-API addon (auto-patches to MSVC v142)
+3. Assembles distribution folder
 
-## 📦 Using the Built Module
-
-Copy `dist/native-libremon-napi/` to your project and require it:
+## Usage
 
 ```javascript
 const monitor = require('./native-libremon-napi');
 
-// Initialize hardware monitoring
 monitor.init({
   cpu: true,
   gpu: true,
@@ -69,65 +41,32 @@ monitor.init({
   network: false
 });
 
-// Poll sensors (non-blocking)
-
 const data = await monitor.poll();
 console.log('Hardware Data:', data);
 
-// Cleanup
 monitor.shutdown();
 ```
 
-> **Runtime Requirement**: Administrator privileges required for hardware access.
+Administrator privileges required.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 LibreHardwareMonitor_NativeNodeIntegration/
 ├── NativeLibremon_NAPI/          # N-API addon source
 │   ├── src/                      # C++ native code
-│   ├── lib/                      # JavaScript wrapper
+│   ├── lib/index.js              # JavaScript wrapper
 │   ├── scripts/                  # Build scripts
-│   │   ├── build-dist.js         # Assembles dist folder
-│   │   ├── fix-runtimeconfig.js  # Removes .NET framework dependency
-│   │   └── check-windows.js      # Platform validation
-│   └── package.json              # Build configuration
+│   └── package.json
 ├── managed/                      # C# bridge source
 │   └── LibreHardwareMonitorBridge/
-├── deps/                         # Dependencies
+├── deps/
 │   └── LibreHardwareMonitor-src/ # LHM submodule (custom fork)
-├── dist/                         # Build output
-│   └── native-libremon-napi/     # ← Distributable module
-└── package.json                  # Root build script
+└── dist/
+    └── native-libremon-napi/     # Build output (~207 files, ~80MB)
 ```
 
-## 🔧 Build Process Details
-
-From repository root, `npm run build` executes:
-
-1. **Compile C# Bridge** (self-contained .NET 9.0 app)
-   ```bash
-   dotnet publish -c Release -r win-x64 --self-contained true
-   ```
-
-2. **Fix Runtime Config** (force bundled runtime usage)
-   ```bash
-   node scripts/fix-runtimeconfig.js
-   ```
-
-3. **Compile C++ Addon** (with automatic MSVC toolset patching)
-   ```bash
-   node-gyp configure && node patch-vcxproj.js && node-gyp build
-   ```
-
-4. **Assemble Distribution** (copy all artifacts to dist folder)
-   ```bash
-   node scripts/build-dist.js
-   ```
-
-> **Toolset Patching**: Node.js 24.9.0 requests ClangCL compiler, but build system automatically patches project files to use MSVC v142.
-
-## 🏗️ Architecture
+## Architecture
 
 ```
 Node.js Application
@@ -141,106 +80,61 @@ LibreHardwareMonitorLib.dll (Custom Fork)
 Hardware Drivers & WMI
 ```
 
-### Key Components
+## Recent Changes (November 21, 2025)
 
-- **N-API Addon** (`librehardwaremonitor_native.node`): Async worker for non-blocking polls
-- **Bridge Layer** (`LibreHardwareMonitorBridge.dll`): .NET interop with LibreHardwareMonitor
-- **LHM Fork** (`LibreHardwareMonitorLib.dll`): Custom build with Intel GPU VRAM support
-- **Self-Contained Runtime**: All .NET dependencies bundled in `dist/`
+- Updated LibreHardwareMonitor submodule to `5b2645bcbbe10373ec21afc3e95cda3a0a93c97e`
+- Removed obsolete `IsDimmDetectionEnabled` property
+- Changed bridge to use `ProjectReference` instead of pre-built DLL
+- Ensures bridge compiles against current LHM source
 
-## 📝 Recent Changes
+## Hardware Support
 
-### November 21, 2025 - LibreHardwareMonitor Update & API Compatibility Fixes
-
-**Updated LibreHardwareMonitor Submodule**
-- Updated `deps/LibreHardwareMonitor-src` to commit `5b2645bcbbe10373ec21afc3e95cda3a0a93c97e`
-- Brings in latest Intel GPU VRAM sensor improvements and bug fixes
-
-**Fixed Build System Issues**
-1. **Removed obsolete `IsDimmDetectionEnabled` property**
-   - Property was removed from LibreHardwareMonitor's `Computer` class in recent versions
-   - Updated `HardwareMonitorBridge.cs` to remove reference (line 70)
-   - DIMM detection is now always enabled when memory monitoring is enabled
-
-2. **Changed LibreHardwareMonitorLib reference from DLL to ProjectReference**
-   - **Previous**: Bridge referenced pre-built `deps/LibreHardwareMonitor/LibreHardwareMonitorLib.dll` (stale)
-   - **Current**: Bridge now references `deps/LibreHardwareMonitor-src/LibreHardwareMonitorLib/LibreHardwareMonitorLib.csproj`
-   - This ensures the bridge always uses the current source code from the submodule
-   - Fixes runtime errors where managed code called obsolete .NET APIs
-
-3. **Updated LibreHardwareMonitorBridge.csproj**
-   - Changed from: `<Reference Include="LibreHardwareMonitorLib"><HintPath>..\..\deps\LibreHardwareMonitor\LibreHardwareMonitorLib.dll</HintPath></Reference>`
-   - Changed to: `<ProjectReference Include="..\..\deps\LibreHardwareMonitor-src\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />`
-   - Ensures build system compiles LHM from source instead of using cached DLL
-
-**Impact**: The addon now works correctly with the updated LibreHardwareMonitor source, providing access to the latest sensor improvements while maintaining API compatibility.
-
-## 📊 Hardware Support
-
-| Category | Status | Admin Required | Intel GPU VRAM | Notes |
-|----------|--------|----------------|----------------|-------|
-| **CPU** | ✅ Full | Yes | - | Temp, load, clocks, power |
-| **GPU** | ✅ Full | Yes | ✅ **Yes** | Intel Arc VRAM support |
-| **Motherboard** | ✅ Full | Yes | - | Voltage, fans, temps |
-| **Memory** | ✅ Full | Yes | - | See DIMM detection below |
-| **Storage** | ✅ Full | Yes | - | SMART, temps, activity |
-| **Network** | ✅ Full | No | - | Bandwidth monitoring |
-
-### Intel GPU VRAM Monitoring
-
-The custom LibreHardwareMonitor fork adds:
-- **GPU Memory Total** (MB)
-- **GPU Memory Used** (MB)
-- **GPU Memory Free** (MB)
-- **GPU Memory Controller Load** (%)
-
-Supported on Intel Arc GPUs and integrated graphics.
+| Category | Admin Required | Notes |
+|----------|----------------|-------|
+| CPU | Yes | Temp, load, clocks, power |
+| GPU | Yes | Intel Arc VRAM support (Total/Used/Free MB, Load %) |
+| Motherboard | Yes | Voltage, fans, temps |
+| Memory | Yes | Load, Used, Available |
+| Storage | Yes | SMART, temps, activity |
+| Network | No | Bandwidth monitoring |
 
 ### Memory / DIMM Detection
 
-Memory monitoring has two modes controlled by `dimmDetection`:
+**`dimmDetection: false` (default)**
+- Virtual Memory + Total Memory only
+- Fast polling (~50-100ms)
+- ~6 sensors total
 
-**`dimmDetection: false` (default - recommended)**
-- Shows: Virtual Memory + Total Memory only
-- Sensors: Load, Used, Available (~6 sensors total)
-- Poll latency: Fast (~50-100ms)
-- **Use for**: Production dashboards polling at 1Hz or faster
+**`dimmDetection: true`**
+- Adds individual DIMM sensors
+- Slow polling (~150-250ms, SMBus I2C reads)
+- Temperature, capacity, timing parameters per DIMM
+- Requires RAMSPDToolkit driver (may fail silently)
 
-**`dimmDetection: true` (detailed)**
-- Shows: Virtual Memory + Total Memory + Individual DIMMs
-- Sensors: Temperature, Capacity, 17 timing parameters per DIMM (~20 sensors/DIMM)
-- Poll latency: Slow (~150-250ms due to SMBus I2C reads)
-- Requires: RAMSPDToolkit driver (may fail silently on some systems)
-- **Use for**: Diagnostics or when DIMM details are essential
-
-## 🔧 API Reference
+## API Reference
 
 ### `monitor.init(config)`
 
-Initialize hardware monitoring with desired categories.
+Initialize hardware monitoring with sensor categories.
 
 ```javascript
 monitor.init({
-  cpu: boolean,        // CPU sensors (temp, load, clocks)
-  gpu: boolean,        // GPU sensors (temp, load, VRAM)
-  motherboard: boolean, // Motherboard sensors (voltage, fans)
-  memory: boolean,     // Memory usage
-  storage: boolean,    // Drive temps, SMART data
-  network: boolean,    // Network bandwidth
-  controller: boolean, // HID controllers
-  psu: boolean,        // Power supply (if supported)
-  battery: boolean,    // Battery status (laptops)
-  dimmDetection: boolean // Optional: Enable per-DIMM sensors (default: false)
+  cpu: boolean,
+  gpu: boolean,
+  motherboard: boolean,
+  memory: boolean,
+  storage: boolean,
+  network: boolean,
+  controller: boolean,
+  psu: boolean,
+  battery: boolean,
+  dimmDetection: boolean  // Optional: Enable per-DIMM sensors (default: false)
 });
 ```
 
-**Performance Note**: `dimmDetection: true` enables detailed DIMM sensors (temperature, timing parameters) but adds ~100-150ms polling latency due to SMBus I2C reads. Use `false` (default) for production dashboards.
-
 ### `await monitor.poll()`
 
-Poll current sensor values (async, non-blocking).
-
-Returns hierarchical JSON matching LibreHardwareMonitor web endpoint format:
+Poll current sensor values (async). Returns hierarchical JSON:
 
 ```javascript
 {
@@ -270,185 +164,73 @@ Returns hierarchical JSON matching LibreHardwareMonitor web endpoint format:
 
 Clean up resources and shutdown monitoring.
 
-## 📁 Project Structure
+## Build Scripts
 
-```
-├── dist/
-│   └── NativeLibremon_NAPI/          # Pre-built distribution
-│       ├── librehardwaremonitor_native.node
-│       ├── LibreHardwareMonitorBridge.dll
-│       ├── LibreHardwareMonitorLib.dll
-│       ├── index.js                  # Entry point
-│       └── [.NET runtime DLLs]
-├── NativeLibremon_NAPI/              # Source code
-│   ├── src/                          # C++ N-API code
-│   │   ├── addon.cc                  # Entry point
-│   │   ├── clr_host.cc               # .NET runtime hosting
-│   │   ├── hardware_monitor.cc       # LHM wrapper
-│   │   └── json_builder.cc           # JSON marshaling
-│   ├── lib/index.js                  # JavaScript wrapper
-│   ├── patch-vcxproj.js              # Build toolset patcher (ClangCL → MSVC)
-│   ├── .npmrc                        # npm configuration (forces MSVC v142)
-│   └── binding.gyp                   # Build configuration
-├── managed/
-│   └── LibreHardwareMonitorBridge/   # .NET bridge project
-│       └── HardwareMonitorBridge.cs  # Managed interop
-├── deps/
-│   └── LibreHardwareMonitor-src/     # Git submodule (custom fork)
-└── scripts/
-    └── build-napi.ps1                # Build automation
-```
-
-## 🔨 Build Scripts
-
-### `.\scripts\build-all.ps1`
-
-Complete build script that builds everything from source:
-1. Builds LibreHardwareMonitor from git submodule
+**`.\scripts\build-all.ps1`** - Complete build from source:
+1. Builds LibreHardwareMonitor from submodule
 2. Publishes .NET bridge with self-contained runtime
-3. Compiles N-API addon with node-gyp
-4. Copies all dependencies to `dist/NativeLibremon_NAPI/`
-
-**Options**:
-```powershell
-# Full build from source
-.\scripts\build-all.ps1
-
-# Clean build (removes build artifacts first)
-.\scripts\build-all.ps1 -Clean
-```
-
-### `.\scripts\build-napi.ps1`
-
-Quick rebuild of just the N-API addon (assumes LibreHardwareMonitor and Bridge are already built):
-```powershell
-.\scripts\build-napi.ps1
-```
-
-## 🐛 Troubleshooting
-
-### Build Issues
-
-**Problem**: `nethost.h: No such file or directory`
-```
-Solution: Install .NET SDK 9.0+
-Check: dotnet --version
-```
-
-**Problem**: `The build tools for ClangCL (Platform Toolset = 'ClangCL') cannot be found`
-```
-Solution: This is automatically handled by the build system
-The N-API package.json includes a patch-vcxproj.js script that converts
-ClangCL toolset references to MSVC v142 after node-gyp configure step.
-If you encounter this error, ensure:
-1. Visual Studio 2019 Build Tools installed with MSVC v142
-2. .npmrc exists in NativeLibremon_NAPI/ with msvs_version=2019
-3. patch-vcxproj.js exists in NativeLibremon_NAPI/
-```
-
-**Problem**: `Could not locate the assembly 'LibreHardwareMonitorLib'`
-```
-Solution: LibreHardwareMonitor DLL not built yet
-Run: .\scripts\build-all.ps1
-This builds LibreHardwareMonitor from source and copies to deps/
-```
-
-**Problem**: Git submodule is empty
-```
-Solution: Initialize submodules
-Run: git submodule update --init --recursive
-```
-
-### Runtime Issues
-
-**Problem**: `The specified module could not be found`
-```
-Solution: Run as Administrator - hardware access requires elevation
-Right-click PowerShell → "Run as administrator"
-```
-
-**Problem**: `Failed to initialize .NET runtime`
-```
-Solution: All .NET dependencies should be in dist/NativeLibremon_NAPI/
-If missing, rebuild: .\scripts\build-napi.ps1
-```
-
-**Problem**: No GPU sensors detected
-```
-Solution: Enable CPU and Motherboard flags - GPU detection often requires these:
-monitor.init({ cpu: true, gpu: true, motherboard: true })
-```
-
-**Problem**: DIMM detection not working (dimmDetection: true)
-```
-Solution: RAMSPDToolkit driver may fail silently on some systems
-This is a known limitation - use dimmDetection: false for basic memory monitoring
-Basic Virtual Memory and Total Memory sensors always work without driver
-```
-
-## 📝 Example: GPU Monitor
-
-See `test/gpu-poll.js` for a complete example that:
-- Initializes with GPU monitoring
-- Polls every second (async, non-blocking)
-- Filters Intel GPUs
-- Displays core usage and VRAM load
-- Handles Ctrl+C gracefully
+3. Compiles N-API addon
+4. Copies to `dist/NativeLibremon_NAPI/`
 
 ```powershell
-# Run as Administrator
+.\scripts\build-all.ps1         # Full build
+.\scripts\build-all.ps1 -Clean  # Clean build
+```
+
+**`.\scripts\build-napi.ps1`** - Quick N-API rebuild only
+
+## Troubleshooting
+
+**Build Issues:**
+- `nethost.h: No such file or directory` - Install .NET SDK 9.0+ (`dotnet --version`)
+- `ClangCL platform toolset cannot be found` - Automatically handled by patch-vcxproj.js (requires VS2019 Build Tools with MSVC v142)
+- `Could not locate assembly 'LibreHardwareMonitorLib'` - Run `.\scripts\build-all.ps1`
+- `Git submodule is empty` - Run `git submodule update --init --recursive`
+
+**Runtime Issues:**
+- `The specified module could not be found` - Run as Administrator
+- `Failed to initialize .NET runtime` - Rebuild: `.\scripts\build-napi.ps1`
+- `No GPU sensors detected` - Enable CPU and Motherboard: `monitor.init({ cpu: true, gpu: true, motherboard: true })`
+- `DIMM detection not working` - RAMSPDToolkit driver may fail silently (use `dimmDetection: false`)
+
+## Example Usage
+
+See `test/gpu-poll.js` for GPU monitoring example. Run as Administrator:
+```powershell
 node test/gpu-poll.js
 ```
 
-## 🔐 Security & Permissions
+## Security & Permissions
 
-### Why Administrator Access?
+Requires Administrator access for hardware sensor I/O (MSR, SuperIO, physical drive handles).
 
-LibreHardwareMonitor requires elevated privileges for:
-- **CPU**: MSR (Model-Specific Register) access
-- **Motherboard**: SuperIO chip I/O port access
-- **Storage**: Physical drive handle access
-- **GPU**: Driver-level API access
-
-This is a Windows limitation, not a library choice.
-
-### Production Deployment (Electron)
-
-Add to your `app.manifest`:
+**Electron Deployment** - Add to `app.manifest`:
 ```xml
 <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
 ```
 
-Or check/request elevation at runtime.
+## Custom Fork
 
-## 📚 Custom LibreHardwareMonitor Fork
+Uses `herrbasan/LibreHardwareMonitor-Fork` (git submodule at `deps/LibreHardwareMonitor-src/`) with Intel GPU VRAM support and additional hardware dependencies.
 
-This project uses `herrbasan/LibreHardwareMonitor-Fork` with:
-- Intel GPU VRAM sensor support
-- CsWin32 for modern Windows API bindings
-- Additional dependencies: `DiskInfoToolkit`, `HidSharp`, `RAMSPDToolkit-NDD`
+## Known Issues
 
-The fork is maintained as a git submodule at `deps/LibreHardwareMonitor-src/`.
+- **DIMM Detection**: RAMSPDToolkit driver may fail silently on some systems. Basic memory monitoring (Virtual Memory + Total Memory) always works without the driver.
+- **.NET CLR Limitation**: Cannot reinitialize the addon in the same process due to .NET runtime restrictions. Requires process restart to change sensor configuration.
+- **GPU Detection**: Some GPUs require CPU and Motherboard flags enabled for proper detection.
 
-## 📄 License
+## Credits
 
-MIT License - See LICENSE file
-
-### Third-Party Components
-
-- **LibreHardwareMonitor Fork**: MPL 2.0
-- **Node.js/N-API**: MIT
-- **.NET Runtime**: MIT
-- **HidSharp**: Apache 2.0
-
-## 🙏 Credits
-
-- [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)
+- [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) - Base hardware monitoring library
 - [herrbasan/LibreHardwareMonitor-Fork](https://github.com/herrbasan/LibreHardwareMonitor-Fork) - Intel GPU VRAM support
-- [Node-API](https://nodejs.org/api/n-api.html)
+- [Node-API](https://nodejs.org/api/n-api.html) - Native addon interface
 
----
+## License
 
-**Status**: ✅ Production Ready  
-**Architecture**: N-API addon with async polling  
-**Last Updated**: November 21, 2025
+MIT License
+
+**Third-Party Components:**
+- LibreHardwareMonitor Fork (MPL 2.0)
+- Node.js/N-API (MIT)
+- .NET Runtime (MIT)
+- HidSharp (Apache 2.0)

@@ -10,8 +10,8 @@ function patchVcxproj(filePath) {
   let content = fs.readFileSync(filePath, 'utf8');
   const original = content;
   
-  // Replace ClangCL with v142 (VS2019 MSVC)
-  content = content.replace(/<PlatformToolset>ClangCL<\/PlatformToolset>/g, '<PlatformToolset>v142</PlatformToolset>');
+  // Replace ClangCL with v143 (VS2022 MSVC)
+  content = content.replace(/<PlatformToolset>ClangCL<\/PlatformToolset>/g, '<PlatformToolset>v143</PlatformToolset>');
   
   if (content !== original) {
     fs.writeFileSync(filePath, content, 'utf8');

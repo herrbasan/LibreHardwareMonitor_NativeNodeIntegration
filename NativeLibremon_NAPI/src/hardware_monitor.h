@@ -18,6 +18,7 @@ struct HardwareConfig {
     bool controller = false;
     bool battery = false;
     bool dimmDetection = false;  // Enable individual DIMM SPD detection (costly)
+    bool physicalNetworkOnly = false;  // Only detect physical network adapters (not virtual/NDIS filters)
 };
 
 /**
@@ -59,7 +60,8 @@ private:
     
     // Function pointers to managed bridge functions
     typedef int (*LHM_InitializeFn)(bool cpu, bool gpu, bool motherboard, bool memory,
-                                     bool storage, bool network, bool psu, bool controller, bool battery, bool dimmDetection);
+                                     bool storage, bool network, bool psu, bool controller, bool battery, 
+                                     bool dimmDetection, bool physicalNetworkOnly);
     typedef void* (*LHM_PollFn)();
     typedef void (*LHM_FreeStringFn)(void* ptr);
     typedef void (*LHM_ShutdownFn)();

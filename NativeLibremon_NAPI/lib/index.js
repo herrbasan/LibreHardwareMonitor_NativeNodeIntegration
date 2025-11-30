@@ -49,7 +49,8 @@ async function init(config = {}) {
 		psu: config.psu !== undefined ? config.psu : false,
 		controller: config.controller !== undefined ? config.controller : false,
 		battery: config.battery !== undefined ? config.battery : false,
-		dimmDetection: config.dimmDetection !== undefined ? config.dimmDetection : false
+		dimmDetection: config.dimmDetection !== undefined ? config.dimmDetection : false,
+		physicalNetworkOnly: config.physicalNetworkOnly !== undefined ? config.physicalNetworkOnly : false
 	};
 
 	try {

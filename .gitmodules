@@ -1,3 +1,4 @@
 [submodule "deps/LibreHardwareMonitor-src"]
 	path = deps/LibreHardwareMonitor-src
 	url = https://github.com/herrbasan/LibreHardwareMonitor.git
+	branch = node-integration-features

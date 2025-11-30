@@ -4,6 +4,61 @@ All notable changes to LibreHardwareMonitor Native Node Integration will be docu
 
 ## [Unreleased]
 
+### Added - 2025-11-30
+
+#### Physical Network Only Filter
+
+New `physicalNetworkOnly` configuration option to filter out virtual network adapters.
+
+**Usage:**
+```javascript
+monitor.init({
+  network: true,
+  physicalNetworkOnly: true  // Filter virtual adapters
+});
+```
+
+**Filtered Adapters:**
+- NDIS Lightweight Filters (`-QoS Packet Scheduler-`, `-WFP-`, etc.)
+- VirtualBox Host-Only Adapters
+- VMware Network Adapters
+- Hyper-V Virtual Adapters
+- Docker network adapters
+- VPN adapters (Private Internet Access, NordVPN, ExpressVPN, etc.)
+- WireGuard, Teredo, ISATAP, 6to4 tunnels
+
+**Performance Improvement:**
+| Metric | Without Filter | With Filter | Improvement |
+|--------|----------------|-------------|-------------|
+| Adapters | 46 | 4 | 91% reduction |
+| Avg poll time | 1.8ms | 0.2ms | 89% faster |
+| CPU usage | 89% | ~0% | ~100% less |
+
+**Implementation:**
+- Added `IsPhysicalNetworkOnly` property to `Computer.cs`
+- Added `IsPhysicalAdapter()` filter method to `NetworkGroup.cs`
+- Added `physicalNetworkOnly` parameter through full stack (JS → C++ → C#)
+
+#### Re-implemented DIMM Detection Toggle
+
+The `dimmDetection` parameter was restored after upstream LHM removed the property.
+
+**Usage:**
+```javascript
+monitor.init({
+  memory: true,
+  dimmDetection: false  // Skip per-DIMM sensors (default)
+});
+```
+
+**Performance Improvement:**
+- Init time: 4665ms → 50ms (99% faster)
+- Poll time: 6ms → ~0ms
+
+**Implementation:**
+- Re-added `IsDimmDetectionEnabled` property to `Computer.cs`
+- Added early return in `MemoryGroup.cs` constructor when disabled
+
 ### Changed - 2025-11-21
 
 #### LibreHardwareMonitor Submodule Update

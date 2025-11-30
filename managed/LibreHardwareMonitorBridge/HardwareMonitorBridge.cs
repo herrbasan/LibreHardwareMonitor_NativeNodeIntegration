@@ -30,7 +30,8 @@ namespace LibreHardwareMonitorNative
             [MarshalAs(UnmanagedType.I1)] bool psu,
             [MarshalAs(UnmanagedType.I1)] bool controller,
             [MarshalAs(UnmanagedType.I1)] bool battery,
-            [MarshalAs(UnmanagedType.I1)] bool dimmDetection);
+            [MarshalAs(UnmanagedType.I1)] bool dimmDetection,
+            [MarshalAs(UnmanagedType.I1)] bool physicalNetworkOnly);
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate IntPtr PollDelegate();
@@ -54,22 +55,25 @@ namespace LibreHardwareMonitorNative
             bool psu,
             bool controller,
             bool battery,
-            bool dimmDetection)
+            bool dimmDetection,
+            bool physicalNetworkOnly)
         {
             try
             {
                 var instance = Instance;
                 _storageEnabled = storage;
                 
-                // Note: IsDimmDetectionEnabled property removed in LibreHardwareMonitor commit 5b2645bcbbe10373ec21afc3e95cda3a0a93c97e
-                // DIMM detection is now implicitly enabled when IsMemoryEnabled = true
+                // IsDimmDetectionEnabled and IsPhysicalNetworkOnly must be set BEFORE 
+                // IsMemoryEnabled/IsNetworkEnabled because they trigger group creation
                 instance._computer = new Computer
                 {
                     IsCpuEnabled = cpu,
                     IsGpuEnabled = gpu,
                     IsMotherboardEnabled = motherboard,
+                    IsDimmDetectionEnabled = dimmDetection,
                     IsMemoryEnabled = memory,
                     IsStorageEnabled = storage,
+                    IsPhysicalNetworkOnly = physicalNetworkOnly,
                     IsNetworkEnabled = network,
                     IsPsuEnabled = psu,
                     IsControllerEnabled = controller,

@@ -130,3 +130,24 @@ cd NativeLibremon_NAPI && npm run clean && cd .. && npm run build
 # Test the built module
 node test/test-native-init.js
 ```
+
+## Configuration Options
+
+The addon supports filtering options to improve performance:
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `dimmDetection` | `false` | Enable per-DIMM memory sensors (slower, uses SMBus I2C) |
+| `physicalNetworkOnly` | `false` | Filter virtual network adapters (VirtualBox, VMware, VPN, etc.) |
+
+**Recommended for production dashboards:**
+```javascript
+monitor.init({
+  cpu: true,
+  gpu: true,
+  memory: true,
+  network: true,
+  dimmDetection: false,      // Skip per-DIMM sensors (99% faster init)
+  physicalNetworkOnly: true  // Physical adapters only (91% fewer, 89% faster)
+});
+```

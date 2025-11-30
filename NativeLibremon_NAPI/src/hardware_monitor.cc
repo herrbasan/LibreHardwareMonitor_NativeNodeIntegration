@@ -114,7 +114,8 @@ bool HardwareMonitor::Initialize(const HardwareConfig& config) {
 	std::cout << "PSU: " << (config.psu ? "true" : "false")
 			  << ", Controller: " << (config.controller ? "true" : "false")
 			  << ", Battery: " << (config.battery ? "true" : "false") << std::endl;
-	std::cout << "DIMM Detection: " << (config.dimmDetection ? "true" : "false") << std::endl;
+	std::cout << "DIMM Detection: " << (config.dimmDetection ? "true" : "false") 
+	          << ", Physical Network Only: " << (config.physicalNetworkOnly ? "true" : "false") << std::endl;
     
 	int result = m_initializeFn(
 		config.cpu,
@@ -126,7 +127,8 @@ bool HardwareMonitor::Initialize(const HardwareConfig& config) {
 		config.psu,
 		config.controller,
 		config.battery,
-		config.dimmDetection
+		config.dimmDetection,
+		config.physicalNetworkOnly
 	);
     
 	if (result != 0) {

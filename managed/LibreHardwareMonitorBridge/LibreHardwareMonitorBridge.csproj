@@ -32,8 +32,8 @@
     <PackageReference Include="System.IO.Ports" Version="10.0.0" />
     
     <!-- Transitive dependencies from LibreHardwareMonitorLib -->
-    <PackageReference Include="DiskInfoToolkit" Version="1.0.6" />
-    <PackageReference Include="RAMSPDToolkit-NDD" Version="1.4.1" />
+    <PackageReference Include="DiskInfoToolkit" Version="1.0.8" />
+    <PackageReference Include="RAMSPDToolkit-NDD" Version="1.4.2" />
     <PackageReference Include="HidSharp" Version="2.6.4" />
   </ItemGroup>
 

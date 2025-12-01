@@ -191,26 +191,49 @@ SensorType.SmallData => "Data",  // NOT "SmallData"
 
 ## Custom LibreHardwareMonitor Fork
 
-Repository: `herrbasan/LibreHardwareMonitor-Fork`
+Repository: `herrbasan/LibreHardwareMonitor`
+Branch: `node-integration-features`
 
-### Key Changes
+### Submodule Workflow
 
-1. **Intel GPU VRAM Sensors**:
-   - `GPU Memory Total`
-   - `GPU Memory Used`
-   - `GPU Memory Free`
-   - Implemented in `Hardware/GPU/IntelGpu.cs`
+The fork tracks `upstream/master` from the official LibreHardwareMonitor repository and adds custom features on the `node-integration-features` branch:
 
-2. **CsWin32 Integration**:
-   - Replaces P/Invoke with source-generated Windows API bindings
-   - Requires `Platform=x64` (AnyCPU not supported)
+```bash
+# Sync fork with upstream
+cd deps/LibreHardwareMonitor-src
+git fetch upstream
+git checkout master
+git merge upstream/master
+git push origin master
 
-3. **Additional Dependencies**:
-   - `DiskInfoToolkit` - Enhanced drive information
-   - `HidSharp` - HID device support
-   - `RAMSPDToolkit-NDD` - Memory module information
+# Rebase custom features onto updated master
+git checkout node-integration-features
+git rebase master
+git push origin node-integration-features --force
+```
 
-### Build Requirements
+This keeps custom features minimal and compatible with upstream changes.
+
+### Custom Changes (on node-integration-features branch)
+
+1. **Intel GPU VRAM Sensors** (from upstream PR #2077):
+   - `D3D Dedicated Memory Used`
+   - `D3D Shared Memory Used`
+   - Now part of official LibreHardwareMonitor (merged to master)
+   - No longer a custom fork feature
+
+2. **DIMM Detection Toggle** (`IsDimmDetectionEnabled`):
+   - Allows disabling expensive per-DIMM SPD sensor detection
+   - Property on `Computer` class, passed to `MemoryGroup` constructor
+   - When false: only Virtual Memory and Total Memory sensors
+   - When true: full DIMM enumeration with timing parameters
+
+3. **Physical Network Only Filter** (`IsPhysicalNetworkOnly`):
+   - Filters out virtual/NDIS filter adapters to reduce polling overhead
+   - Property on `Computer` class, passed to `NetworkGroup` constructor
+   - Uses language-independent detection (IPv4 interface index, Description field)
+
+### Build Requirements (inherited from upstream)
 
 ```xml
 <PropertyGroup>
@@ -399,7 +422,7 @@ The `physicalNetworkOnly` parameter (added November 2025) filters out virtual ne
 
 ### Implementation Chain
 
-1. **JavaScript** (`lib/index.js`): Parse `physicalNetworkOnly` from config (default: false)
+1. **JavaScript** (`lib/index.js`): Parse `physicalNetworkOnly` from config (default: true)
 2. **C++ N-API** (`hardware_monitor.cc`): Pass to `HardwareConfig.physicalNetworkOnly` → managed bridge
 3. **Bridge** (`HardwareMonitorBridge.cs`): Pass to `Computer.IsPhysicalNetworkOnly` property
 4. **LibreHardwareMonitor** (`Computer.cs`): Pass to `NetworkGroup` constructor
@@ -407,13 +430,13 @@ The `physicalNetworkOnly` parameter (added November 2025) filters out virtual ne
 
 ### Behavior
 
-**`physicalNetworkOnly: false` (default)**
+**`physicalNetworkOnly: false`**
 - Shows: All network adapters (~46 on typical system with VMs installed)
 - Includes: NDIS lightweight filters (QoS, WFP, etc.), VirtualBox, VMware, Hyper-V, Docker, VPN
 - Poll time: ~1.8ms per poll
 - CPU usage: ~89% of wall time
 
-**`physicalNetworkOnly: true`**
+**`physicalNetworkOnly: true` (default)**
 - Shows: Physical adapters only (~3-5 typically)
 - Keeps: Ethernet, Wi-Fi, Bluetooth adapters
 - Filters out:
@@ -429,25 +452,37 @@ The `physicalNetworkOnly` parameter (added November 2025) filters out virtual ne
 
 ### Filter Logic (NetworkGroup.cs)
 
+The filter uses **language-independent** detection methods to work on non-English Windows:
+
 ```csharp
 private static bool IsPhysicalAdapter(NetworkInterface nic)
 {
-    string name = nic.Name?.ToLowerInvariant() ?? "";
-    string desc = nic.Description?.ToLowerInvariant() ?? "";
+    // NDIS Lightweight Filter adapters (QoS, WFP, Native WiFi) don't have IPv4 support
+    // This is language-independent - works on all Windows locales
+    var ipv4Props = nic.GetIPProperties()?.GetIPv4Properties();
+    if (ipv4Props == null)
+        return false;  // NDIS filter adapters have no IPv4 interface index
     
-    // Exclude NDIS Lightweight Filter adapters
-    if (name.Contains("-0000") || name.Contains("-qos packet") || 
-        name.Contains("-wfp ") || name.Contains("-native wifi"))
+    // NetworkInterfaceType 53 = TAP/TUN adapters (VPN clients)
+    if ((int)nic.NetworkInterfaceType == 53)
         return false;
     
-    // Exclude virtual adapters by description
+    // Description field is ALWAYS in English regardless of Windows locale
+    string desc = nic.Description?.ToLowerInvariant() ?? "";
+    
+    // Exclude virtual adapters by description (English vendor names)
     if (desc.Contains("virtualbox") || desc.Contains("vmware") || 
-        desc.Contains("hyper-v") || desc.Contains("docker"))
+        desc.Contains("hyper-v") || desc.Contains("virtual") ||
+        desc.Contains("vpn") || desc.Contains("wireguard") ||
+        desc.Contains("teredo") || desc.Contains("isatap") || 
+        desc.Contains("6to4"))
         return false;
     
     return true;
 }
 ```
+
+**Key Insight**: `NetworkInterface.Name` is localized on Windows (e.g., "Ethernet" becomes "Etternett" in Norwegian), but `NetworkInterface.Description` contains the driver/vendor name which is always in English.
 
 ### Performance Impact
 
@@ -473,7 +508,7 @@ private static bool IsPhysicalAdapter(NetworkInterface nic)
 - [ ] Caching layer to reduce poll frequency
 - [x] Selective sensor filtering (reduce JSON size) - Implemented via `physicalNetworkOnly`
 - [ ] Delta updates (only changed sensors)
-- [ ] Multi-language support (currently English only)
+- [x] Multi-language support - Network filter now uses language-independent detection
 - [ ] Linux support (would require different LHM backend)
 - [ ] Fix RAMSPDToolkit driver loading (investigate silent failures in MemoryGroup.cs lines 52-55)
 
@@ -533,7 +568,17 @@ DIMM detection uses kernel drivers (RAMSPDToolkit) requiring admin privileges:
 - No error messages - hardware simply doesn't appear
 - Always test with elevated PowerShell session
 
+### Windows API Fields Have Different Localization Behavior
+
+When working with `System.Net.NetworkInformation.NetworkInterface`:
+- `Name` property: **LOCALIZED** - varies by Windows language (e.g., "Ethernet" → "Etternett" in Norwegian)
+- `Description` property: **ALWAYS ENGLISH** - contains vendor/driver names
+- `GetIPv4Properties()`: Returns `null` for NDIS filter adapters (language-independent detection method)
+
+**Key Insight**: NDIS Lightweight Filter adapters (QoS Packet Scheduler, WFP, Native WiFi) inject themselves as sub-adapters but don't have their own IPv4 interface index. Checking for `null` IPv4 properties is a reliable, language-independent way to filter them out.
+
 ---
 
 **Status**: ✅ Production Ready  
-**Last Updated**: November 30, 2025
+**Last Updated**: June 2, 2025  
+**Version**: 1.1.17

@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
-const distDir = path.join(root, '..', 'dist', 'native-libremon-napi');
+const distDir = path.join(root, '..', 'dist', 'NativeLibremon_NAPI');
 const buildDir = path.join(root, 'build', 'Release');
 const managedPublish = path.join(root, '..', 'managed', 'LibreHardwareMonitorBridge', 'bin', 'Release', 'net9.0', 'win-x64', 'publish-selfcontained');
 

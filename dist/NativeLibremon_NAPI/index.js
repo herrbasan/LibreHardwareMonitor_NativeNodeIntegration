@@ -1,19 +1,35 @@
-﻿/**
+/**
  * LibreHardwareMonitor Native - Node.js interface
- * Provides JavaScript API for native hardware monitoring addon
+ * Self-contained N-API addon with .NET runtime bundled
+ * 
+ * This module can be copied anywhere and will work as long as:
+ * - You're on Windows x64
+ * - All DLL files are in the same directory
+ * - You have administrator privileges
  */
+
+const path = require('path');
+const fs = require('fs');
 
 let nativeAddon = null;
 
-// Lazy load the native addon
+// Load the native addon from the same directory as this file
 function loadAddon() {
 	if (!nativeAddon) {
 		try {
-			nativeAddon = require('./librehardwaremonitor_native.node');
+			const addonPath = path.join(__dirname, 'librehardwaremonitor_native.node');
+			
+			if (!fs.existsSync(addonPath)) {
+				throw new Error(
+					'Native addon not found at: ' + addonPath + '\n' +
+					'Make sure all files from the distribution folder are present.'
+				);
+			}
+			
+			nativeAddon = require(addonPath);
 		} catch (err) {
-			const msg = 'Failed to load native addon. Make sure to run "npm install" first.\n' +
-				'Error: ' + err.message + (err.stack ? '\n' + err.stack : '');
-			// Log full error to stderr for easier debugging in tests
+			const msg = 'Failed to load native addon.\n' +
+				'Error: ' + err.message;
 			console.error(msg);
 			throw new Error(msg);
 		}
@@ -32,7 +48,9 @@ async function init(config = {}) {
 		network: config.network !== undefined ? config.network : false,
 		psu: config.psu !== undefined ? config.psu : false,
 		controller: config.controller !== undefined ? config.controller : false,
-		battery: config.battery !== undefined ? config.battery : false
+		battery: config.battery !== undefined ? config.battery : false,
+		dimmDetection: config.dimmDetection !== undefined ? config.dimmDetection : false,
+		physicalNetworkOnly: config.physicalNetworkOnly !== undefined ? config.physicalNetworkOnly : true
 	};
 
 	try {
@@ -116,4 +134,3 @@ module.exports = {
 	poll,
 	shutdown
 };
-

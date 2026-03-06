@@ -12,7 +12,7 @@
         "<!@(node -p \"require('node-addon-api').include\")",
         "src",
         "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.11/runtimes/win-x64/native",
-        "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/10.0.0/runtimes/win-x64/native",
+        "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/10.0.3/runtimes/win-x64/native",
         "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native",
         "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.10/runtimes/win-x64/native",
         "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.8/runtimes/win-x64/native",
@@ -37,7 +37,7 @@
         "VCLinkerTool": {
           "AdditionalLibraryDirectories": [
             "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.11/runtimes/win-x64/native",
-            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/10.0.0/runtimes/win-x64/native",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/10.0.3/runtimes/win-x64/native",
             "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.9/runtimes/win-x64/native",
             "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.10/runtimes/win-x64/native",
             "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/9.0.8/runtimes/win-x64/native"
